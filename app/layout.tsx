@@ -5,7 +5,7 @@ import { Manrope } from 'next/font/google';
 export const metadata: Metadata = {
   title: 'Thư mời | DXMD Vietnam Award 2026',
   description:
-    'Thư mời chính thức tham dự DXMD Vietnam Award 2026 – sự kiện vinh danh các cá nhân và doanh nghiệp tiêu biểu trong lĩnh vực tại Việt Nam.',
+    'Thư mời chính thức tham dự DXMD Vietnam Award 2026 – sự kiện vinh danh các cá nhân và doanh nghiệp tiêu biểu tại DXMD Việt Nam.',
 
   keywords: [
     'DXMD Vietnam Award 2026',
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   },
 
   alternates: {
-    canonical: 'https://dxmdvietnam.vn/invitation',
+    canonical: 'https://marketing.dxmd.vn',
   },
 
   category: 'Event',
