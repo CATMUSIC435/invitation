@@ -5,7 +5,7 @@ import { Manrope } from 'next/font/google';
 export const metadata: Metadata = {
   title: 'Thư mời | DXMD Vietnam Award 2026',
   description:
-    'Thư mời chính thức tham dự DXMD Vietnam Award 2026 – sự kiện vinh danh các cá nhân và doanh nghiệp tiêu biểu trong lĩnh vực chuyển đổi số tại Việt Nam.',
+    'Thư mời chính thức tham dự DXMD Vietnam Award 2026 – sự kiện vinh danh các cá nhân và doanh nghiệp tiêu biểu trong lĩnh vực tại Việt Nam.',
 
   keywords: [
     'DXMD Vietnam Award 2026',
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Thư mời DXMD Vietnam Award 2026',
     description:
-      'DXMD Vietnam Award 2026 – sự kiện vinh danh các cá nhân và doanh nghiệp xuất sắc trong chuyển đổi số tại DXMD Việt Nam.',
+      'DXMD Vietnam Award 2026 – sự kiện vinh danh các cá nhân và doanh nghiệp xuất sắc trong tại DXMD Việt Nam.',
     type: 'website',
     locale: 'vi_VN',
     siteName: 'DXMD Vietnam Award 2026',
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Thư mời | DXMD Vietnam Award 2026',
     description:
-      'Thư mời chính thức tham dự DXMD Vietnam Award 2026 – sự kiện vinh danh chuyển đổi số tại Việt Nam.',
+      'Thư mời chính thức tham dự DXMD Vietnam Award 2026 – sự kiện vinh danh tại DXMD Việt Nam.',
     images: ['/og-dxmd-vietnam-award-2026.png'],
   },
 
