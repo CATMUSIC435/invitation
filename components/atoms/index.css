@@ -1,0 +1,14 @@
+.small-text {
+    margin: 6px 0 0;
+    padding: 0;
+    letter-spacing: 2px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
+    font-family: 'SVN Gotham Book';
+}
+
+@media screen and (min-width: 960px) {
+    .small-text {
+        margin: 0;
+    }
+}
