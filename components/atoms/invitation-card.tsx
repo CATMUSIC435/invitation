@@ -187,7 +187,7 @@ export default function InvitationCard() {
                   </div>
 
                   <div className='relative z-20 top-[16px]'>
-                    <h2 className='text-4xl font-bold text-white -mb-2' style={{ margin: 0, padding: 0, letterSpacing: '3px', fontFamily: 'SVN Avo bold' , fontWeight: 400, lineHeight: 1}}>{dataForm.name}</h2>
+                    <h2 className='text-4xl font-bold text-white mb-1' style={{ padding: 0, letterSpacing: '3px', fontFamily: 'SVN Avo bold' , fontWeight: 400, lineHeight: 1}}>{dataForm.name}</h2>
                     <div>
                       <h3 className='text-xl text-white mt-0 font-normal small-text'  style={{ fontFamily: 'SVN Avo'}}>{dataForm.field_one}</h3>
                     </div>
@@ -198,7 +198,7 @@ export default function InvitationCard() {
 
             {isAllow ? <form action={handleDownload}>
               <button
-                className='mt-4 bg-[#844d15] text-white font-bold mx-2 py-2 rounded hover:bg-[#844d15]/80 w-full'
+                className='mt-4 bg-[#844d15] text-white font-bold mx-2 py-2 rounded hover:bg-[#844d15]/80 w-full cursor-pointer'
               >
                 Tải thẻ mời xuống
               </button>
@@ -214,24 +214,24 @@ const Controls = () => {
   const { zoomIn, zoomOut, resetTransform } = useControls();
 
   return (
-    <div className="relative left-1/2 -translate-x-1/2 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg flex gap-3 z-50 border border-gray-200">
+    <div className="relative left-1/2 -translate-x-1/2 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg flex gap-3 z-50 border border-gray-200 hover:border-gray-400 transition-all delay-75 ease-linear">
       <button
         onClick={() => zoomIn()}
-        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold transition-all delay-75 ease-linear cursor-pointer"
+        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold hover:bg-white/80 hover:shadow-2xl transition-all delay-75 ease-linear cursor-pointer"
         title="Zoom In"
       >
         +
       </button>
       <button
         onClick={() => zoomOut()}
-        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold transition-all delay-75 ease-linear cursor-pointer"
+        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold hover:bg-white/80 hover:shadow-2xl transition-all delay-75 ease-linear cursor-pointer"
         title="Zoom Out"
       >
         −
       </button>
       <button
         onClick={() => resetTransform()}
-        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold transition-all delay-75 ease-linear cursor-pointer"
+        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold hover:bg-white/80 hover:shadow-2xl transition-all delay-75 ease-linear cursor-pointer"
         title="Reset Zoom"
       >
         ⟳

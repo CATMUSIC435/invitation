@@ -108,9 +108,9 @@ export default function FormExample({ onCallBack }: FormExampleProps) {
                             type="submit"
                             disabled={!canSubmit}
                             className={`
-                                mt-4 px-6 py-2 rounded-md font-bold transition w-full 
+                                mt-4 px-6 py-2 rounded-md font-bold transition-all w-full cursor-pointer
                                 ${canSubmit
-                                    ? 'bg-white text-[#844d15] hover:bg-wwhite/80 shadow-md backdrop-blur-lg'
+                                    ? 'bg-white text-[#844d15] hover:bg-white/80 shadow-md backdrop-blur-lg'
                                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                                 }
                             `}
