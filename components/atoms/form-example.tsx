@@ -115,7 +115,7 @@ export default function FormExample({ onCallBack }: FormExampleProps) {
                                 }
                             `}
                         >
-                            {isSubmitting ? 'Đang gửi...' : 'Tạo thiệp'}
+                            {isSubmitting ? 'Đang tạo...' : 'Tạo thư'}
                         </button>
                     )}
                 />

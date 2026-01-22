@@ -200,7 +200,7 @@ export default function InvitationCard() {
               <button
                 className='mt-4 bg-[#844d15] text-white font-bold mx-2 py-2 rounded hover:bg-[#844d15]/80 w-full cursor-pointer'
               >
-                Tải thẻ mời xuống
+                Tải thư mời xuống
               </button>
             </form> : null}
           </div>
