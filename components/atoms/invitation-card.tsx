@@ -97,32 +97,19 @@ export default function InvitationCard() {
       ctx?.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, width, height);
 
       const base64 = resizedCanvas.toDataURL('image/png', 1.0);
+      const link = document.createElement('a');
+      link.download = 'invitation-card.png';
+      link.href = base64;
+      const file = base64ToFile(base64, 'avatar.png');
+      const formData = new FormData();
+      formData.append('avatar', file);
+      console.log(dataForm);
 
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-      if (isIOS) {
-        const newWindow = window.open();
-        if (newWindow) {
-          newWindow.document.write(
-            `<img src="${base64}" style="width:100%;height:auto" />`
-          );
-          newWindow.document.title = 'Thư mời DXMD 2026';
-        }
-      } else {
-        const link = document.createElement('a');
-        link.download = 'invitation-card.png';
-        link.href = base64;
-        const file = base64ToFile(base64, 'avatar.png');
-        const formData = new FormData();
-        formData.append('avatar', file);
-        console.log(dataForm);
-
-        Object.entries(dataForm).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
-        formData.append('role', '');
-        link.click();
-      }
+      Object.entries(dataForm).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+      formData.append('role', '');
+      link.click();
       setIsAllow(false);
     }
     setIsPending(false)
@@ -200,9 +187,9 @@ export default function InvitationCard() {
                   </div>
 
                   <div className='relative z-20 top-[16px]'>
-                    <h2 className='text-4xl font-bold text-white mb-1' style={{ padding: 0, letterSpacing: '3px', fontFamily: 'SVN Avo bold', fontWeight: 400, lineHeight: 1 }}>{dataForm.name}</h2>
+                    <h2 className='text-4xl font-bold text-white mb-1' style={{ padding: 0, letterSpacing: '3px', fontFamily: 'SVN Avo bold' , fontWeight: 400, lineHeight: 1}}>{dataForm.name}</h2>
                     <div>
-                      <h3 className='text-xl text-white mt-0 font-normal small-text' style={{ fontFamily: 'SVN Avo' }}>{dataForm.field_one}</h3>
+                      <h3 className='text-xl text-white mt-0 font-normal small-text'  style={{ fontFamily: 'SVN Avo'}}>{dataForm.field_one}</h3>
                     </div>
                   </div>
                 </div>
