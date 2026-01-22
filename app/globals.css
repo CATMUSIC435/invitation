@@ -305,6 +305,6 @@
 
 @font-face {
   font-family: 'SVN Avo';
-  src: url('/fonts/SVN-AVO.TTFf') format('opentype'),
+  src: url('/fonts/SVN-AVO.TTF') format('opentype'),
        url('/fonts/SVN-AVO.TTF') format('truetype');
 }
