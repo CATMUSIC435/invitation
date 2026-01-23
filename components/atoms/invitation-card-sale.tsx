@@ -162,7 +162,7 @@ export default function InvitationCardSale() {
               <div className='h-[500px] w-[300px] overflow-hidden relative z-10'>
                 <div
                   ref={cardRef}
-                  className='bg-gradient-to-br from-[#844d15] to-yellow-100 shadow-lg rounded-xl text-center pt-[270px] px-2 flex flex-col items-center gap-4 bg-center bg-cover'
+                  className='bg-gradient-to-br from-[#844d15] to-yellow-100 shadow-lg rounded-xl text-center pt-[262px] px-2 flex flex-col items-center gap-4 bg-center bg-cover'
                   style={{
                     width: '900px',
                     height: '1500px',
@@ -171,10 +171,10 @@ export default function InvitationCardSale() {
                     backgroundImage: 'url(/frame-sale.png)',
                   }}>
                   <div className='relative'>
-                    <div className='w-[415px] h-[415px] object-cover rounded-full shadow overflow-hidden z-0'>
-                      <div className='w-[415px] h-[415px] relative'>
+                    <div className='w-[424px] h-[424px] object-cover rounded-full shadow overflow-hidden z-0'>
+                      <div className='w-[424px] h-[424px] relative'>
                         <TransformComponent wrapperClass="transform-component">
-                          <div className="h-[415px] w-[415px] overflow-hidden relative z-1">
+                          <div className="h-[424px] w-[424px] overflow-hidden relative z-1">
                             {avatarUrl ? <img
                               src={avatarUrl ?? ''}
                               className="h-full w-auto object-cover"
@@ -183,18 +183,18 @@ export default function InvitationCardSale() {
                           </div>
                         </TransformComponent>
                         
-                        {/* <div className='absolute h-[415px] w-[415px] rounded-full z-50 top-0 pointer-events-none'>
+                        <div className='absolute h-[424px] w-[424px] rounded-full z-50 top-0 pointer-events-none'>
                           <img
-                            src='/asset.png'
+                            src='/asset-sque.png'
                             className="h-full w-full object-contain"
                             alt=""
                           />
-                        </div> */}
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className='relative z-20 top-[20px]'>
+                  <div className='relative z-20 top-[16px]'>
                     <h2 className='text-4xl font-bold text-white mb-1' style={{ padding: 0, letterSpacing: '3px', fontFamily: 'SVN Avo bold' , fontWeight: 400, lineHeight: 1}}>{dataForm.name}</h2>
                     <div>
                       <h3 className='text-2xl text-white mt-0 font-normal small-text'  style={{ fontFamily: 'SVN Avo'}}>{dataForm.field_one}</h3>
