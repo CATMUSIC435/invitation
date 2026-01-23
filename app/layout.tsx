@@ -1,3 +1,4 @@
+import PageButton from '@/components/molecules/page-button';
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
@@ -72,8 +73,24 @@ export default function RootLayout({
       lang="en"
       className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
     >
-      <body className="min-h-[100dvh] bg-gray-50">
-          {children}
+      <body className="min-h-[100dvh] bg-gray-50 relative">
+        <div className='absolute top-0 left-0 w-full'>
+          <div className='w-full flex justify-center items-center gap-4 px-4 md:px-0'>
+            <PageButton
+              href="/"
+              label="DXMD VIETNAM AWARD 2025"
+              bgColor="bg-gradient-to-r from-[#844d15] to-yellow-500"
+              textColor="text-white"
+            />
+            <PageButton
+              href="/invitations"
+              label="MAGIC NIGHT POOL PARTY"
+              bgColor="bg-gradient-to-r from-[#844d15] to-yellow-500"
+              textColor="text-white"
+            />
+          </div>
+        </div>
+        {children}
       </body>
     </html>
   );
