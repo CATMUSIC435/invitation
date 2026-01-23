@@ -1,7 +1,7 @@
 {
-    "name": "Thiệp mời | Gửi lời chúc ý nghĩa",
-    "short_name": "Thiệp mời",
-    "description": "Tạo thiệp mời online với ảnh, mã QR, lời chúc và gửi email nhanh chóng.",
+    "name": "Thư mời | DXMD Vietnam Award 2025",
+    "short_name": "DXMD Vietnam Award 2025",
+    "description": "Thư mời chính thức tham dự DXMD Vietnam Award 2025 – sự kiện vinh danh các cá nhân và doanh nghiệp tiêu biểu tại DXMD Việt Nam.",
     "start_url": "/",
     "display": "standalone",
     "background_color": "#ffffff",

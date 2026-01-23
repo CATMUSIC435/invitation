@@ -3,12 +3,12 @@ import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 
 export const metadata: Metadata = {
-  title: 'Thư mời | DXMD Vietnam Award 2026',
+  title: 'Thư mời | DXMD Vietnam Award 2025',
   description:
-    'Thư mời chính thức tham dự DXMD Vietnam Award 2026 – sự kiện vinh danh các cá nhân và doanh nghiệp tiêu biểu tại DXMD Việt Nam.',
+    'Thư mời chính thức tham dự DXMD Vietnam Award 2025 – sự kiện vinh danh các cá nhân và doanh nghiệp tiêu biểu tại DXMD Việt Nam.',
 
   keywords: [
-    'DXMD Vietnam Award 2026',
+    'DXMD Vietnam Award 2025',
     'Thư mời DXMD',
     'Sự kiện công nghệ Việt Nam',
     'Vietnam Digital Transformation Award',
@@ -24,28 +24,28 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'Thư mời DXMD Vietnam Award 2026',
+    title: 'Thư mời DXMD Vietnam Award 2025',
     description:
-      'DXMD Vietnam Award 2026 – sự kiện vinh danh các cá nhân và doanh nghiệp xuất sắc trong tại DXMD Việt Nam.',
+      'DXMD Vietnam Award 2025 – sự kiện vinh danh các cá nhân và doanh nghiệp xuất sắc trong tại DXMD Việt Nam.',
     type: 'website',
     locale: 'vi_VN',
-    siteName: 'DXMD Vietnam Award 2026',
+    siteName: 'DXMD Vietnam Award 2025',
     images: [
       {
-        url: '/og-dxmd-vietnam-award-2026.png', // 1200x630
+        url: '/og-image.jpg', // 1200x630
         width: 1200,
         height: 630,
-        alt: 'DXMD Vietnam Award 2026',
+        alt: 'DXMD Vietnam Award 2025',
       },
     ],
   },
 
   twitter: {
     card: 'summary_large_image',
-    title: 'Thư mời | DXMD Vietnam Award 2026',
+    title: 'Thư mời | DXMD Vietnam Award 2025',
     description:
-      'Thư mời chính thức tham dự DXMD Vietnam Award 2026 – sự kiện vinh danh tại DXMD Việt Nam.',
-    images: ['/og-dxmd-vietnam-award-2026.png'],
+      'Thư mời chính thức tham dự DXMD Vietnam Award 2025 – sự kiện vinh danh tại DXMD Việt Nam.',
+    images: ['/og-dxmd-vietnam-award-2025.png'],
   },
 
   alternates: {
