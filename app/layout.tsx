@@ -1,4 +1,4 @@
-import PageButton from '@/components/molecules/page-button';
+// import PageButton from '@/components/molecules/page-button';
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
@@ -74,7 +74,7 @@ export default function RootLayout({
       className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
     >
       <body className="min-h-[100dvh] bg-gray-50 relative">
-        <div className='absolute top-0 left-0 w-full'>
+        {/* <div className='absolute top-0 left-0 w-full'>
           <div className='w-full flex justify-center items-center gap-4 px-4 md:px-0'>
             <PageButton
               href="/"
@@ -89,7 +89,7 @@ export default function RootLayout({
               textColor="text-white"
             />
           </div>
-        </div>
+        </div> */}
         {children}
       </body>
     </html>
