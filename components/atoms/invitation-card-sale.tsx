@@ -162,7 +162,7 @@ export default function InvitationCardSale() {
               <div className='h-[500px] w-[300px] overflow-hidden relative z-10'>
                 <div
                   ref={cardRef}
-                  className='bg-gradient-to-br from-[#844d15] to-yellow-100 shadow-lg rounded-xl text-center pt-[262px] px-2 flex flex-col items-center gap-4 bg-center bg-cover'
+                  className='bg-gradient-to-br from-[#844d15] to-yellow-100 shadow-lg text-center pt-[262px] px-2 flex flex-col items-center gap-4 bg-center bg-cover'
                   style={{
                     width: '900px',
                     height: '1500px',
