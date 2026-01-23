@@ -29,6 +29,7 @@ export default function PageButton({
     transition-all duration-200
     shadow-md
     text-xs
+    md:text-base
     before:absolute
     before:top-0
     before:-left-full
