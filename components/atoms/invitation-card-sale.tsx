@@ -3,8 +3,8 @@
 import { useActionState, useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import FormExample from './form-example';
-import { signUp } from '@/app/(login)/actions';
-import { ActionState } from '@/lib/auth/middleware';
+// import { signUp } from '@/app/(login)/actions';
+// import { ActionState } from '@/lib/auth/middleware';
 import LoadingModal from './loading-modal';
 import { TransformComponent, TransformWrapper, useControls } from 'react-zoom-pan-pinch';
 import { UploadCloud } from 'lucide-react';
@@ -48,13 +48,12 @@ export function base64ToFile(base64: string, filename: string): File {
   return new File([u8arr], filename, { type: mime });
 }
 
-export default function InvitationCard() {
+export default function InvitationCardSale() {
   const [zoomValue, setZoomValue] = useState(1);
   const [isPending, setIsPending] = useState<boolean>(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [isAllow, setIsAllow] = useState<boolean>(false);
   const [dataForm, setDataForm] = useState<FormEvent>(event);
-  const [link, setLink] = useState<string>('');
   const cardRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef<any>(null);
   const inputRef = useRef<HTMLInputElement>(null)
@@ -62,9 +61,9 @@ export default function InvitationCard() {
   const handleClick = () => {
     inputRef.current?.click()
   }
-  const [state, formAction, pending] = useActionState<ActionState, FormData>(
-    signUp, { error: '' }
-  );
+  // const [state, formAction, pending] = useActionState<ActionState, FormData>(
+  //   signUp, { error: '' }
+  // );
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -110,19 +109,6 @@ export default function InvitationCard() {
         formData.append(key, value);
       });
       formData.append('role', '');
-      // startTransition(() => {
-      //   formAction(formData)
-      // })
-      try {
-        const res = await fetch('/api/upload-avatar', {
-          method: 'POST',
-          body: formData,
-        });
-        const data: any = await res.json();
-        setLink(data?.success ?? '')      
-      } catch (error) {
-
-      }
       link.click();
       setIsAllow(false);
     }
@@ -149,14 +135,14 @@ export default function InvitationCard() {
         <div className='mx-auto'>
           <div className='md:w-[fit-content] mx-auto'>
             <div className='flex flex-col md:flex-row items-center gap-4 justify-center'>
-              <div className='h-full py-4 md:py-0 md:h-[500px] max-w-[282px] flex flex-col items-center justify-center rounded-xl w-full md:w-md px-6 bg-gradient-to-br from-pink-200 via-pink-50 to-pink-100'>
+              <div className='h-full py-4 md:py-0 md:h-[500px] max-w-[282px] flex flex-col items-center justify-center rounded-xl w-full md:w-md px-6 bg-gradient-to-br from-[#844d15] via-[#c19d68] to-[##ac8d45]'>
                 <div
-                  className="w-full h-36 border-2 border-dashed border-gray-300 rounded-xl bg-[url('data:image/svg+xml;utf8,<svg width=\\'40\\' height=\\'40\\' viewBox=\\'0 0 40 40\\' xmlns=\\'http://www.w3.org/2000/svg\\'><path fill=\\'%23eeeeee\\' d=\\'M0 0h40v1H0zm0 20h40v1H0zm0 20h40v1H0z\\'/></svg>')] bg-repeat bg-[length:40px_40px] flex flex-col items-center justify-center text-center cursor-pointer transition hover:bg-gray-50"
+                  className="w-full h-36 border-2 border-dashed border-gray-300 rounded-xl bg-[url('data:image/svg+xml;utf8,<svg width=\\'40\\' height=\\'40\\' viewBox=\\'0 0 40 40\\' xmlns=\\'http://www.w3.org/2000/svg\\'><path fill=\\'%23eeeeee\\' d=\\'M0 0h40v1H0zm0 20h40v1H0zm0 20h40v1H0z\\'/></svg>')] bg-repeat bg-[length:40px_40px] flex flex-col items-center justify-center text-center cursor-pointer"
                   onClick={handleClick}
                 >
-                  <UploadCloud className="w-10 h-10 text-blue-600 mb-2" />
+                  <UploadCloud className="w-10 h-10 text-white mb-2" />
                   <p className="text-sm font-medium text-gray-800">
-                    Kéo thả hoặc <span className="text-blue-600 font-semibold">Bấm vào đây</span><br />
+                    Kéo thả hoặc <span className="text-white font-semibold">Bấm vào đây</span><br />
                     để đăng tải hình ảnh
                   </p>
                   <input
@@ -173,10 +159,10 @@ export default function InvitationCard() {
                 </div>
                 <FormExample onCallBack={changeValueEvent} />
               </div>
-              <div className='h-[500px] w-[300px] overflow-hidden'>
+              <div className='h-[500px] w-[300px] overflow-hidden relative z-10'>
                 <div
                   ref={cardRef}
-                  className='bg-gradient-to-br from-pink-200 to-yellow-100 shadow-lg rounded-xl text-center pt-[203px] px-2 flex flex-col items-center gap-4 bg-center bg-cover'
+                  className='bg-gradient-to-br from-[#844d15] to-yellow-100 shadow-lg rounded-xl text-center pt-[270px] px-2 flex flex-col items-center gap-4 bg-center bg-cover'
                   style={{
                     width: '900px',
                     height: '1500px',
@@ -185,10 +171,10 @@ export default function InvitationCard() {
                     backgroundImage: 'url(/frame-sale.png)',
                   }}>
                   <div className='relative'>
-                    <div className='w-[282px] h-full object-cover rounded-full shadow overflow-hidden'>
-                      <div className='w-[282px] h-[282px] relative'>
+                    <div className='w-[415px] h-[415px] object-cover rounded-full shadow overflow-hidden z-0'>
+                      <div className='w-[415px] h-[415px] relative'>
                         <TransformComponent wrapperClass="transform-component">
-                          <div className="h-[282px] w-[282px] overflow-hidden relative z-0">
+                          <div className="h-[415px] w-[415px] overflow-hidden relative z-1">
                             {avatarUrl ? <img
                               src={avatarUrl ?? ''}
                               className="h-full w-auto object-cover"
@@ -196,21 +182,22 @@ export default function InvitationCard() {
                             /> : null}
                           </div>
                         </TransformComponent>
-                        <div className='absolute h-[283px] w-[283px] rounded-full z-20 top-0  pointer-events-none'>
+                        
+                        {/* <div className='absolute h-[415px] w-[415px] rounded-full z-50 top-0 pointer-events-none'>
                           <img
-                            src='/frame-cut.png'
+                            src='/asset.png'
                             className="h-full w-full object-contain"
                             alt=""
                           />
-                        </div>
+                        </div> */}
                       </div>
                     </div>
                   </div>
 
-                  <div className='relative z-20 -top-14'>
-                    <h2 className='text-4xl font-bold text-white -mb-2' style={{ margin: 0, padding: 0, letterSpacing: '3px', color: 'rgba(255,255,255,0.7)', fontFamily: 'SVN Gotham', fontWeight: 400 }}>{dataForm.name}</h2>
+                  <div className='relative z-20 top-[20px]'>
+                    <h2 className='text-4xl font-bold text-white mb-1' style={{ padding: 0, letterSpacing: '3px', fontFamily: 'SVN Avo bold' , fontWeight: 400, lineHeight: 1}}>{dataForm.name}</h2>
                     <div>
-                      <h3 className='text-xl text-white mt-0 font-normal small-text'>{dataForm.field_one}</h3>
+                      <h3 className='text-2xl text-white mt-0 font-normal small-text'  style={{ fontFamily: 'SVN Avo'}}>{dataForm.field_one}</h3>
                     </div>
                   </div>
                 </div>
@@ -219,17 +206,11 @@ export default function InvitationCard() {
 
             {isAllow ? <form action={handleDownload}>
               <button
-                className='mt-4 bg-cyan-200 text-black font-bold mx-2 py-2 rounded hover:bg-cyan-300 w-full'
+                className='mt-4 bg-[#844d15] text-white font-bold mx-2 py-2 rounded hover:bg-[#844d15]/80 w-full cursor-pointer'
               >
-                Tải thẻ mời xuống
+                Tải thư mời xuống
               </button>
             </form> : null}
-             {link ? 
-              <a href={`${link}`}><button
-                className='mt-4 bg-cyan-300 text-black font-bold mx-2 py-2 rounded hover:bg-cyan-400 w-full'
-              >
-                Nếu ảnh không tải vui lòng nhấn vào đây
-              </button></a> : null}
           </div>
           <LoadingModal isOpen={isPending} />
         </div>)}
@@ -241,24 +222,24 @@ const Controls = () => {
   const { zoomIn, zoomOut, resetTransform } = useControls();
 
   return (
-    <div className="relative left-1/2 -translate-x-1/2 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg flex gap-3 z-50 border border-gray-200">
+    <div className="relative left-1/2 -translate-x-1/2 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg flex gap-3 z-50 border border-gray-200 hover:border-gray-400 transition-all delay-75 ease-linear">
       <button
         onClick={() => zoomIn()}
-        className="w-8 h-8 rounded-md bg-blue-500 text-white text-xl font-semibold hover:bg-blue-600 transition"
+        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold hover:bg-white/80 hover:shadow-2xl transition-all delay-75 ease-linear cursor-pointer"
         title="Zoom In"
       >
         +
       </button>
       <button
         onClick={() => zoomOut()}
-        className="w-8 h-8 rounded-md bg-blue-500 text-white text-xl font-semibold hover:bg-blue-600 transition"
+        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold hover:bg-white/80 hover:shadow-2xl transition-all delay-75 ease-linear cursor-pointer"
         title="Zoom Out"
       >
         −
       </button>
       <button
         onClick={() => resetTransform()}
-        className="w-8 h-8 rounded-md bg-gray-500 text-white text-xl font-semibold hover:bg-gray-600 transition"
+        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold hover:bg-white/80 hover:shadow-2xl transition-all delay-75 ease-linear cursor-pointer"
         title="Reset Zoom"
       >
         ⟳

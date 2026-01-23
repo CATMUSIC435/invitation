@@ -3,8 +3,8 @@
 import { useActionState, useRef, useState } from 'react';
 import html2canvas from 'html2canvas';
 import FormExample from './form-example';
-import { signUp } from '@/app/(login)/actions';
-import { ActionState } from '@/lib/auth/middleware';
+// import { signUp } from '@/app/(login)/actions';
+// import { ActionState } from '@/lib/auth/middleware';
 import LoadingModal from './loading-modal';
 import { TransformComponent, TransformWrapper, useControls } from 'react-zoom-pan-pinch';
 import { UploadCloud } from 'lucide-react';
@@ -61,9 +61,9 @@ export default function InvitationCard() {
   const handleClick = () => {
     inputRef.current?.click()
   }
-  const [state, formAction, pending] = useActionState<ActionState, FormData>(
-    signUp, { error: '' }
-  );
+  // const [state, formAction, pending] = useActionState<ActionState, FormData>(
+  //   signUp, { error: '' }
+  // );
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -168,7 +168,7 @@ export default function InvitationCard() {
                     height: '1500px',
                     transform: 'scale(0.33)',
                     transformOrigin: 'top left',
-                    backgroundImage: 'url(/frame-sale.png)',
+                    backgroundImage: 'url(/frame.png)',
                   }}>
                   <div className='relative'>
                     <div className='w-[360px] h-[360px] object-cover rounded-full shadow overflow-hidden'>

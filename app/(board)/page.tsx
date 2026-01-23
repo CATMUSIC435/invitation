@@ -1,4 +1,3 @@
-import { Instructions } from "@/components/atoms/instructions";
 import InvitationCard from "@/components/atoms/invitation-card";
 
 export default function Page() {
