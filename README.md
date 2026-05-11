@@ -1,119 +1,81 @@
-# Next.js SaaS Starter
+# Fenica Invitation & Ranking Platform
 
-This is a starter template for building a SaaS application using **Next.js** with support for authentication, Stripe integration for payments, and a dashboard for logged-in users.
+A high-performance Next.js application built for the **"SĂN VÉ LÊN TÀU CÙNG FENICA"** campaign. It features a luxury 3D WebGL background, dynamic invitation card generation, social ranking boards, and an admin dashboard.
 
-**Demo: [https://next-saas-start.vercel.app/](https://next-saas-start.vercel.app/)**
+## 🌟 Key Features
 
-## Features
+- **Dynamic Invitation Card Generation:** 
+  Users can generate personalized high-resolution invitation cards with their name and custom titles using HTML2Canvas, with smart aspect-ratio correction to prevent image distortion.
+- **Premium 3D WebGL Background:**
+  A luxurious interactive fluid wave background powered by `React Three Fiber`, `Three.js`, and Custom GLSL ShaderMaterials (Simplex Noise) that reacts dynamically to mouse movement and creates a stunning visual aesthetic.
+- **Social Ranking Board:** 
+  A real-time ranking page (`/ranking`) displaying live metrics (Likes, Comments, Shares) fetched from Upstash Redis.
+- **Shareable Links & QR Codes:** 
+  Generate unique `/share/[slug]` pages with dynamic OpenGraph SEO metadata, QR code generation, and 1-click clipboard/Facebook sharing functionality.
+- **Admin Dashboard:**
+  A fully responsive, mobile-first admin interface (`/dashboard`) to manage generated invitations and view scraped social data.
+- **Next.js 16 Optimizations:**
+  Utilizes the latest Next.js 16 features including Turbopack, App Router, Server Components, and Partial Prerendering (PPR) for blazing fast load times.
 
-- Marketing landing page (`/`) with animated Terminal element
-- Pricing page (`/pricing`) which connects to Stripe Checkout
-- Dashboard pages with CRUD operations on users/teams
-- Basic RBAC with Owner and Member roles
-- Subscription management with Stripe Customer Portal
-- Email/password authentication with JWTs stored to cookies
-- Global middleware to protect logged-in routes
-- Local middleware to protect Server Actions or validate Zod schemas
-- Activity logging system for any user events
+## 🛠 Tech Stack
 
-## Tech Stack
+- **Framework:** [Next.js 16](https://nextjs.org/) (App Router, Turbopack)
+- **Styling:** [Tailwind CSS 4](https://tailwindcss.com/)
+- **3D Graphics:** [Three.js](https://threejs.org/) & [React Three Fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
+- **Database:** [PostgreSQL](https://www.postgresql.org/) + [Drizzle ORM](https://orm.drizzle.team/)
+- **Cache / Redis:** [Upstash Redis](https://upstash.com/)
+- **Image Generation:** `html2canvas`
+- **UI Components:** [Lucide React](https://lucide.dev/), Radix UI
 
-- **Framework**: [Next.js](https://nextjs.org/)
-- **Database**: [Postgres](https://www.postgresql.org/)
-- **ORM**: [Drizzle](https://orm.drizzle.team/)
-- **Payments**: [Stripe](https://stripe.com/)
-- **UI Library**: [shadcn/ui](https://ui.shadcn.com/)
+## 🚀 Getting Started
 
-## Getting Started
+### 1. Installation
 
-```bash
-git clone https://github.com/nextjs/saas-starter
-cd saas-starter
-pnpm install
-```
-
-## Running Locally
-
-[Install](https://docs.stripe.com/stripe-cli) and log in to your Stripe account:
+Install the dependencies:
 
 ```bash
-stripe login
+npm install
 ```
 
-Use the included setup script to create your `.env` file:
+### 2. Environment Variables
+
+Create a `.env` file in the root directory and add the required environment variables:
 
 ```bash
-pnpm db:setup
+# Database (PostgreSQL)
+POSTGRES_URL=postgresql://user:password@localhost:5432/fenica
+
+# Redis (Upstash for Social Data)
+UPSTASH_REDIS_REST_URL=your_upstash_url
+UPSTASH_REDIS_REST_TOKEN=your_upstash_token
+
+# Application URL
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
-Run the database migrations and seed the database with a default user and team:
+### 3. Database Setup
+
+Push the database schema using Drizzle:
 
 ```bash
-pnpm db:migrate
-pnpm db:seed
+npm run db:generate
+npm run db:migrate
 ```
 
-This will create the following user and team:
+### 4. Running the Development Server
 
-- User: `test@test.com`
-- Password: `admin123`
-
-You can also create new users through the `/sign-up` route.
-
-Finally, run the Next.js development server:
+Start the application using Turbopack:
 
 ```bash
-pnpm dev
+npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to see the app in action.
+Open [http://localhost:3000](http://localhost:3000) in your browser to interact with the application.
 
-You can listen for Stripe webhooks locally through their CLI to handle subscription change events:
+## 📂 Project Structure
 
-```bash
-stripe listen --forward-to localhost:3000/api/stripe/webhook
-```
-
-## Testing Payments
-
-To test Stripe payments, use the following test card details:
-
-- Card Number: `4242 4242 4242 4242`
-- Expiration: Any future date
-- CVC: Any 3-digit number
-
-## Going to Production
-
-When you're ready to deploy your SaaS application to production, follow these steps:
-
-### Set up a production Stripe webhook
-
-1. Go to the Stripe Dashboard and create a new webhook for your production environment.
-2. Set the endpoint URL to your production API route (e.g., `https://yourdomain.com/api/stripe/webhook`).
-3. Select the events you want to listen for (e.g., `checkout.session.completed`, `customer.subscription.updated`).
-
-### Deploy to Vercel
-
-1. Push your code to a GitHub repository.
-2. Connect your repository to [Vercel](https://vercel.com/) and deploy it.
-3. Follow the Vercel deployment process, which will guide you through setting up your project.
-
-### Add environment variables
-
-In your Vercel project settings (or during deployment), add all the necessary environment variables. Make sure to update the values for the production environment, including:
-
-1. `BASE_URL`: Set this to your production domain.
-2. `STRIPE_SECRET_KEY`: Use your Stripe secret key for the production environment.
-3. `STRIPE_WEBHOOK_SECRET`: Use the webhook secret from the production webhook you created in step 1.
-4. `POSTGRES_URL`: Set this to your production database URL.
-5. `AUTH_SECRET`: Set this to a random string. `openssl rand -base64 32` will generate one.
-
-## Other Templates
-
-While this template is intentionally minimal and to be used as a learning resource, there are other paid versions in the community which are more full-featured:
-
-- https://achromatic.dev
-- https://shipfa.st
-- https://makerkit.dev
-- https://zerotoshipped.com
-- https://turbostarter.dev
+- `app/(board)`: Main public pages (Home, Ranking, Invitations).
+- `app/(dashboard)`: Admin dashboard with responsive sidebar layout.
+- `app/share/[slug]`: Dynamic shareable pages with SEO OpenGraph integration.
+- `components/atoms`: Reusable micro-components (e.g., `ParticleBackground`, `ShareButtons`, `InvitationCard`).
+- `lib/db`: Drizzle ORM schema and database connection setup.
