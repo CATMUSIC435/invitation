@@ -13,13 +13,13 @@ export default function LoadingModal({ isOpen }: { isOpen: boolean }) {
                     exit={{ opacity: 0 }}
                 >
                     <motion.div
-                        className="bg-white p-6 rounded-2xl shadow-lg flex items-center gap-4"
+                        className="bg-[#0a1520]/90 backdrop-blur-xl border border-white/10 p-6 rounded-2xl shadow-2xl flex items-center gap-4"
                         initial={{ scale: 0.8, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         exit={{ scale: 0.8, opacity: 0 }}
                     >
                         <svg
-                            className="animate-spin h-6 w-6 text-blue-500"
+                            className="animate-spin h-6 w-6 text-[#c19d68]"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -38,7 +38,7 @@ export default function LoadingModal({ isOpen }: { isOpen: boolean }) {
                                 d="M4 12a8 8 0 018-8v4l3-3-3-3v4a8 8 0 100 16v-4l-3 3 3 3v-4a8 8 0 01-8-8z"
                             ></path>
                         </svg>
-                        <span className="text-gray-700 text-sm">Đang xử lý...</span>
+                        <span className="text-white/90 text-sm font-medium">Đang xử lý thư mời...</span>
                     </motion.div>
                 </motion.div>
             )}

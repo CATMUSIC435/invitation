@@ -1,32 +1,25 @@
-'use client';
-import { startTransition, useActionState, useEffect } from 'react';
-import { User } from '@/lib/db/schema';
-import { getUsers } from '@/app/(login)/actions';
-import { DataTable } from '@/components/molecules/data-table';
-import { ChartAreaInteractive } from '@/components/molecules/chart-area-interactive';
+import { db } from '@/lib/db/drizzle';
+import { invitations } from '@/lib/db/schema';
+import { desc } from 'drizzle-orm';
+import AdminTable from './AdminTable';
 
+async function getInvitations() {
+  'use cache';
+  return await db.select().from(invitations).orderBy(desc(invitations.created_at));
+}
 
-export default function SettingsPage() {
-  const [users, runAction, isPending] = useActionState<User[], FormData>(
-    getUsers,
-    []
-  );
-  useEffect(() => {
-    if (users.length === 0) {
-      startTransition(() => {
-        const formData = new FormData();
-        formData.append('avatar', '');
-        runAction(formData)
-      })
-    }
-  }, [])
+export default async function DashboardPage() {
+  const data = await getInvitations();
 
   return (
-    <section className="flex-1 flex flex-col gap-4 p-4 lg:p-8">
-      <div className="px-4 lg:px-6">
-        <ChartAreaInteractive />
+    <section className="flex-1 flex flex-col gap-4 p-4">
+      <div className="w-full max-w-6xl mx-auto">
+        <h2 className="hidden text-[#c19d68] text-xl font-bold tracking-wider uppercase mb-4 font-avo-bold">
+          Quản trị Thư Mời
+        </h2>
+        <AdminTable data={data} />
       </div>
-      {users.length === 0 ? null : <DataTable data={users} />}
     </section>
   );
 }
+

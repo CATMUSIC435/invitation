@@ -55,6 +55,11 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
+
+  --font-gotham: "SVN Gotham", sans-serif;
+  --font-gotham-book: "SVN Gotham Book", sans-serif;
+  --font-avo: "SVN Avo", sans-serif;
+  --font-avo-bold: "SVN Avo bold", sans-serif;
 }
 
 /*
@@ -162,6 +167,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(200%) skewX(12deg);
+  }
+}
+
 
 /*
   ---break---

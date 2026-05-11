@@ -79,7 +79,7 @@ export default function ImportExcel() {
       const ws = wb.Sheets[wsname];
       const jsonData = XLSX.utils.sheet_to_json(ws);
       console.log(jsonData);
-      
+
       setData(jsonData);
     };
     reader.readAsBinaryString(file);
@@ -88,13 +88,13 @@ export default function ImportExcel() {
   return (
     <div className="mx-auto">
       {!isSend ? (<div className='p-4 max-w-4xl mx-auto'>
-        <h2 className="text-xl font-bold mb-4">📥 Import Excel</h2>
+        <h2 className="text-xl font-bold mb-2">📥 Import Excel</h2>
 
         <input
           type="file"
           accept=".xlsx, .xls, .csv"
           onChange={handleFileUpload}
-          className="block mb-4 border px-3 py-2 rounded"
+          className="block mb-2 border px-3 py-2 rounded"
         />
         {data.length !== 0 ? <button className='mx-auto max-w-sm w-full py-2 bg-cyan-100' onClick={() => setIsSend(true)}>Send</button> : null}
         <DataTableExcel data={data} />

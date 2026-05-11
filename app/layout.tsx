@@ -1,23 +1,22 @@
-// import PageButton from '@/components/molecules/page-button';
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 
 export const metadata: Metadata = {
-  title: 'Thư mời | DXMD Vietnam Award 2025',
+  title: 'Thư mời | CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
   description:
-    'Thư mời chính thức tham dự DXMD Vietnam Award 2025 – sự kiện vinh danh các cá nhân và doanh nghiệp tiêu biểu tại DXMD Việt Nam.',
+    'Thư mời chính thức tham dự CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA” – sự kiện đặc biệt từ FENICA.',
 
   keywords: [
-    'DXMD Vietnam Award 2025',
-    'Thư mời DXMD',
-    'Sự kiện công nghệ Việt Nam',
-    'Vietnam Digital Transformation Award',
+    'SĂN VÉ LÊN TÀU CÙNG FENICA',
+    'Thư mời FENICA',
+    'Sự kiện FENICA',
+    'Cuộc thi FENICA',
   ],
 
-  authors: [{ name: 'DXMD Vietnam' }],
-  creator: 'DXMD Vietnam',
-  publisher: 'DXMD Vietnam',
+  authors: [{ name: 'FENICA' }],
+  creator: 'FENICA',
+  publisher: 'FENICA',
 
   robots: {
     index: true,
@@ -25,43 +24,44 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'Thư mời DXMD Vietnam Award 2025',
+    title: 'Thư mời CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
     description:
-      'DXMD Vietnam Award 2025 – sự kiện vinh danh các cá nhân và doanh nghiệp xuất sắc trong tại DXMD Việt Nam.',
+      'CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA” – sự kiện đặc biệt dành cho các thành viên.',
     type: 'website',
     locale: 'vi_VN',
-    siteName: 'DXMD Vietnam Award 2025',
+    siteName: 'CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
     images: [
       {
         url: '/og-image.jpg', // 1200x630
         width: 1200,
         height: 630,
-        alt: 'DXMD Vietnam Award 2025',
+        alt: 'CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
       },
     ],
   },
 
   twitter: {
     card: 'summary_large_image',
-    title: 'Thư mời | DXMD Vietnam Award 2025',
+    title: 'Thư mời | CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
     description:
-      'Thư mời chính thức tham dự DXMD Vietnam Award 2025 – sự kiện vinh danh tại DXMD Việt Nam.',
-    images: ['/og-dxmd-vietnam-award-2025.png'],
+      'Thư mời chính thức tham dự CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”.',
+    images: ['/og-image.jpg'],
   },
 
   alternates: {
-    canonical: 'https://marketing.dxmd.vn',
+    canonical: 'https://fenica.vn',
   },
 
   category: 'Event',
 };
-
 
 export const viewport: Viewport = {
   maximumScale: 1
 };
 
 const manrope = Manrope({ subsets: ['latin'] });
+
+import ParticleBackground from '@/components/atoms/particle-background';
 
 export default function RootLayout({
   children
@@ -70,26 +70,11 @@ export default function RootLayout({
 }) {
   return (
     <html
-      lang="en"
-      className={`bg-white dark:bg-gray-950 text-black dark:text-white ${manrope.className}`}
+      lang="vi"
+      className={`bg-[#0a1520] text-gray-100 ${manrope.className}`}
     >
-      <body className="min-h-[100dvh] bg-gray-50 relative">
-        {/* <div className='absolute top-0 left-0 w-full'>
-          <div className='w-full flex justify-center items-center gap-4 px-4 md:px-0'>
-            <PageButton
-              href="/"
-              label="DXMD VIETNAM AWARD 2025"
-              bgColor="bg-gradient-to-r from-[#844d15] to-yellow-500"
-              textColor="text-white"
-            />
-            <PageButton
-              href="/invitations"
-              label="MAGIC NIGHT POOL PARTY"
-              bgColor="bg-gradient-to-r from-[#844d15] to-yellow-500"
-              textColor="text-white"
-            />
-          </div>
-        </div> */}
+      <body className="min-h-[100dvh] bg-transparent relative antialiased selection:bg-[#0e1e2e] selection:text-white">
+        <ParticleBackground />
         {children}
       </body>
     </html>

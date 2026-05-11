@@ -11,7 +11,7 @@ const QrScanner = () => {
   const [result, setResult] = useState<{
     error?: string;
     success?: string;
-  }>({error: '', success: ''});
+  }>({ error: '', success: '' });
   const [isPending, setIsPending] = useState(false);
 
   const handleChange = async (email = '') => {
@@ -28,8 +28,8 @@ const QrScanner = () => {
 
       const data = await res.json();
       console.log('✅ Transition done');
-      console.log('Result:', data); 
-      setResult(data);    
+      console.log('Result:', data);
+      setResult(data);
       setIsPending(false)
       setOpen(true);
       inter = 1;
@@ -68,11 +68,11 @@ const QrScanner = () => {
       <div id="reader" className={isPending ? 'hidden' : ''} style={{ width: "300px" }}></div>
       <AnimatedModal isOpen={open} onClose={() => setOpen(false)}>
         <h2 className="text-xl font-semibold mb-2">🎉 Welcome!</h2>
-        <p className="text-gray-600 mb-4">Đây là modal chứa tên người dùng.</p>
-        <p className='text-gray-600 text-xl font-bold mb-4'>{result.success ? result.success : result.error}</p>
+        <p className="text-gray-600 mb-2">Đây là modal chứa tên người dùng.</p>
+        <p className='text-gray-600 text-xl font-bold mb-2'>{result.success ? result.success : result.error}</p>
         {result.success ?
-          <p className='text-blue-300 text-2xl font-bold mb-4'>Checkin thành công</p> :
-          <p className='text-red-300 text-2xl font-bold mb-4'>Vui lòng kiểm tra lại</p>}
+          <p className='text-blue-300 text-2xl font-bold mb-2'>Checkin thành công</p> :
+          <p className='text-red-300 text-2xl font-bold mb-2'>Vui lòng kiểm tra lại</p>}
         <button
           onClick={() => setOpen(false)}
           className="bg-red-500 text-white px-3 py-1 rounded w-full"

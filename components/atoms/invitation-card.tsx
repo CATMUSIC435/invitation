@@ -1,38 +1,22 @@
 'use client';
 
-import { useActionState, useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import html2canvas from 'html2canvas';
-import FormExample from './form-example';
-// import { signUp } from '@/app/(login)/actions';
-// import { ActionState } from '@/lib/auth/middleware';
+import InvitationForm from './invitation-form';
+import { InvitationFormData } from '@/lib/store/useInvitationStore';
 import LoadingModal from './loading-modal';
 import { TransformComponent, TransformWrapper, useControls } from 'react-zoom-pan-pinch';
-import { UploadCloud } from 'lucide-react';
+import { UploadCloud, ZoomIn, ZoomOut, RefreshCw } from 'lucide-react';
+import { saveInvitation } from '@/app/(board)/actions';
+import { useInvitationStore } from '@/lib/store/useInvitationStore';
 import './index.css';
 
-export type FormEvent = {
-  name: string;
-  field_one: string;
-  field_two: string;
-  field_three: string;
-  email: string;
+function toUppercaseValues(obj: InvitationFormData): InvitationFormData {
+  return {
+    name: obj.name.toUpperCase(),
+    title: obj.title.toUpperCase(),
+  };
 }
-export const event: FormEvent = {
-  name: '',
-  field_one: '',
-  field_two: '',
-  field_three: '',
-  email: '',
-}
-
-function toUppercaseValues(obj: FormEvent): FormEvent {
-  const uppercased = Object.fromEntries(
-    Object.entries(obj).map(([key, value]) => [key, value.toUpperCase()])
-  ) as FormEvent;
-
-  return uppercased;
-}
-
 
 export function base64ToFile(base64: string, filename: string): File {
   const arr = base64.split(',');
@@ -50,80 +34,102 @@ export function base64ToFile(base64: string, filename: string): File {
 
 export default function InvitationCard() {
   const [zoomValue, setZoomValue] = useState(1);
-  const [isPending, setIsPending] = useState<boolean>(false);
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [isAllow, setIsAllow] = useState<boolean>(false);
-  const [dataForm, setDataForm] = useState<FormEvent>(event);
+  const [imageStyle, setImageStyle] = useState<React.CSSProperties>({ width: '100%', height: '100%', objectFit: 'cover' });
+  const { dataForm, setDataForm, avatarUrl, setAvatarUrl, isPending, setIsPending, isAllow, setIsAllow } = useInvitationStore();
   const cardRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef<any>(null);
-  const inputRef = useRef<HTMLInputElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    return () => {
+      if (avatarUrl) {
+        URL.revokeObjectURL(avatarUrl);
+      }
+    };
+  }, [avatarUrl]);
 
   const handleClick = () => {
-    inputRef.current?.click()
-  }
-  // const [state, formAction, pending] = useActionState<ActionState, FormData>(
-  //   signUp, { error: '' }
-  // );
+    inputRef.current?.click();
+  };
 
   const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setAvatarUrl(URL.createObjectURL(file));
+      if (avatarUrl) {
+        URL.revokeObjectURL(avatarUrl);
+      }
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        const isPortrait = img.naturalHeight > img.naturalWidth;
+        setImageStyle(isPortrait 
+          ? { width: '100%', height: 'auto', minHeight: '100%' } 
+          : { width: 'auto', height: '100%', minWidth: '100%' });
+        setAvatarUrl(url);
+      };
+      img.src = url;
     }
   };
 
-  const handleDownload = async () => {
-    setIsPending(true)
+  const isProcessingRef = useRef(false);
 
-    if (cardRef.current) {
-      const scale = 4;
+  const handleDownload = async () => {
+    if (!dataForm.name || !dataForm.title) {
+      alert('Vui lòng điền đầy đủ thông tin Họ tên và Chức vụ');
+      return;
+    }
+
+    if (isProcessingRef.current || isPending) return;
+    
+    isProcessingRef.current = true;
+    setIsPending(true);
+    try {
+      if (!cardRef.current) return;
       const canvas = await html2canvas(cardRef.current, {
-        scale,
+        scale: 3,
         useCORS: true,
         allowTaint: false,
         logging: false,
-        backgroundColor: null,
-        removeContainer: true,
-      })
-      const resizedCanvas = document.createElement('canvas');
-      const ctx = resizedCanvas.getContext('2d');
-
-      const width = cardRef.current.offsetWidth;
-      const height = cardRef.current.offsetHeight;
-
-      resizedCanvas.width = width;
-      resizedCanvas.height = height;
-
-      ctx?.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, width, height);
-
-      const base64 = resizedCanvas.toDataURL('image/png', 1.0);
-      const link = document.createElement('a');
-      link.download = 'invitation-card.png';
-      link.href = base64;
-      const file = base64ToFile(base64, 'avatar.png');
-      const formData = new FormData();
-      formData.append('avatar', file);
-      console.log(dataForm);
-
-      Object.entries(dataForm).forEach(([key, value]) => {
-        formData.append(key, value);
+        backgroundColor: '#0a1520', // Add solid background for JPEG
+        onclone: (doc, el) => {
+          if (el) {
+            el.style.transform = 'none';
+          }
+        }
       });
-      formData.append('role', '');
+
+      const base64 = canvas.toDataURL('image/jpeg', 0.95);
+      
+      // Tải về máy
+      const link = document.createElement('a');
+      link.download = `invitation-${dataForm.name.toLowerCase().replace(/\s+/g, '-')}.jpg`;
+      link.href = base64;
       link.click();
+
+      // Lưu vào database và tải lên WordPress
+      const result = await saveInvitation(dataForm.name, dataForm.title, base64);
+      
+      if (result.success && result.slug) {
+        // Chuyển hướng sang trang share
+        window.location.href = `/share/${result.slug}`;
+      }
+    } catch (error) {
+      console.error('Lỗi khi tải thư mời xuống:', error);
+      alert('Có lỗi xảy ra khi tạo ảnh. Vui lòng thử lại.');
+    } finally {
+      isProcessingRef.current = false;
+      setIsPending(false);
       setIsAllow(false);
     }
-    setIsPending(false)
   };
 
-  const changeValueEvent = (value: FormEvent) => {
-    value = toUppercaseValues(value);
-    setDataForm(value);
+  const changeValueEvent = (value: InvitationFormData) => {
+    const upperValue = toUppercaseValues(value);
+    setDataForm(upperValue);
     setIsAllow(true);
-  }
-
+  };
 
   return (
-
     <TransformWrapper
       ref={transformRef}
       initialScale={1}
@@ -132,80 +138,137 @@ export default function InvitationCard() {
       onZoomStop={(ref) => setZoomValue(ref.state.scale)}
     >
       {() => (
-        <div className='mx-auto'>
-          <div className='md:w-[fit-content] mx-auto'>
-            <div className='flex flex-col md:flex-row items-center gap-4 justify-center'>
-              <div className='h-full py-4 md:py-0 md:h-[500px] max-w-[282px] flex flex-col items-center justify-center rounded-xl w-full md:w-md px-6 bg-gradient-to-br from-[#844d15] via-[#c19d68] to-[##ac8d45]'>
-                <div
-                  className="w-full h-36 border-2 border-dashed border-gray-300 rounded-xl bg-[url('data:image/svg+xml;utf8,<svg width=\\'40\\' height=\\'40\\' viewBox=\\'0 0 40 40\\' xmlns=\\'http://www.w3.org/2000/svg\\'><path fill=\\'%23eeeeee\\' d=\\'M0 0h40v1H0zm0 20h40v1H0zm0 20h40v1H0z\\'/></svg>')] bg-repeat bg-[length:40px_40px] flex flex-col items-center justify-center text-center cursor-pointer"
-                  onClick={handleClick}
-                >
-                  <UploadCloud className="w-10 h-10 text-white mb-2" />
-                  <p className="text-sm font-medium text-gray-800">
-                    Kéo thả hoặc <span className="text-white font-semibold">Bấm vào đây</span><br />
-                    để đăng tải hình ảnh
-                  </p>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    ref={inputRef}
-                    onChange={handleUpload}
-                    className="hidden"
-                  />
-                </div>
+        <div className="mx-auto w-full max-w-6xl py-4">
+          <div className="md:w-fit mx-auto">
+            <div className="flex flex-col lg:flex-row items-start gap-10 lg:gap-16 justify-center">
 
-                <div className="flex items-center gap-2 my-2">
-                  <Controls />
+              {/* Form Section */}
+              <div className="relative w-full max-w-md pt-2">
+                <div className="absolute -inset-1 bg-gradient-to-b from-[#0e1e2e]/50 to-[#c19d68]/20 rounded-[2.5rem] blur-xl opacity-70"></div>
+                <div className="relative w-full h-[500px] py-6 flex flex-col items-center justify-between rounded-[2rem] px-8 bg-[#0a1520]/95 backdrop-blur-2xl shadow-2xl ring-1 ring-white/10 overflow-hidden">
+                  {/* Decorative element */}
+                  <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#c19d68]/50 to-transparent"></div>
+
+                  <div className="text-center w-full">
+                    <h3 className="text-xl font-semibold tracking-wide text-white mb-1">Tạo Thẻ Mời</h3>
+                    <p className="text-xs text-gray-400">Tải ảnh lên và điều chỉnh thông tin</p>
+                  </div>
+
+                  <div
+                    className="w-full h-28 border-[1.5px] border-dashed border-white/20 rounded-2xl bg-white/5 flex flex-col items-center justify-center text-center cursor-pointer hover:bg-white/10 hover:border-[#c19d68]/50 hover:shadow-[0_0_20px_rgba(193,157,104,0.15)] transition-all duration-300 group"
+                    onClick={handleClick}
+                  >
+                    <div className="p-2 bg-white/5 rounded-full mb-1 group-hover:scale-110 group-hover:bg-[#c19d68]/20 transition-all duration-300">
+                      <UploadCloud className="w-6 h-6 text-[#c19d68]" />
+                    </div>
+                    <p className="text-sm font-medium text-white/70 leading-relaxed">
+                      Kéo thả hoặc <span className="text-[#c19d68] font-semibold">Tải ảnh lên</span>
+                    </p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      ref={inputRef}
+                      onChange={handleUpload}
+                      className="hidden"
+                    />
+                  </div>
+
+                  <div className="w-full flex justify-center scale-90">
+                    <Controls />
+                  </div>
+
+                  <div className="w-full">
+                    <InvitationForm onCallBack={changeValueEvent} />
+                  </div>
                 </div>
-                <FormExample onCallBack={changeValueEvent} />
               </div>
-              <div className='h-[500px] w-[300px] overflow-hidden'>
-                <div
-                  ref={cardRef}
-                  className='bg-gradient-to-br from-[#844d15] to-yellow-100 shadow-lg text-center pt-[270px] px-2 flex flex-col items-center gap-4 bg-center bg-cover'
-                  style={{
-                    width: '900px',
-                    height: '1500px',
-                    transform: 'scale(0.33)',
-                    transformOrigin: 'top left',
-                    backgroundImage: 'url(/frame.png)',
-                  }}>
-                  <div className='relative'>
-                    <div className='w-[360px] h-[360px] object-cover rounded-full shadow overflow-hidden'>
-                      <div className='w-[360px] h-[360px] relative'>
+
+              {/* Preview Section */}
+              <div className="mx-auto relative group flex flex-col items-center pt-2">
+                {/* Glow effect behind card */}
+                <div className="absolute -inset-4 bg-gradient-to-b from-[#c19d68]/20 to-transparent rounded-[2rem] blur-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-700"></div>
+
+                <div className="h-[500px] w-[300px] overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/20 bg-[#0e1e2e] relative z-10 transition-transform duration-500 group-hover:-translate-y-2">
+                  <div
+                    ref={cardRef}
+                    className="bg-gradient-to-br from-[#844d15] to-yellow-100 text-center pt-[270px] px-2 flex flex-col items-center gap-4 bg-center bg-cover bg-no-repeat"
+                    style={{
+                      width: '900px',
+                      height: '1500px',
+                      transform: 'scale(0.3333)',
+                      transformOrigin: 'top left',
+                      backgroundImage: 'url(/frame.png)',
+                    }}
+                  >
+                    <div className="relative">
+                      <div 
+                        className="w-[360px] h-[360px] rounded-full overflow-hidden bg-[#0a1520] flex items-center justify-center relative"
+                        style={{ boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 4px rgba(255,255,255,0.5)' }}
+                      >
                         <TransformComponent wrapperClass="transform-component">
-                          <div className="h-[360px] w-[360px] overflow-hidden relative z-0">
-                            {avatarUrl ? <img
-                              src={avatarUrl ?? ''}
-                              className="h-full w-auto object-cover"
-                              alt=""
-                            /> : null}
+                          <div className="h-[360px] w-[360px] overflow-hidden relative z-0 flex items-center justify-center">
+                            {avatarUrl ? (
+                              <img
+                                src={avatarUrl}
+                                style={{ ...imageStyle, maxWidth: 'none', maxHeight: 'none' }}
+                                alt="Avatar"
+                              />
+                            ) : (
+                              <div className="text-gray-500 text-lg flex flex-col items-center opacity-40">
+                                <UploadCloud className="w-16 h-16 mb-2" />
+                                <span>Chưa có ảnh</span>
+                              </div>
+                            )}
                           </div>
                         </TransformComponent>
                       </div>
                     </div>
-                  </div>
 
-                  <div className='relative z-20 top-[16px]'>
-                    <h2 className='text-4xl font-bold text-white mb-1' style={{ padding: 0, letterSpacing: '3px', fontFamily: 'SVN Avo bold' , fontWeight: 400, lineHeight: 1}}>{dataForm.name}</h2>
-                    <div>
-                      <h3 className='text-xl text-white mt-0 font-normal small-text'  style={{ fontFamily: 'SVN Avo'}}>{dataForm.field_one}</h3>
+                    <div className="relative z-20 top-[16px]">
+                      <h2
+                        className="text-4xl font-bold text-white mb-1 uppercase font-avo-bold leading-tight"
+                        style={{ textShadow: '0 4px 10px rgba(0,0,0,0.3)', padding: 0, letterSpacing: '3px', fontWeight: 400, lineHeight: 1 }}
+                      >
+                        {dataForm.name || 'NGUYỄN VĂN A'}
+                      </h2>
+                      <div>
+                        <h3
+                          className="text-xl mt-0 font-normal small-text uppercase text-[#e5e5e5] font-avo"
+                          style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                        >
+                          {dataForm.title || 'CHỨC VỤ'}
+                        </h3>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            {isAllow ? <form action={handleDownload}>
-              <button
-                className='mt-4 bg-[#844d15] text-white font-bold mx-2 py-2 rounded hover:bg-[#844d15]/80 w-full cursor-pointer'
-              >
-                Tải thư mời xuống
-              </button>
-            </form> : null}
+                {/* Action Button */}
+                <div className="w-full relative z-20 mt-8">
+                  {isAllow ? (
+                    <button
+                      onClick={handleDownload}
+                      className="group relative overflow-hidden bg-gradient-to-r from-[#c19d68] to-[#ac8d45] text-white font-bold py-4 rounded-xl shadow-[0_10px_30px_rgba(193,157,104,0.3)] hover:shadow-[0_15px_40px_rgba(193,157,104,0.5)] transition-all duration-300 uppercase tracking-widest w-full disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-1 active:translate-y-0"
+                      disabled={isPending}
+                    >
+                      <div className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] skew-x-12"></div>
+                      <span className="relative flex items-center justify-center gap-2">
+                        {isPending ? 'Đang xử lý...' : 'Tải Thư Mời'}
+                      </span>
+                    </button>
+                  ) : (
+                    <div className="py-4 text-center text-white/30 text-sm border border-white/10 rounded-xl bg-white/5 border-dashed">
+                      Hoàn thành form để tải thư mời
+                    </div>
+                  )}
+                </div>
+              </div>
+
+            </div>
           </div>
           <LoadingModal isOpen={isPending} />
-        </div>)}
+        </div>
+      )}
     </TransformWrapper>
   );
 }
@@ -214,30 +277,34 @@ const Controls = () => {
   const { zoomIn, zoomOut, resetTransform } = useControls();
 
   return (
-    <div className="relative left-1/2 -translate-x-1/2 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg flex gap-3 z-50 border border-gray-200 hover:border-gray-400 transition-all delay-75 ease-linear">
+    <div className="flex items-center gap-1 p-1 bg-[#0a1520]/80 backdrop-blur-xl rounded-full border border-white/10 shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)]">
       <button
+        type="button"
         onClick={() => zoomIn()}
-        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold hover:bg-white/80 hover:shadow-2xl transition-all delay-75 ease-linear cursor-pointer"
-        title="Zoom In"
+        className="w-11 h-11 flex items-center justify-center rounded-full text-white/60 hover:text-[#c19d68] hover:bg-[#c19d68]/10 active:scale-90 transition-all duration-300"
+        title="Phóng to"
       >
-        +
+        <ZoomIn className="w-5 h-5" strokeWidth={2} />
       </button>
+      <div className="w-px h-5 bg-white/10"></div>
       <button
+        type="button"
         onClick={() => zoomOut()}
-        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold hover:bg-white/80 hover:shadow-2xl transition-all delay-75 ease-linear cursor-pointer"
-        title="Zoom Out"
+        className="w-11 h-11 flex items-center justify-center rounded-full text-white/60 hover:text-[#c19d68] hover:bg-[#c19d68]/10 active:scale-90 transition-all duration-300"
+        title="Thu nhỏ"
       >
-        −
+        <ZoomOut className="w-5 h-5" strokeWidth={2} />
       </button>
+      <div className="w-px h-5 bg-white/10"></div>
       <button
+        type="button"
         onClick={() => resetTransform()}
-        className="w-8 h-8 rounded-md bg-white text-[#c19d68] text-xl font-semibold hover:bg-white/80 hover:shadow-2xl transition-all delay-75 ease-linear cursor-pointer"
-        title="Reset Zoom"
+        className="w-11 h-11 flex items-center justify-center rounded-full text-white/60 hover:text-[#c19d68] hover:bg-[#c19d68]/10 active:scale-90 transition-all duration-300"
+        title="Đặt lại"
       >
-        ⟳
+        <RefreshCw className="w-5 h-5" strokeWidth={2} />
       </button>
     </div>
-
   );
 };
 
