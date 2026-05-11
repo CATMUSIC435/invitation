@@ -1,12 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Facebook, QrCode, Link2, X } from 'lucide-react';
+import { Facebook, QrCode, Globe, X } from 'lucide-react';
 
 export default function ShareButtons() {
   const [url, setUrl] = useState('');
   const [showQR, setShowQR] = useState(false);
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setUrl(window.location.href);
@@ -16,26 +15,20 @@ export default function ShareButtons() {
     window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=600,height=400');
   };
 
-  const copyForTikTok = async () => {
-    try {
-      await navigator.clipboard.writeText(url);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-      // Tiktok không có API web share link, nên ta copy vào clipboard để người dùng tự dán
-    } catch (err) {
-      console.error('Failed to copy', err);
-    }
+  const goToProject = () => {
+    const projectUrl = process.env.NEXT_PUBLIC_PROJECT_URL || 'https://fenica.vn/';
+    window.open(projectUrl, '_blank');
   };
 
   return (
     <>
       {/* Fixed Share Buttons */}
       <div className="fixed right-4 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-50">
-        
+
         {/* Facebook Share */}
-        <button 
+        <button
           onClick={shareFacebook}
-          className="w-12 h-12 bg-[#1877F2] rounded-full flex items-center justify-center text-white shadow-lg hover:scale-110 hover:shadow-[#1877F2]/50 transition-all duration-300 group relative"
+          className="w-10 h-10 md:w-12 md:h-12 bg-[#1877F2] rounded-md flex items-center justify-center text-white shadow-lg hover:scale-110 hover:shadow-[#1877F2]/50 transition-all duration-300 group relative"
           title="Chia sẻ lên Facebook"
         >
           <Facebook size={22} fill="currentColor" />
@@ -44,24 +37,22 @@ export default function ShareButtons() {
           </span>
         </button>
 
-        {/* TikTok / Copy Link */}
-        <button 
-          onClick={copyForTikTok}
-          className="w-12 h-12 bg-black rounded-full flex items-center justify-center text-white shadow-lg hover:scale-110 transition-all duration-300 group relative border border-white/20"
-          title="Copy link cho TikTok"
+        {/* Project Website */}
+        <button
+          onClick={goToProject}
+          className="w-10 h-10 md:w-12 md:h-12 bg-white/10 rounded-md flex items-center justify-center text-white shadow-lg hover:scale-110 hover:bg-white/20 transition-all duration-300 group relative border border-white/20 backdrop-blur-sm"
+          title="Trang chủ dự án"
         >
-          <svg viewBox="0 0 448 512" fill="currentColor" className="w-5 h-5">
-            <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
-          </svg>
+          <Globe size={22} />
           <span className="absolute right-full mr-3 bg-black/80 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-            {copied ? 'Đã copy!' : 'TikTok'}
+            Fenica.vn
           </span>
         </button>
 
         {/* QR Code */}
-        <button 
+        <button
           onClick={() => setShowQR(true)}
-          className="w-12 h-12 bg-gradient-to-br from-[#c19d68] to-[#ac8d45] rounded-full flex items-center justify-center text-white shadow-lg hover:scale-110 hover:shadow-[#c19d68]/50 transition-all duration-300 group relative"
+          className="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-[#c19d68] to-[#ac8d45] rounded-md flex items-center justify-center text-white shadow-lg hover:scale-110 hover:shadow-[#c19d68]/50 transition-all duration-300 group relative"
           title="Mã QR"
         >
           <QrCode size={22} />
@@ -76,7 +67,7 @@ export default function ShareButtons() {
       {showQR && (
         <div className="fixed inset-0 bg-black/80 z-[100] flex items-center justify-center p-4 backdrop-blur-sm" onClick={() => setShowQR(false)}>
           <div className="bg-[#0a1520] border border-[#c19d68]/30 p-8 rounded-2xl max-w-sm w-full shadow-2xl relative" onClick={e => e.stopPropagation()}>
-            <button 
+            <button
               onClick={() => setShowQR(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
             >

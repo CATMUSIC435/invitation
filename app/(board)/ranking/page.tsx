@@ -132,9 +132,9 @@ async function RankingContent() {
                     <div className="flex-shrink-0 relative">
                       {actualRank === 1 && <Trophy className="absolute -top-3 -right-3 text-yellow-400 drop-shadow-[0_0_5px_rgba(250,204,21,0.8)] z-10" size={16} />}
                       {item.cover ? (
-                        <img src={item.cover} alt={item.username} className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full object-cover ring-2 transition-all ${ringColor}`} />
+                        <img src={item.cover} alt={item.username} className={`w-10 h-10 md:w-12 md:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full object-cover ring-2 transition-all ${ringColor}`} />
                       ) : (
-                        <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gray-800 flex items-center justify-center ring-2 ${ringColor}`}>
+                        <div className={`w-10 h-10 md:w-12 md:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gray-800 flex items-center justify-center ring-2 ${ringColor}`}>
                           <span className="text-gray-500 text-[10px] sm:text-xs">No img</span>
                         </div>
                       )}
@@ -184,7 +184,7 @@ export default function RankingPage() {
 
       <Suspense fallback={
         <div className="py-32 flex flex-col items-center justify-center text-[#c19d68]">
-          <div className="w-12 h-12 border-4 border-[#c19d68] border-t-transparent rounded-full animate-spin mb-4"></div>
+          <div className="w-10 h-10 md:w-12 md:h-12 border-4 border-[#c19d68] border-t-transparent rounded-full animate-spin mb-4"></div>
           <p className="text-lg animate-pulse font-medium">Đang tải bảng xếp hạng...</p>
         </div>
       }>

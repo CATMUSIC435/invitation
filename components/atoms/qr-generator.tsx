@@ -14,11 +14,11 @@ export default function QrGenerator() {
                     level="H"
                     includeMargin
                 />
-                
+
                 <img
                     src="/avatar.png"
                     alt="Avatar"
-                    className="w-12 h-12 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-white shadow-md"
+                    className="w-10 h-10 md:w-12 md:h-12 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border-2 border-white shadow-md"
                 />
             </div>
         </div>

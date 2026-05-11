@@ -67,7 +67,7 @@ export default function InvitationCardChild({ dataForm }: InvitationCardChildPro
                         </label>)}
                     </div>
                 </div>
-                <div className="w-12 h-12 absolute -bottom-4 right-0">
+                <div className="w-10 h-10 md:w-12 md:h-12 absolute -bottom-4 right-0">
                     <div className='rounded-sm overflow-hidden bg-white'>
                         <QRCodeCanvas
                             value={`DXMD-${dataForm.name}`}
