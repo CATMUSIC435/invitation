@@ -30,8 +30,9 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
 import { Suspense } from 'react';
 
-async function ShareContent({ slug }: { slug: string }) {
-  const data = await getInvitationBySlug(slug);
+async function ShareContent({ params }: { params: Params }) {
+  const resolvedParams = await params;
+  const data = await getInvitationBySlug(resolvedParams.slug);
   if (!data) return notFound();
 
   return (
@@ -74,16 +75,14 @@ async function ShareContent({ slug }: { slug: string }) {
 
 import ShareButtons from '@/components/atoms/share-buttons';
 
-export default async function SharePage({ params }: { params: Params }) {
-  const resolvedParams = await params;
-
+export default function SharePage({ params }: { params: Params }) {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-transparent relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#c19d68]/50 to-transparent"></div>
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-b from-[#0e1e2e]/50 to-[#c19d68]/10 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
 
-      <ShareButtons slug={resolvedParams.slug} />
+      <ShareButtons />
 
       <Suspense fallback={
         <div className="relative z-10 flex flex-col items-center justify-center text-white">
@@ -91,7 +90,7 @@ export default async function SharePage({ params }: { params: Params }) {
           <p>Đang tải thư mời...</p>
         </div>
       }>
-        <ShareContent slug={resolvedParams.slug} />
+        <ShareContent params={params} />
       </Suspense>
     </main>
   );

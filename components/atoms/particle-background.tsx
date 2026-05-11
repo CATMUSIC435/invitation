@@ -61,7 +61,8 @@ function WaveGrid() {
       {geometries.map((geo, i) => (
         <group key={i}>
           {/* Lưới các đường Line */}
-          <line ref={(el) => { if(el) linesRef.current[i] = el; }} geometry={geo}>
+          {/* @ts-ignore */}
+          <line ref={(el: any) => { if(el) linesRef.current[i] = el; }} geometry={geo}>
             <lineBasicMaterial 
               color={0x4aa3df} 
               transparent={true}

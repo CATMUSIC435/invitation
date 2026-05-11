@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Facebook, QrCode, Link2, X } from 'lucide-react';
 
-export default function ShareButtons({ slug }: { slug: string }) {
+export default function ShareButtons() {
   const [url, setUrl] = useState('');
   const [showQR, setShowQR] = useState(false);
   const [copied, setCopied] = useState(false);
