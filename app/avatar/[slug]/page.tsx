@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import AvatarMergeEditor from '../editor';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -55,12 +55,12 @@ export default async function AvatarMergeSlugPage(props: { params: Promise<{ slu
     const template = templates.find((t: any) => t.slug === params.slug);
 
     if (!template) {
-      notFound();
+      redirect('/');
     }
 
     return <AvatarMergeEditor initialTemplate={template} />;
   } catch (error) {
     console.error("Error reading index.json", error);
-    notFound();
+    redirect('/');
   }
 }
