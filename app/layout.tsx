@@ -52,6 +52,18 @@ export const metadata: Metadata = {
     canonical: 'https://fenica.vn',
   },
 
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png' },
+    ],
+  },
+  manifest: '/site.webmanifest',
+
   category: 'Event',
 };
 
@@ -61,7 +73,7 @@ export const viewport: Viewport = {
 
 const manrope = Manrope({ subsets: ['latin'] });
 
-import ParticleBackground from '@/components/atoms/particle-background';
+import ParticleWrapper from '@/components/atoms/particle-wrapper';
 
 export default function RootLayout({
   children
@@ -74,7 +86,7 @@ export default function RootLayout({
       className={`bg-[#0a1520] text-gray-100 ${manrope.className}`}
     >
       <body className="min-h-[100dvh] bg-transparent relative antialiased selection:bg-[#0e1e2e] selection:text-white">
-        <ParticleBackground />
+        <ParticleWrapper />
         {children}
       </body>
     </html>

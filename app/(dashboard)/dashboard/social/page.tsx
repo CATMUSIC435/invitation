@@ -2,7 +2,10 @@ import { Suspense } from 'react';
 import { fetchSocialData } from './actions';
 import SocialTable from './SocialTable';
 
+import { connection } from 'next/server';
+
 async function SocialContent() {
+  await connection();
   const data = await fetchSocialData();
   return <SocialTable initialData={data} />;
 }

@@ -1,16 +1,14 @@
-import fs from 'fs';
-import path from 'path';
-import AvatarMergeEditor from '../editor';
 import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
+import AvatarMergeEditor from '../editor';
+import { db } from '@/lib/db/drizzle';
+import { avatarTemplates } from '@/lib/db/schema';
+import { eq } from 'drizzle-orm';
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const params = await props.params;
-  const jsonPath = path.join(process.cwd(), 'public', 'index.json');
   try {
-    const fileContent = fs.readFileSync(jsonPath, 'utf-8');
-    const templates = JSON.parse(fileContent);
-    const template = templates.find((t: any) => t.slug === params.slug);
+    const template = await getTemplate(params.slug);
 
     if (template) {
       return {
@@ -19,12 +17,12 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
         openGraph: {
           title: `Tạo Avatar - ${template.title}`,
           description: template.content || `Tạo avatar chiến dịch ${template.title}`,
-          images: template.image ? [template.image] : [],
+          images: template.image_url ? [template.image_url] : [],
         }
       };
     }
   } catch (error) {
-    // Fallback if file read fails
+    // Fallback
   }
 
   return {
@@ -34,33 +32,40 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 }
 
 export async function generateStaticParams() {
-  const jsonPath = path.join(process.cwd(), 'public', 'index.json');
   try {
-    const fileContent = fs.readFileSync(jsonPath, 'utf-8');
-    const templates = JSON.parse(fileContent);
-    return templates.map((t: any) => ({ slug: t.slug }));
+    const templates = await db.select({ slug: avatarTemplates.slug }).from(avatarTemplates);
+    return templates.map((t) => ({ slug: t.slug }));
   } catch (error) {
     return [];
   }
 }
 
+async function getTemplate(slug: string) {
+  'use cache';
+  const [template] = await db.select().from(avatarTemplates).where(eq(avatarTemplates.slug, slug));
+  return template;
+}
+
 export default async function AvatarMergeSlugPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
-  const jsonPath = path.join(process.cwd(), 'public', 'index.json');
   
   try {
-    const fileContent = fs.readFileSync(jsonPath, 'utf-8');
-    const templates = JSON.parse(fileContent);
-    
-    const template = templates.find((t: any) => t.slug === params.slug);
+    const template = await getTemplate(params.slug);
 
     if (!template) {
       redirect('/');
     }
 
-    return <AvatarMergeEditor initialTemplate={template} />;
+    // Map DB fields to what editor expects
+    const editorTemplate = {
+      ...template,
+      content: template.content || undefined,
+      image: template.image_url || undefined
+    };
+
+    return <AvatarMergeEditor initialTemplate={editorTemplate} />;
   } catch (error) {
-    console.error("Error reading index.json", error);
+    console.error("Error reading from DB", error);
     redirect('/');
   }
 }

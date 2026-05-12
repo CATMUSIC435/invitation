@@ -198,16 +198,16 @@ export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate
   };
 
   return (
-    <div className="min-h-screen bg-transparent p-4 md:p-8 font-sans flex flex-col pt-8">
+    <div className="min-h-screen bg-transparent px-4 md:px-8 font-sans flex flex-col  ">
 
       {/* Top Branding */}
       <TopBranding />
 
       {/* Popup Modal */}
-      <SuccessModal 
-        showPopup={showPopup} 
-        setShowPopup={setShowPopup} 
-        generatedImage={generatedImage} 
+      <SuccessModal
+        showPopup={showPopup}
+        setShowPopup={setShowPopup}
+        generatedImage={generatedImage}
       />
 
       <div className="max-w-6xl mx-auto space-y-8 w-full">
@@ -219,7 +219,7 @@ export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate
               <h1 className="text-2xl md:text-3xl font-bold tracking-[0.1em] text-white uppercase">
                 {jsonContent.title && jsonContent.title}
               </h1>
-              <p className="text-gray-400 mt-3 text-xs md:text-sm font-light uppercase tracking-[0.15em]">
+              <p className="text-gray-400 mt-3 text-xs md:text-sm font-light  tracking-[0.15em]">
                 {jsonContent.content && jsonContent.content}
               </p>
             </div>
@@ -328,8 +328,8 @@ export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate
           <div className="lg:col-span-8 flex flex-col">
             <div className="flex-1 bg-black/60 border border-[#c19d68]/20 rounded-2xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.5)] relative min-h-[500px] flex items-center justify-center p-4 md:p-8">
               {/* Background grid pattern for transparency look */}
-              <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
-                style={{ backgroundImage: 'linear-gradient(#c19d68 1px, transparent 1px), linear-gradient(90deg, #c19d68 1px, transparent 1px)', backgroundSize: '30px 30px' }}>
+              <div className="absolute inset-0 opacity-[0.05] pointer-events-none"
+                style={{ backgroundImage: 'linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)', backgroundSize: '30px 30px' }}>
               </div>
 
               <div className="relative w-full h-full flex items-center justify-center overflow-auto rounded-xl touch-none">

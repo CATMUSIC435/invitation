@@ -12,6 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { name: 'Thư mời', href: '/dashboard', icon: Ticket },
+    { name: 'Quản lý Avatar', href: '/dashboard/avatar', icon: Users },
     { name: 'Dữ liệu MXH (Upstash)', href: '/dashboard/social', icon: Users },
   ];
 

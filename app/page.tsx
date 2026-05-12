@@ -2,9 +2,10 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import ShareFooter from '@/components/atoms/share-footer';
 import TopBranding from '@/components/atoms/top-branding';
-import fs from 'fs';
-import path from 'path';
 import { Metadata } from 'next';
+import { db } from '@/lib/db/drizzle';
+import { avatarTemplates } from '@/lib/db/schema';
+import { desc } from 'drizzle-orm';
 
 export const metadata: Metadata = {
   title: 'Tạo Avatar Chiến Dịch | DXMD Việt Nam',
@@ -19,67 +20,81 @@ export const metadata: Metadata = {
   },
 };
 
-export default function AvatarMergeListPage() {
-  const jsonPath = path.join(process.cwd(), 'public', 'index.json');
-
-  let templates = [];
+async function getTemplates() {
+  'use cache';
   try {
-    const fileContent = fs.readFileSync(jsonPath, 'utf-8');
-    templates = JSON.parse(fileContent);
+    return await db.select().from(avatarTemplates).orderBy(desc(avatarTemplates.created_at));
   } catch (error) {
-    console.error("Error loading templates", error);
+    console.error("Error reading from database", error);
+    return [];
   }
+}
+
+export default async function AvatarMergeListPage() {
+  const templates = await getTemplates();
 
   return (
-    <div className="min-h-screen p-4 md:p-8 max-w-6xl mx-auto flex flex-col items-center justify-start pt-8">
+    <main className="min-h-screen text-gray-100 flex flex-col font-sans relative overflow-hidden">
+      {/* Background elements */}
+      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#c19d68]/50 to-transparent"></div>
+      <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-b from-[#0e1e2e]/50 to-[#c19d68]/5 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
 
-      {/* Top Branding */}
       <TopBranding />
 
-      <div className="mb-12 text-center max-w-2xl mx-auto">
-        <p className="text-gray-400 mt-2 text-xs md:text-sm font-light uppercase tracking-[0.15em]">
-          Vui lòng chọn một mẫu chiến dịch để tạo avatar của bạn
-        </p>
-      </div>
-
-      {templates.length === 0 ? (
-        <div className="text-center text-[#c19d68]/50 py-12 font-light tracking-widest text-sm uppercase">
-          KHÔNG TÌM THẤY MẪU NÀO.
+      <div className="flex-1 flex flex-col items-center justify-center p-2 md:p-4 relative z-10 w-full max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="hidden text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight uppercase font-avo-bold">
+            Tạo Avatar Chiến Dịch
+          </h1>
+          <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
+            Cùng DXMD Việt Nam lan tỏa thông điệp tích cực bằng cách tạo và chia sẻ avatar chiến dịch của bạn.
+          </p>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 w-full">
           {templates.map((template: any) => (
             <Link
               href={`/avatar/${template.slug}`}
               key={template.slug}
               className="group relative overflow-hidden transition-all duration-500 flex flex-col"
             >
-              <div className="aspect-square relative overflow-hidden flex items-center justify-center py-2">
-                {/* Background effect */}
-                <div className="absolute inset-0 opacity-[0.02]"
-                  style={{ backgroundImage: 'linear-gradient(#c19d68 1px, transparent 1px), linear-gradient(90deg, #c19d68 1px, transparent 1px)', backgroundSize: '30px 30px' }}>
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#0e1e2e] z-10 opacity-60 group-hover:opacity-40 transition-opacity"></div>
+
+              <div className="relative aspect-[4/5] w-full overflow-hidden shadow-2xl ring-1 ring-white/10 group-hover:ring-[#c19d68]/50 transition-all duration-500">
+                <div className="absolute inset-0 opacity-[0.05]"
+                  style={{ backgroundImage: 'linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)', backgroundSize: '30px 30px' }}>
                 </div>
-                {template.image ? (
-                  <img src={template.image} alt={template.title} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out relative z-10" />
+                {template.image_url ? (
+                  <img
+                    src={template.image_url}
+                    alt={template.title}
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  />
                 ) : (
-                  <div className="text-[#c19d68]/50 font-light tracking-widest text-sm uppercase">NO IMAGE</div>
+                  <div className="w-full h-full bg-[#162a40] flex items-center justify-center text-gray-500">No Image</div>
                 )}
-              </div>
-              <div className="p-2 flex-1 flex flex-col">
-                <h2 className="text-base font-bold text-white mb-3 line-clamp-2 uppercase tracking-wide leading-relaxed">{template.title}</h2>
-                <p className="text-gray-400 text-xs font-light line-clamp-3 mb-6 flex-1 leading-relaxed">{template.content}</p>
-                <div className="flex items-center justify-between text-[#c19d68] text-xs font-bold uppercase tracking-[0.1em] mt-auto">
-                  <span>Tạo ngay</span>
-                  <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform duration-300" />
+
+                <div className="absolute bottom-0 left-0 right-0 p-3 md:p-6 z-20 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                  <h2 className="text-base md:text-2xl font-bold text-white mb-1 md:mb-2 font-avo-bold leading-tight line-clamp-2">{template.title}</h2>
+                  <div className="flex items-center text-[#c19d68] text-xs md:text-base font-medium opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">
+                    <span>Tham gia ngay</span>
+                    <ArrowRight className="ml-1 md:ml-2 transform translate-x-0 md:-translate-x-2 group-hover:translate-x-0 transition-transform duration-500 w-3 h-3 md:w-5 md:h-5" />
+                  </div>
                 </div>
               </div>
             </Link>
           ))}
         </div>
-      )}
 
-      {/* Footer / Share */}
+        {templates.length === 0 && (
+          <div className="text-center py-20 w-full bg-white/5 rounded-2xl border border-white/10 backdrop-blur-sm">
+            <h3 className="text-2xl font-bold text-white mb-2">Chưa có chiến dịch nào</h3>
+            <p className="text-gray-400">Vui lòng kiểm tra lại sau hoặc liên hệ Admin.</p>
+          </div>
+        )}
+      </div>
+
       <ShareFooter />
-    </div>
+    </main>
   );
 }
