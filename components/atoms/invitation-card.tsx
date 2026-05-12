@@ -86,7 +86,7 @@ export default function InvitationCard() {
     try {
       if (!cardRef.current) return;
       const canvas = await html2canvas(cardRef.current, {
-        scale: 3,
+        scale: 2,
         useCORS: true,
         allowTaint: false,
         logging: false,
