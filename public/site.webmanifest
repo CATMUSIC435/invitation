@@ -1,11 +1,11 @@
 {
-    "name": "Thư mời | DXMD Vietnam Award 2025",
-    "short_name": "DXMD Vietnam Award 2025",
-    "description": "Thư mời chính thức tham dự DXMD Vietnam Award 2025 – sự kiện vinh danh các cá nhân và doanh nghiệp tiêu biểu tại DXMD Việt Nam.",
+    "name": "Tạo Avatar Chiến Dịch | DXMD Việt Nam",
+    "short_name": "DXMD Avatar",
+    "description": "Tạo và chia sẻ avatar cá nhân hóa cho các chiến dịch cùng DXMD Việt Nam.",
     "start_url": "/",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#ffffff",
+    "background_color": "#0a1520",
+    "theme_color": "#0a1520",
     "orientation": "portrait",
     "lang": "vi-VN",
     "icons": [
@@ -19,8 +19,5 @@
             "sizes": "512x512",
             "type": "image/png"
         }
-    ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone"
+    ]
 }

@@ -87,7 +87,10 @@ async function fetchRankings() {
 import { Trophy, Eye, Heart, MessageCircle, Share2, Medal } from 'lucide-react';
 import { Suspense } from 'react';
 
+import { connection } from 'next/server';
+
 async function RankingContent() {
+  await connection();
   const data = await fetchRankings();
 
   return (
