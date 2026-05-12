@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Plus, Edit2, Trash2, Image as ImageIcon, Loader2, X, Calendar } from 'lucide-react';
+import { Plus, Edit2, Trash2, Image as ImageIcon, Loader2, X, Calendar, RefreshCw } from 'lucide-react';
 import { createAvatarTemplate, updateAvatarTemplate, deleteAvatarTemplate, uploadToWordPress } from './actions';
 
 export default function AvatarAdminClient({ initialTemplates }: { initialTemplates: any[] }) {
@@ -89,60 +89,72 @@ export default function AvatarAdminClient({ initialTemplates }: { initialTemplat
   };
 
   return (
-    <div className="w-full relative z-10 text-white">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-white tracking-tight uppercase font-avo-bold">Quản lý Mẫu Avatar</h1>
-          <p className="text-gray-400 mt-1">Thêm, sửa, xóa các chiến dịch tạo Avatar</p>
+    <div className="bg-[#0a1520] border border-white/10 rounded-xl overflow-hidden shadow-2xl relative z-10 w-full">
+      <div className="p-4 border-b border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0 bg-[#162a40]/50 backdrop-blur-md">
+        <h3 className="text-white font-bold text-sm uppercase tracking-wider">Quản lý Mẫu Avatar</h3>
+        <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto justify-end">
+          <button 
+            onClick={() => window.location.reload()}
+            className="flex items-center gap-2 bg-[#1a2d42] hover:bg-[#233a54] text-gray-300 text-sm px-3 sm:px-4 py-2 font-medium transition-all rounded-lg border border-white/10"
+            title="Tải lại dữ liệu"
+          >
+            <RefreshCw size={16} />
+            <span className="hidden sm:inline">Tải lại</span>
+          </button>
+          <button 
+            onClick={() => handleOpenModal()}
+            className="flex items-center gap-2 bg-gradient-to-r from-[#c19d68] to-[#ac8d45] hover:from-[#d3b27d] hover:to-[#c19d68] text-white text-sm px-3 sm:px-4 py-2 font-bold transition-all rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-0.5 active:translate-y-0"
+          >
+            <Plus size={16} /> Thêm mới
+          </button>
         </div>
-        <button 
-          onClick={() => handleOpenModal()}
-          className="bg-gradient-to-r from-[#c19d68] to-[#ac8d45] hover:from-[#d4b079] hover:to-[#c19d68] text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 transition-all shadow-[0_0_15px_rgba(193,157,104,0.3)]"
-        >
-          <Plus size={18} /> Thêm mới
-        </button>
       </div>
 
-      <div className="bg-white/5 border border-white/10 rounded-xl overflow-hidden backdrop-blur-md shadow-2xl">
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-sm whitespace-nowrap">
-            <thead className="bg-white/5 text-gray-300 uppercase text-xs tracking-wider border-b border-white/10">
-              <tr>
-                <th className="px-6 py-4">Ảnh (Frame)</th>
-                <th className="px-6 py-4">Chiến dịch (Title)</th>
-                <th className="px-6 py-4">Đường dẫn (Slug)</th>
-                <th className="px-6 py-4">Thời gian</th>
-                <th className="px-6 py-4 text-right">Thao tác</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
+      <div className="overflow-x-auto">
+        <table className="w-full text-left text-sm text-gray-300">
+          <thead className="bg-[#1a2d42] text-gray-400 uppercase text-xs border-b border-white/10">
+            <tr>
+              <th className="px-4 py-3 font-semibold text-center w-16">ID</th>
+              <th className="px-4 py-3 font-semibold text-center">Ảnh (Frame)</th>
+              <th className="px-4 py-3 font-semibold">Chiến dịch (Title)</th>
+              <th className="px-4 py-3 font-semibold">Đường dẫn (Slug)</th>
+              <th className="px-4 py-3 font-semibold">Thời gian</th>
+              <th className="px-4 py-3 font-semibold text-right">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-white/5">
               {templates.length === 0 ? (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-gray-400">
-                    Chưa có chiến dịch nào. Hãy thêm mới!
+                  <td colSpan={6} className="px-4 py-8 text-center text-sm text-gray-500 italic">
+                    Chưa có dữ liệu nào.
                   </td>
                 </tr>
               ) : templates.map((t) => (
-                <tr key={t.id} className="hover:bg-white/5 transition-colors">
-                  <td className="px-6 py-4">
+                <tr key={t.id} className="hover:bg-white/5 transition-colors group">
+                  <td className="px-4 py-3 text-center text-xs text-gray-500">{t.id}</td>
+                  <td className="px-4 py-3 text-center">
                     {t.image_url ? (
-                      <img src={t.image_url} alt="frame" className="w-12 h-12 object-cover rounded-md border border-white/10 bg-black" />
+                      <a href={t.image_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center px-2 py-1 rounded-md bg-[#c19d68]/10 text-[#c19d68] hover:bg-[#c19d68]/20 text-xs font-medium transition-colors">
+                        Xem ảnh
+                      </a>
                     ) : (
-                      <div className="w-12 h-12 bg-white/10 flex items-center justify-center rounded-md text-gray-500"><ImageIcon size={16} /></div>
+                      <span className="text-gray-500 text-xs italic">Trống</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 font-medium text-white">{t.title}</td>
-                  <td className="px-6 py-4 text-gray-400">/avatar/{t.slug}</td>
-                  <td className="px-6 py-4 text-gray-400">
+                  <td className="px-4 py-3 font-medium text-white">{t.title}</td>
+                  <td className="px-4 py-3">/avatar/{t.slug}</td>
+                  <td className="px-4 py-3 text-xs text-gray-400">
                     {t.start_date && new Date(t.start_date).toLocaleDateString()} - {t.end_date && new Date(t.end_date).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 text-right">
-                    <button onClick={() => handleOpenModal(t)} className="text-[#c19d68] hover:text-[#d4b079] bg-[#c19d68]/10 p-2 rounded-md transition-colors mr-2">
-                      <Edit2 size={16} />
-                    </button>
-                    <button onClick={() => handleDelete(t.id)} className="text-red-400 hover:text-red-300 bg-red-400/10 p-2 rounded-md transition-colors">
-                      <Trash2 size={16} />
-                    </button>
+                  <td className="px-4 py-3">
+                    <div className="flex items-center justify-end gap-2 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
+                      <button onClick={() => handleOpenModal(t)} className="p-1.5 bg-blue-500/10 text-blue-400 hover:bg-blue-500/30 rounded-md transition-colors" title="Sửa">
+                        <Edit2 size={16} />
+                      </button>
+                      <button onClick={() => handleDelete(t.id)} className="p-1.5 bg-red-500/10 text-red-400 hover:bg-red-500/30 rounded-md transition-colors" title="Xóa">
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}
