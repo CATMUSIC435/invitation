@@ -7,7 +7,7 @@ import { InvitationFormData } from '@/lib/store/useInvitationStore';
 import LoadingModal from './loading-modal';
 import { TransformComponent, TransformWrapper, useControls } from 'react-zoom-pan-pinch';
 import { UploadCloud, ZoomIn, ZoomOut, RefreshCw } from 'lucide-react';
-import { saveInvitation } from '@/app/(board)/actions';
+import { saveInvitation } from '@/app/actions';
 import { useInvitationStore } from '@/lib/store/useInvitationStore';
 import './index.css';
 
