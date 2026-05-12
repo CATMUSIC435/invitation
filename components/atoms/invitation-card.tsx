@@ -62,8 +62,8 @@ export default function InvitationCard() {
       const img = new Image();
       img.onload = () => {
         const isPortrait = img.naturalHeight > img.naturalWidth;
-        setImageStyle(isPortrait 
-          ? { width: '100%', height: 'auto', minHeight: '100%' } 
+        setImageStyle(isPortrait
+          ? { width: '100%', height: 'auto', minHeight: '100%' }
           : { width: 'auto', height: '100%', minWidth: '100%' });
         setAvatarUrl(url);
       };
@@ -80,7 +80,7 @@ export default function InvitationCard() {
     }
 
     if (isProcessingRef.current || isPending) return;
-    
+
     isProcessingRef.current = true;
     setIsPending(true);
     try {
@@ -99,7 +99,7 @@ export default function InvitationCard() {
       });
 
       const base64 = canvas.toDataURL('image/jpeg', 0.95);
-      
+
       // Tải về máy
       const link = document.createElement('a');
       link.download = `invitation-${dataForm.name.toLowerCase().replace(/\s+/g, '-')}.jpg`;
@@ -108,7 +108,7 @@ export default function InvitationCard() {
 
       // Lưu vào database và tải lên WordPress
       const result = await saveInvitation(dataForm.name, dataForm.title, base64);
-      
+
       if (result.success && result.slug) {
         // Chuyển hướng sang trang share
         window.location.href = `/share/${result.slug}`;
@@ -143,14 +143,14 @@ export default function InvitationCard() {
             <div className="flex flex-col lg:flex-row items-start gap-10 lg:gap-16 justify-center">
 
               {/* Form Section */}
-              <div className="relative w-full max-w-md pt-2">
+              <div className="mx-auto relative w-full max-w-md pt-2">
                 <div className="absolute -inset-1 bg-gradient-to-b from-[#0e1e2e]/50 to-[#c19d68]/20 rounded-[2.5rem] blur-xl opacity-70"></div>
                 <div className="relative w-full h-[500px] py-6 flex flex-col items-center justify-between rounded-[2rem] px-8 bg-[#0a1520]/95 backdrop-blur-2xl shadow-2xl ring-1 ring-white/10 overflow-hidden">
                   {/* Decorative element */}
                   <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#c19d68]/50 to-transparent"></div>
 
                   <div className="text-center w-full">
-                    <h3 className="text-xl font-semibold tracking-wide text-white mb-1">Tạo Thẻ Mời</h3>
+                    <h3 className="text-xl font-semibold tracking-wide text-white mb-1 opacity-0">Tạo Thẻ Mời</h3>
                     <p className="text-xs text-gray-400">Tải ảnh lên và điều chỉnh thông tin</p>
                   </div>
 
@@ -201,7 +201,7 @@ export default function InvitationCard() {
                     }}
                   >
                     <div className="relative">
-                      <div 
+                      <div
                         className="w-[360px] h-[360px] rounded-full overflow-hidden bg-[#0a1520] flex items-center justify-center relative"
                         style={{ boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5), 0 0 0 4px rgba(255,255,255,0.5)' }}
                       >
