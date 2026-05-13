@@ -28,7 +28,6 @@ export const metadata: Metadata = {
 };
 
 async function getTemplates() {
-  'use cache';
   try {
     return await db.select().from(invitationTemplates).orderBy(desc(invitationTemplates.created_at));
   } catch (error) {

@@ -47,7 +47,6 @@ export async function generateStaticParams() {
 }
 
 async function getTemplate(slug: string) {
-  'use cache';
   const [template] = await db.select().from(avatarTemplates).where(eq(avatarTemplates.slug, slug));
   return template;
 }

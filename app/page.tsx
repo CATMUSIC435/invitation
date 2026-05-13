@@ -28,7 +28,6 @@ export const metadata: Metadata = {
 };
 
 async function getTemplates() {
-  'use cache';
   try {
     return await db.select().from(avatarTemplates).orderBy(desc(avatarTemplates.created_at));
   } catch (error) {

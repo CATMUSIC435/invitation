@@ -105,7 +105,6 @@ export async function saveInvitationTemplate(data: {
 }
 
 export async function getInvitationTemplateBySlug(slug: string) {
-  'use cache';
   try {
     const [template] = await db.select().from(invitationTemplates).where(eq(invitationTemplates.slug, slug)).limit(1);
     return template || null;
@@ -116,7 +115,6 @@ export async function getInvitationTemplateBySlug(slug: string) {
 }
 
 export async function getInvitationTemplates() {
-  'use cache';
   try {
     const templates = await db.select().from(invitationTemplates).orderBy(invitationTemplates.created_at);
     return templates;
