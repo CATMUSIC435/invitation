@@ -15,6 +15,8 @@ type Props = {
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const params = await props.params;
+  const { connection } = await import('next/server');
+  await connection();
   try {
     const template = await getInvitationTemplateBySlug(params.slug);
     if (template) {
