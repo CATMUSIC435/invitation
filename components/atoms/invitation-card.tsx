@@ -226,15 +226,15 @@ export default function InvitationCard() {
 
                     <div className="relative z-20 top-[16px]">
                       <h2
-                        className="text-4xl font-bold text-white mb-1 uppercase font-avo-bold leading-tight"
-                        style={{ textShadow: '0 4px 10px rgba(0,0,0,0.3)', padding: 0, letterSpacing: '3px', fontWeight: 400, lineHeight: 1 }}
+                        className="text-4xl font-bold text-white mb-1 uppercase leading-tight"
+                        style={{ fontFamily: '"Times New Roman", Times, serif', textShadow: '0 4px 10px rgba(0,0,0,0.3)', padding: 0, letterSpacing: '3px', fontWeight: 700, lineHeight: 1 }}
                       >
                         {dataForm.name || 'NGUYỄN VĂN A'}
                       </h2>
                       <div>
                         <h3
-                          className="text-xl mt-0 font-normal small-text uppercase text-[#e5e5e5] font-avo"
-                          style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                          className="text-xl mt-0 font-normal small-text uppercase text-[#e5e5e5]"
+                          style={{ fontFamily: '"Times New Roman", Times, serif', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                         >
                           {dataForm.title || 'CHỨC VỤ'}
                         </h3>

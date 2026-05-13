@@ -143,15 +143,15 @@ export default function UserInvitationCard({ template }: { template: InvitationT
                     }}
                   >
                     <h2
-                      className="text-4xl font-bold text-white mb-1 font-avo-bold leading-tight"
-                      style={{ textShadow: '0 4px 10px rgba(0,0,0,0.3)', padding: 0, letterSpacing: '3px', fontWeight: 400, lineHeight: 1 }}
+                      className="text-4xl font-bold text-white mb-1 leading-tight"
+                      style={{ fontFamily: '"Times New Roman", Times, serif', textShadow: '0 4px 10px rgba(0,0,0,0.3)', padding: 0, letterSpacing: '3px', fontWeight: 600, lineHeight: 1 }}
                     >
                       {dataForm?.name || 'NGUYỄN VĂN A'}
                     </h2>
                     <div className="">
                       <h3
-                        className="text-xl mt-2 font-normal small-text text-[#e5e5e5] font-avo whitespace-pre-wrap text-center"
-                        style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                        className="text-xl mt-1 font-normal small-text text-[#e5e5e5] whitespace-pre-wrap text-center"
+                        style={{ fontFamily: '"Times New Roman", Times, serif', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                       >
                         {dataForm?.title || 'CHỨC VỤ'}
                       </h3>

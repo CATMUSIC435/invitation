@@ -148,15 +148,15 @@ export default function TemplatePreview() {
               <Move size={24} /> Kéo Text
             </div>
             <h2
-              className="text-4xl font-bold text-white mb-1 font-avo-bold leading-tight pointer-events-none"
-              style={{ textShadow: '0 4px 10px rgba(0,0,0,0.3)', padding: 0, letterSpacing: '3px', fontWeight: 400, lineHeight: 1 }}
+              className="text-4xl font-bold text-white mb-1 leading-tight pointer-events-none"
+              style={{ fontFamily: '"Times New Roman", Times, serif', textShadow: '0 4px 10px rgba(0,0,0,0.3)', padding: 0, letterSpacing: '3px', fontWeight: 600, lineHeight: 1 }}
             >
               Ông: LÂM QUANG THỚI
             </h2>
             <div className="pointer-events-none">
               <h3
-                className="text-xl mt-2 font-normal small-text text-[#e5e5e5] font-avo whitespace-pre-wrap text-center"
-                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                className="text-xl mt-1 font-normal small-text text-[#e5e5e5] whitespace-pre-wrap text-center"
+                style={{ fontFamily: '"Times New Roman", Times, serif', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
               >
                 TỔNG GIÁM ĐỐC
                 CÔNG TY TNHH ĐẦU TƯ DỰ ÁN PHƯỢNG HOÀNG
