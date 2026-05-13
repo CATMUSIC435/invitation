@@ -8,21 +8,21 @@ import { invitationTemplates } from '@/lib/db/schema';
 import { desc } from 'drizzle-orm';
 
 export const metadata: Metadata = {
-  title: 'Tạo Thư Mời | FENICA',
-  description: 'Danh sách các mẫu thư mời nổi bật từ FENICA. Hãy chọn mẫu ưng ý và tạo thư mời của bạn ngay hôm nay!',
+  title: 'Tạo Thư Mời | DXMD Vietnam',
+  description: 'Danh sách các mẫu thư mời nổi bật từ DXMD Vietnam. Hãy chọn mẫu ưng ý và tạo thư mời của bạn ngay hôm nay!',
   openGraph: {
-    title: 'Tạo Thư Mời | FENICA',
-    description: 'Cùng tham gia tạo thư mời cho các sự kiện cùng FENICA.',
+    title: 'Tạo Thư Mời | DXMD Vietnam',
+    description: 'Cùng tham gia tạo thư mời cho các sự kiện cùng DXMD Vietnam.',
     url: '/invitations',
-    siteName: 'FENICA',
+    siteName: 'DXMD Vietnam',
     locale: 'vi_VN',
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tạo Thư Mời | FENICA',
-    description: 'Cùng tham gia tạo thư mời cho các sự kiện cùng FENICA.',
+    title: 'Tạo Thư Mời | DXMD Vietnam',
+    description: 'Cùng tham gia tạo thư mời cho các sự kiện cùng DXMD Vietnam.',
     images: ['/og-image.jpg'],
   },
 };
@@ -48,13 +48,13 @@ export default async function InvitationsListPage() {
 
       <TopBranding />
 
-      <div className="flex-1 flex flex-col items-center justify-center p-2 md:p-4 relative z-10 w-full max-w-6xl mx-auto">
+      <div className="flex flex-col items-center justify-center p-2 md:px-4 md:py-2 relative z-10 w-full max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight uppercase font-avo-bold">
             Tạo Thư Mời
           </h1>
           <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
-            Cùng FENICA lan tỏa thông điệp tích cực bằng cách tạo thư mời sự kiện của bạn.
+            Cùng DXMD Vietnam lan tỏa thông điệp tích cực bằng cách tạo thư mời sự kiện của bạn.
           </p>
         </div>
 

@@ -8,21 +8,21 @@ import { avatarTemplates } from '@/lib/db/schema';
 import { desc } from 'drizzle-orm';
 
 export const metadata: Metadata = {
-  title: 'Tạo Avatar Chiến Dịch | FENICA',
-  description: 'Danh sách các mẫu avatar chiến dịch nổi bật từ FENICA. Hãy chọn mẫu ưng ý và tạo avatar ủng hộ chiến dịch ngay hôm nay!',
+  title: 'Tạo Avatar Chiến Dịch | DXMD Vietnam',
+  description: 'Danh sách các mẫu avatar chiến dịch nổi bật từ DXMD Vietnam. Hãy chọn mẫu ưng ý và tạo avatar ủng hộ chiến dịch ngay hôm nay!',
   openGraph: {
-    title: 'Tạo Avatar Chiến Dịch | FENICA',
-    description: 'Cùng tham gia tạo avatar ủng hộ các chiến dịch cộng đồng cùng FENICA.',
+    title: 'Tạo Avatar Chiến Dịch | DXMD Vietnam',
+    description: 'Cùng tham gia tạo avatar ủng hộ các chiến dịch cộng đồng cùng DXMD Vietnam.',
     url: '/',
-    siteName: 'FENICA',
+    siteName: 'DXMD Vietnam',
     locale: 'vi_VN',
     type: 'website',
     images: [{ url: '/og-image.jpg', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Tạo Avatar Chiến Dịch | FENICA',
-    description: 'Cùng tham gia tạo avatar ủng hộ các chiến dịch cộng đồng cùng FENICA.',
+    title: 'Tạo Avatar Chiến Dịch | DXMD Vietnam',
+    description: 'Cùng tham gia tạo avatar ủng hộ các chiến dịch cộng đồng cùng DXMD Vietnam.',
     images: ['/og-image.jpg'],
   },
 };
@@ -48,13 +48,13 @@ export default async function AvatarMergeListPage() {
 
       <TopBranding />
 
-      <div className="flex-1 flex flex-col items-center justify-center p-2 md:p-4 relative z-10 w-full max-w-6xl mx-auto">
+      <div className="flex flex-col items-center justify-center p-2 md:px-4 md:py-2 relative z-10 w-full max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h1 className="hidden text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight uppercase font-avo-bold">
             Tạo Avatar Chiến Dịch
           </h1>
           <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
-            Cùng FENICA lan tỏa thông điệp tích cực bằng cách tạo và chia sẻ avatar chiến dịch của bạn.
+            Cùng DXMD Vietnam lan tỏa thông điệp tích cực bằng cách tạo và chia sẻ avatar chiến dịch của bạn.
           </p>
         </div>
 

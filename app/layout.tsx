@@ -3,21 +3,21 @@ import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://fenica.vn'),
-  title: 'Thư mời | CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://avatar.dxmd.vn'),
+  title: 'Tạo avatar và thư mời | DXMD Vietnam',
   description:
-    'Thư mời chính thức tham dự CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA” – sự kiện đặc biệt từ FENICA.',
+    'Nền tảng tạo avatar và thư mời trực tuyến dành cho các chiến dịch và sự kiện của DXMD Vietnam.',
 
   keywords: [
-    'SĂN VÉ LÊN TÀU CÙNG FENICA',
-    'Thư mời FENICA',
-    'Sự kiện FENICA',
-    'Cuộc thi FENICA',
+    'Tạo avatar DXMD',
+    'Thư mời DXMD',
+    'Sự kiện DXMD Vietnam',
+    'Chiến dịch DXMD Vietnam',
   ],
 
-  authors: [{ name: 'FENICA' }],
-  creator: 'FENICA',
-  publisher: 'FENICA',
+  authors: [{ name: 'DXMD Vietnam' }],
+  creator: 'DXMD Vietnam',
+  publisher: 'DXMD Vietnam',
 
   robots: {
     index: true,
@@ -25,27 +25,27 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: 'Thư mời CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
+    title: 'Tạo avatar và thư mời | DXMD Vietnam',
     description:
-      'CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA” – sự kiện đặc biệt dành cho các thành viên.',
+      'Nền tảng tạo avatar và thư mời trực tuyến dành cho các chiến dịch và sự kiện của DXMD Vietnam.',
     type: 'website',
     locale: 'vi_VN',
-    siteName: 'CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
+    siteName: 'DXMD Vietnam',
     images: [
       {
         url: '/og-image.jpg', // 1200x630
         width: 1200,
         height: 630,
-        alt: 'CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
+        alt: 'DXMD Vietnam',
       },
     ],
   },
 
   twitter: {
     card: 'summary_large_image',
-    title: 'Thư mời | CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
+    title: 'Tạo avatar và thư mời | DXMD Vietnam',
     description:
-      'Thư mời chính thức tham dự CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”.',
+      'Nền tảng tạo avatar và thư mời trực tuyến dành cho các chiến dịch và sự kiện của DXMD Vietnam.',
     images: ['/og-image.jpg'],
   },
 

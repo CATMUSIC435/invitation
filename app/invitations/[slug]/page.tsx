@@ -28,7 +28,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
     const template = await getInvitationTemplateBySlug(params.slug);
     if (template) {
       return {
-        title: `Thư Mời - ${template.title || template.name} | FENICA`,
+        title: `Thư Mời - ${template.title || template.name} | DXMD Vietnam`,
         description: template.description || `Thư mời ${template.name}`,
         openGraph: {
           title: `Thư Mời - ${template.title || template.name}`,
@@ -46,8 +46,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   } catch (error) { }
 
   return {
-    title: 'Thư Mời | FENICA',
-    description: 'Tạo thư mời sự kiện cùng FENICA.'
+    title: 'Thư Mời | DXMD Vietnam',
+    description: 'Tạo thư mời sự kiện cùng DXMD Vietnam.'
   };
 }
 
