@@ -33,7 +33,13 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
         openGraph: {
           title: `Thư Mời - ${template.title || template.name}`,
           description: template.description || `Thư mời ${template.name}`,
-          images: template.background_url ? [template.background_url] : [],
+          images: template.background_url ? [template.background_url] : ['/og-image.jpg'],
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: `Thư Mời - ${template.title || template.name}`,
+          description: template.description || `Thư mời ${template.name}`,
+          images: template.background_url ? [template.background_url] : ['/og-image.jpg'],
         }
       };
     }

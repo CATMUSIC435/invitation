@@ -5,12 +5,20 @@ import { InvitationTemplate } from '@/lib/db/schema';
 import { saveInvitation, getProxyImage } from '@/app/actions';
 import { ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
 
-function toUppercaseValues(obj: InvitationFormData): InvitationFormData {
+const formatNameWithPrefix = (name: string) => {
+  if (name.includes(':')) {
+    const parts = name.split(':');
+    return parts[0] + ':' + parts.slice(1).join(':').toUpperCase();
+  }
+  return name.toUpperCase();
+};
+
+const toUppercaseValues = (obj: InvitationFormData) => {
   return {
-    name: obj.name.toUpperCase(),
+    name: formatNameWithPrefix(obj.name),
     title: obj.title?.toUpperCase(),
   };
-}
+};
 
 export function useInvitationCard(template: InvitationTemplate) {
   const [dataForm, setDataForm] = useState<InvitationFormData>({ name: '', title: '' });

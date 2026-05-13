@@ -17,7 +17,13 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
         openGraph: {
           title: `Tạo Avatar - ${template.title}`,
           description: template.content || `Tạo avatar chiến dịch ${template.title}`,
-          images: template.image_url ? [template.image_url] : [],
+          images: template.image_url ? [template.image_url] : ['/og-image.jpg'],
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title: `Tạo Avatar - ${template.title}`,
+          description: template.content || `Tạo avatar chiến dịch ${template.title}`,
+          images: template.image_url ? [template.image_url] : ['/og-image.jpg'],
         }
       };
     }
