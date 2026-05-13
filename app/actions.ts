@@ -128,9 +128,16 @@ export async function getInvitationTemplates() {
 
 export async function deleteInvitationTemplate(id: number) {
   try {
+    const template = await db.select().from(invitationTemplates).where(eq(invitationTemplates.id, id)).then(res => res[0]);
     await db.delete(invitationTemplates).where(eq(invitationTemplates.id, id));
+    
     revalidatePath('/dashboard/invitation-templates');
     revalidatePath('/invitations');
+    if (template) {
+      revalidatePath(`/invitations/${template.slug}`);
+      revalidatePath(`/avatar/${template.slug}`);
+    }
+    
     return { success: true };
   } catch (error) {
     console.error('Failed to delete template', error);

@@ -37,7 +37,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
         }
       };
     }
-  } catch (error) {}
+  } catch (error) { }
 
   return {
     title: 'Thư Mời | DXMD Việt Nam',
@@ -48,7 +48,7 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 export default async function Page({ params }: Props) {
   const resolvedParams = await params;
   const template = await getInvitationTemplateBySlug(resolvedParams.slug);
-  
+
   if (!template) {
     notFound();
   }
@@ -56,9 +56,9 @@ export default async function Page({ params }: Props) {
   return (
     <main className="p-4 min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
       <TopBranding />
-      
+
       <div className="flex-1 w-full flex flex-col items-center justify-center relative z-10 pb-10">
-        <div className="mt-8 mb-8 text-center max-w-2xl mx-auto">
+        <div className="mt-4 mb-4 text-center max-w-2xl mx-auto">
           <h1 className="text-xl md:text-2xl font-bold mb-2 text-center tracking-tight text-white uppercase">
             <span className="text-base md:text-3xl block font-medium tracking-[0.2em] text-[#c19d68] items-center mb-2">
               {template.title || 'THƯ MỜI'}
