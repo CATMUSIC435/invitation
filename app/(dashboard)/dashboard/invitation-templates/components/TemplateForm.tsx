@@ -120,6 +120,19 @@ export default function TemplateForm() {
           </label>
         </div>
 
+        <div className="flex items-center gap-3 pt-2">
+          <input 
+            type="checkbox" 
+            id="has_company"
+            checked={!!editingTemplate.has_company}
+            onChange={e => handleChange('has_company', e.target.checked)}
+            className="w-4 h-4 accent-[#c19d68]"
+          />
+          <label htmlFor="has_company" className="font-medium text-gray-300 cursor-pointer">
+            Cho phép hiển thị ô nhập Tên Đơn vị/Công ty
+          </label>
+        </div>
+
         <div className="flex items-center gap-3 pt-1 pb-4">
           <input 
             type="checkbox" 

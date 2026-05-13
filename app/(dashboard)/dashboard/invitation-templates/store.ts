@@ -56,6 +56,7 @@ export const useTemplateStore = create<TemplateState>((set, get) => ({
           avatar_position_x: 450,
           avatar_position_y: 450,
           has_avatar: true,
+          has_company: true,
           save_user_info: true,
         }, 
         bgPreview: null,

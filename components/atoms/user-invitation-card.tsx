@@ -63,7 +63,7 @@ export default function UserInvitationCard({ template }: { template: InvitationT
               )}
 
               <div className="w-full">
-                <InvitationForm onCallBack={changeValueEvent} />
+                <InvitationForm onCallBack={changeValueEvent} hasCompany={template.has_company ?? true} />
               </div>
             </div>
           </div>

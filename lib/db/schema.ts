@@ -48,6 +48,7 @@ export const invitationTemplates = pgTable('invitation_templates', {
   avatar_position_x: integer('avatar_position_x').default(450),
   avatar_position_y: integer('avatar_position_y').default(450),
   has_avatar: boolean('has_avatar').default(true),
+  has_company: boolean('has_company').default(true),
   save_user_info: boolean('save_user_info').default(true),
   created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
   updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),

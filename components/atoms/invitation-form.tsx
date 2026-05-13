@@ -15,9 +15,10 @@ function FieldInfo({ field }: { field: AnyFieldApi }) {
 
 type InvitationFormProps = {
   onCallBack: (value: InvitationFormData) => void;
+  hasCompany?: boolean;
 };
 
-export default function InvitationForm({ onCallBack }: InvitationFormProps) {
+export default function InvitationForm({ onCallBack, hasCompany = true }: InvitationFormProps) {
   const form = useForm({
     defaultValues: {
       ...defaultFormData,
@@ -103,27 +104,29 @@ export default function InvitationForm({ onCallBack }: InvitationFormProps) {
             )}
           />
 
-          <form.Field
-            name="company"
-            children={(field) => (
-              <>
-                <div>
-                  <label htmlFor={field.name} className="block text-sm font-medium text-white mb-1.5">
-                    Tên Đơn vị/Công ty:
-                  </label>
-                  <input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all duration-200"
-                    placeholder="Nhập công ty (VD: DXMD Vietnam)"
-                  />
-                </div>
-              </>
-            )}
-          />
+          {hasCompany && (
+            <form.Field
+              name="company"
+              children={(field) => (
+                <>
+                  <div>
+                    <label htmlFor={field.name} className="block text-sm font-medium text-white mb-1.5">
+                      Tên Đơn vị/Công ty:
+                    </label>
+                    <input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      className="w-full px-4 py-2.5 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all duration-200"
+                      placeholder="Nhập công ty (VD: DXMD Vietnam)"
+                    />
+                  </div>
+                </>
+              )}
+            />
+          )}
         </div>
 
         <form.Subscribe

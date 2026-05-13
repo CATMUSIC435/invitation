@@ -78,6 +78,7 @@ export async function saveInvitationTemplate(data: {
   avatar_position_x?: number;
   avatar_position_y?: number;
   has_avatar: boolean;
+  has_company?: boolean;
   save_user_info?: boolean;
 }) {
   try {
