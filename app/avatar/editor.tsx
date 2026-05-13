@@ -5,6 +5,7 @@ import { Upload, Image as ImageIcon, SlidersHorizontal, UserCircle, RotateCcw, Z
 import ShareFooter from '@/components/atoms/share-footer';
 import TopBranding from '@/components/atoms/top-branding';
 import SuccessModal from '@/components/atoms/success-modal';
+import { getProxyImage } from '@/app/actions';
 
 export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate?: { title?: string; content?: string; image?: string } | null }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -56,13 +57,21 @@ export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate
   // Handle initial template loading
   useEffect(() => {
     if (initialTemplate && initialTemplate.image) {
-      const img = new window.Image();
-      img.crossOrigin = "anonymous";
-      img.onload = () => {
-        setFrameSrc(initialTemplate.image!);
-        setFrameImg(img);
+      const loadInitialImage = async () => {
+        try {
+          const proxyUrl = await getProxyImage(initialTemplate.image!);
+          const img = new window.Image();
+          img.crossOrigin = "anonymous";
+          img.onload = () => {
+            setFrameSrc(proxyUrl);
+            setFrameImg(img);
+          };
+          img.src = proxyUrl;
+        } catch (error) {
+          console.error("Failed to load template image via proxy", error);
+        }
       };
-      img.src = initialTemplate.image;
+      loadInitialImage();
     }
   }, [initialTemplate]);
 
