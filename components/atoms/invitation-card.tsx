@@ -233,10 +233,12 @@ export default function InvitationCard() {
                       </h2>
                       <div>
                         <h3
-                          className="text-xl mt-0 font-normal small-text uppercase text-[#e5e5e5]"
+                          className="text-xl mt-0 font-normal small-text uppercase text-[#e5e5e5] text-center"
                           style={{ fontFamily: '"Times New Roman", Times, serif', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                         >
-                          {dataForm.title || 'CHỨC VỤ'}
+                          {(dataForm.title || 'CHỨC VỤ').split('\n').map((line, index) => (
+                            <div key={index}>{line}</div>
+                          ))}
                         </h3>
                       </div>
                     </div>

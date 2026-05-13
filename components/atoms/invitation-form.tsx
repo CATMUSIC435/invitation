@@ -19,9 +19,16 @@ type InvitationFormProps = {
 
 export default function InvitationForm({ onCallBack }: InvitationFormProps) {
   const form = useForm({
-    defaultValues: defaultFormData,
+    defaultValues: {
+      ...defaultFormData,
+      role: (defaultFormData?.title || '').split('\n')[0] || '',
+      company: (defaultFormData?.title || '').split('\n').slice(1).join('\n') || '',
+    },
     onSubmit: async ({ value }) => {
-      onCallBack(value);
+      onCallBack({
+        ...value,
+        title: [value.role, value.company].filter(Boolean).join('\n')
+      });
     },
   });
 
@@ -68,9 +75,9 @@ export default function InvitationForm({ onCallBack }: InvitationFormProps) {
           />
         </div>
 
-        <div className="mb-2">
+        <div className="mb-2 flex flex-col gap-4">
           <form.Field
-            name="title"
+            name="role"
             validators={{
               onChange: ({ value }) =>
                 !value ? 'Vui lòng nhập chức vụ' : undefined,
@@ -81,21 +88,56 @@ export default function InvitationForm({ onCallBack }: InvitationFormProps) {
                   <label htmlFor={field.name} className="block text-sm font-medium text-white mb-1.5">
                     Chức vụ:
                   </label>
-                  <textarea
+                  <input
                     id={field.name}
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all duration-200 resize-none h-20"
-                    placeholder="Nhập chức vụ... (Có thể xuống dòng)"
+                    className="w-full px-4 py-2.5 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all duration-200"
+                    placeholder="Nhập chức vụ (VD: Tổng Giám Đốc)"
                   />
                 </div>
                 <FieldInfo field={field} />
               </>
             )}
           />
+
+          <form.Field
+            name="company"
+            children={(field) => (
+              <>
+                <div>
+                  <label htmlFor={field.name} className="block text-sm font-medium text-white mb-1.5">
+                    Tên Đơn vị/Công ty:
+                  </label>
+                  <input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    className="w-full px-4 py-2.5 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all duration-200"
+                    placeholder="Nhập công ty (Tùy chọn)"
+                  />
+                </div>
+              </>
+            )}
+          />
         </div>
+
+        <form.Subscribe
+          selector={(state) => state.values}
+          children={(values) => {
+            React.useEffect(() => {
+              onCallBack({
+                name: values.name,
+                title: [values.role, values.company].filter(Boolean).join('\n')
+              });
+            }, [values.name, values.role, values.company]);
+            return null;
+          }}
+        />
 
         <form.Subscribe
           selector={(state) => [state.canSubmit, state.isSubmitting]}

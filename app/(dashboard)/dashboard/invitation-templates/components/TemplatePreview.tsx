@@ -155,11 +155,11 @@ export default function TemplatePreview() {
             </h2>
             <div className="pointer-events-none">
               <h3
-                className="text-xl mt-1 font-normal small-text text-[#e5e5e5] whitespace-pre-wrap text-center"
+                className="text-xl mt-1 font-normal small-text text-[#e5e5e5] text-center"
                 style={{ fontFamily: '"Times New Roman", Times, serif', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
               >
-                TỔNG GIÁM ĐỐC
-                CÔNG TY TNHH ĐẦU TƯ DỰ ÁN PHƯỢNG HOÀNG
+                <div>TỔNG GIÁM ĐỐC</div>
+                <div>CÔNG TY TNHH ĐẦU TƯ DỰ ÁN PHƯỢNG HOÀNG</div>
               </h3>
             </div>
           </div>
