@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Trophy, Ticket, LogOut, ChevronLeft, ChevronRight, Menu, X } from 'lucide-react';
+import { LayoutDashboard, Users, Trophy, Ticket, LogOut, ChevronLeft, ChevronRight, Menu, X, Palette } from 'lucide-react';
 import { useState } from 'react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -12,6 +12,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
   const navItems = [
     { name: 'Thư mời', href: '/dashboard', icon: Ticket },
+    { name: 'Mẫu Thư mời', href: '/dashboard/invitation-templates', icon: Palette },
     { name: 'Quản lý Avatar', href: '/dashboard/avatar', icon: Users },
     { name: 'Dữ liệu MXH (Upstash)', href: '/dashboard/social', icon: Users },
   ];

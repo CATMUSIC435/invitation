@@ -35,3 +35,23 @@ export const avatarTemplates = pgTable('avatar_templates', {
 
 export type AvatarTemplate = typeof avatarTemplates.$inferSelect;
 export type NewAvatarTemplate = typeof avatarTemplates.$inferInsert;
+
+export const invitationTemplates = pgTable('invitation_templates', {
+  id: serial('id').primaryKey(),
+  slug: text('slug').unique().notNull(),
+  name: text('name').notNull(),
+  title: text('title'),
+  description: text('description'),
+  background_url: text('background_url'),
+  text_position_x: integer('text_position_x').default(0),
+  text_position_y: integer('text_position_y').default(0),
+  avatar_position_x: integer('avatar_position_x').default(450),
+  avatar_position_y: integer('avatar_position_y').default(450),
+  has_avatar: boolean('has_avatar').default(true),
+  save_user_info: boolean('save_user_info').default(true),
+  created_at: timestamp('created_at', { withTimezone: true }).defaultNow(),
+  updated_at: timestamp('updated_at', { withTimezone: true }).defaultNow(),
+});
+
+export type InvitationTemplate = typeof invitationTemplates.$inferSelect;
+export type NewInvitationTemplate = typeof invitationTemplates.$inferInsert;
