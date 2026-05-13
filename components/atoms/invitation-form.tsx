@@ -118,7 +118,7 @@ export default function InvitationForm({ onCallBack }: InvitationFormProps) {
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
                     className="w-full px-4 py-2.5 bg-white/10 border border-white/20 text-white placeholder-white/50 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/50 transition-all duration-200"
-                    placeholder="Nhập công ty (Tùy chọn)"
+                    placeholder="Nhập công ty (VD: DXMD Vietnam)"
                   />
                 </div>
               </>
