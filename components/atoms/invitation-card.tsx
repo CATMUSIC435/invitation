@@ -102,7 +102,7 @@ export default function InvitationCard() {
 
       // Tải về máy
       const link = document.createElement('a');
-      link.download = `invitation-${dataForm.name.toLowerCase().replace(/\s+/g, '-')}.jpg`;
+      link.download = `invitation-${dataForm.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now().toString().slice(-6)}.jpg`;
       link.href = base64;
       link.click();
 

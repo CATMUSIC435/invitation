@@ -56,7 +56,7 @@ async function ShareContent({ params }: { params: Params }) {
             href={data.image_url}
             target="_blank"
             rel="noopener noreferrer"
-            download={`invitation-${data.name.toLowerCase().replace(/\s+/g, '-')}.jpg`}
+            download={`invitation-${data.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now().toString().slice(-6)}.jpg`}
             className="flex-1 bg-gradient-to-r from-[#c19d68] to-[#ac8d45] text-white text-center font-bold py-3.5 rounded-xl shadow-[0_10px_30px_rgba(193,157,104,0.3)] hover:shadow-[0_15px_40px_rgba(193,157,104,0.5)] transition-all duration-300"
           >
             Tải ảnh chất lượng cao

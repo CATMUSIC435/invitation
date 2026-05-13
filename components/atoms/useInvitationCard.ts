@@ -117,7 +117,7 @@ export function useInvitationCard(template: InvitationTemplate) {
       const blobUrl = URL.createObjectURL(blob);
 
       const link = document.createElement('a');
-      link.download = `invitation-${dataForm.name.toLowerCase().replace(/\s+/g, '-')}.jpg`;
+      link.download = `invitation-${dataForm.name.toLowerCase().replace(/\s+/g, '-')}-${Date.now().toString().slice(-6)}.jpg`;
       link.href = blobUrl;
       link.click();
       

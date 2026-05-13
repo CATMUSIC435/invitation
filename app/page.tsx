@@ -49,7 +49,7 @@ export default async function AvatarMergeListPage() {
 
       <div className="flex flex-col items-center justify-center p-2 md:px-4 md:py-2 relative z-10 w-full max-w-6xl mx-auto">
         <div className="text-center mb-12">
-          <h1 className="hidden text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 tracking-tight uppercase font-avo-bold">
+          <h1 className="hidden text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight uppercase font-avo-bold">
             Tạo Avatar Chiến Dịch
           </h1>
           <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
