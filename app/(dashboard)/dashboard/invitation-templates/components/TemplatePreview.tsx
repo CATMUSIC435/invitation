@@ -25,18 +25,18 @@ export default function TemplatePreview() {
   const PREVIEW_WIDTH = isHorizontal ? 360 : 240;
   const PREVIEW_HEIGHT = (PREVIEW_WIDTH * bgDimensions.height) / bgDimensions.width;
   const scaleFactor = PREVIEW_WIDTH / bgDimensions.width;
-  
+
   // Logic to calculate position based on scale
   const transformToCanvas = (val: number) => val / scaleFactor;
   const transformFromCanvas = (val: number) => Math.round(val * scaleFactor);
 
   const handleMouseDown = (e: React.MouseEvent, type: 'text' | 'avatar') => {
     setDraggingElement(type);
-    
+
     if (previewRef.current) {
       previewRef.current.dataset.dragStartX = e.clientX.toString();
       previewRef.current.dataset.dragStartY = e.clientY.toString();
-      
+
       if (type === 'text') {
         previewRef.current.dataset.initialX = transformToCanvas(editingTemplate?.text_position_x || 450).toString();
         previewRef.current.dataset.initialY = transformToCanvas(editingTemplate?.text_position_y || 650).toString();
@@ -49,7 +49,7 @@ export default function TemplatePreview() {
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!draggingElement || !previewRef.current) return;
-    
+
     const dragStartX = parseFloat(previewRef.current.dataset.dragStartX || '0');
     const dragStartY = parseFloat(previewRef.current.dataset.dragStartY || '0');
     const initialX = parseFloat(previewRef.current.dataset.initialX || '0');
@@ -57,7 +57,7 @@ export default function TemplatePreview() {
 
     const dx = e.clientX - dragStartX;
     const dy = e.clientY - dragStartY;
-    
+
     let newX = initialX + dx;
     let newY = initialY + dy;
 
@@ -83,12 +83,12 @@ export default function TemplatePreview() {
           Avatar: {editingTemplate.avatar_position_x || 450}px, {editingTemplate.avatar_position_y || 450}px
         </p>
       </div>
-      
-      <div 
+
+      <div
         className="relative border border-dashed border-[#c19d68]/40 rounded-xl bg-white/5 shadow-inner overflow-hidden"
         style={{ width: `${PREVIEW_WIDTH}px`, height: `${PREVIEW_HEIGHT}px` }}
       >
-        <div 
+        <div
           ref={previewRef}
           className="absolute top-0 left-0 origin-top-left overflow-hidden"
           style={{
@@ -99,20 +99,20 @@ export default function TemplatePreview() {
           onMouseMove={handleMouseMove}
         >
           {bgPreview ? (
-            <img 
+            <img
               src={bgPreview}
               alt="Preview"
               className="absolute inset-0 z-10 pointer-events-none w-full h-full object-cover"
             />
           ) : (
-            <div 
+            <div
               className="absolute inset-0 z-10 pointer-events-none bg-center bg-cover bg-no-repeat"
               style={{ backgroundImage: 'url(/frame.png)' }}
             />
           )}
 
           {editingTemplate.has_avatar && (
-            <div 
+            <div
               className="absolute z-0 flex flex-col items-center justify-center cursor-move group"
               style={{
                 top: `${editingTemplate.avatar_position_y || 450}px`,
@@ -132,7 +132,7 @@ export default function TemplatePreview() {
             </div>
           )}
 
-          <div 
+          <div
             className="absolute z-20 flex flex-col items-center justify-center cursor-move group"
             style={{
               top: `${editingTemplate.text_position_y || 650}px`,
@@ -155,11 +155,11 @@ export default function TemplatePreview() {
             </h2>
             <div className="pointer-events-none">
               <h3
-                className="text-xl mt-0 font-normal small-text text-[#e5e5e5] font-avo whitespace-pre-wrap text-center"
+                className="text-xl mt-2 font-normal small-text text-[#e5e5e5] font-avo whitespace-pre-wrap text-center"
                 style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
               >
                 TỔNG GIÁM ĐỐC
-CÔNG TY TNHH ĐẦU TƯ DỰ ÁN PHƯỢNG HOÀNG
+                CÔNG TY TNHH ĐẦU TƯ DỰ ÁN PHƯỢNG HOÀNG
               </h3>
             </div>
           </div>

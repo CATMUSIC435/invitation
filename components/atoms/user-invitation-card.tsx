@@ -72,7 +72,7 @@ export default function UserInvitationCard({ template }: { template: InvitationT
           <div className="mx-auto relative group flex flex-col items-center pt-2 max-w-full">
             <div className="absolute -inset-4 bg-gradient-to-b from-[#c19d68]/20 to-transparent rounded-[2rem] blur-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-700"></div>
 
-            <div 
+            <div
               className="overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/20 bg-[#0e1e2e] relative z-10 transition-transform duration-500 group-hover:-translate-y-2 max-w-[90vw]"
               style={{ width: `${PREVIEW_WIDTH}px`, height: `${PREVIEW_HEIGHT}px` }}
             >
@@ -87,7 +87,7 @@ export default function UserInvitationCard({ template }: { template: InvitationT
                 }}
               >
                 {bgImage ? (
-                  <img 
+                  <img
                     src={bgImage}
                     alt="Background"
                     className="absolute inset-0 z-10 pointer-events-none w-full h-full object-cover"
@@ -99,7 +99,7 @@ export default function UserInvitationCard({ template }: { template: InvitationT
                 )}
 
                 {isLoaded && template.has_avatar && (
-                  <div 
+                  <div
                     className="absolute z-0 flex items-center justify-center transition-opacity duration-300"
                     style={{
                       top: template.avatar_position_y ? `${template.avatar_position_y}px` : '450px',
@@ -133,7 +133,7 @@ export default function UserInvitationCard({ template }: { template: InvitationT
                 )}
 
                 {isLoaded && (
-                  <div 
+                  <div
                     className="absolute z-20 flex flex-col items-center justify-center transition-opacity duration-300"
                     style={{
                       top: template.text_position_y ? `${template.text_position_y}px` : '650px',
@@ -150,7 +150,7 @@ export default function UserInvitationCard({ template }: { template: InvitationT
                     </h2>
                     <div className="">
                       <h3
-                        className="text-xl mt-0 font-normal small-text text-[#e5e5e5] font-avo whitespace-pre-wrap text-center"
+                        className="text-xl mt-2 font-normal small-text text-[#e5e5e5] font-avo whitespace-pre-wrap text-center"
                         style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                       >
                         {dataForm?.title || 'CHỨC VỤ'}
