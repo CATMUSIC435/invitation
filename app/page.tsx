@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import ShareFooter from '@/components/atoms/share-footer';
+import TopBranding from '@/components/atoms/top-branding';
 import { db } from '@/lib/db/drizzle';
 import { avatarTemplates } from '@/lib/db/schema';
 import { desc } from 'drizzle-orm';
