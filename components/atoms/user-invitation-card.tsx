@@ -1,119 +1,18 @@
 'use client';
 
-import React, { useRef, useState } from 'react';
-import { TransformWrapper, TransformComponent, useControls, ReactZoomPanPinchRef } from 'react-zoom-pan-pinch';
+import React from 'react';
+import { TransformWrapper, TransformComponent, useControls } from 'react-zoom-pan-pinch';
 import { UploadCloud, ZoomIn, ZoomOut, RefreshCw, Download, Loader2 } from 'lucide-react';
-import html2canvas from 'html2canvas';
 import InvitationForm from './invitation-form';
-import { InvitationFormData } from '@/lib/store/useInvitationStore';
 import { InvitationTemplate } from '@/lib/db/schema';
-import { saveInvitation } from '@/app/actions';
 import LoadingModal from './loading-modal';
-
-function toUppercaseValues(obj: InvitationFormData): InvitationFormData {
-  return {
-    name: obj.name.toUpperCase(),
-    title: obj.title?.toUpperCase(),
-  };
-}
+import { useInvitationCard } from './useInvitationCard';
 
 export default function UserInvitationCard({ template }: { template: InvitationTemplate }) {
-  const [dataForm, setDataForm] = useState<InvitationFormData>({ name: '', title: '' });
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const [zoomValue, setZoomValue] = useState<number>(1);
-  const [isAllow, setIsAllow] = useState<boolean>(false);
-  const [isPending, setIsPending] = useState(false);
-
-  const cardRef = useRef<HTMLDivElement>(null);
-  const transformRef = useRef<ReactZoomPanPinchRef>(null);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const isProcessingRef = useRef<boolean>(false);
-
-  const imageStyle = {
-    transform: `scale(${zoomValue})`,
-    transformOrigin: 'center center',
-  };
-
-  const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (!file.type.startsWith('image/')) {
-        alert('Vui lòng chọn file hình ảnh');
-        return;
-      }
-      
-      const MAX_SIZE = 5 * 1024 * 1024; // 5MB
-      if (file.size > MAX_SIZE) {
-        alert('Vui lòng chọn file hình ảnh nhỏ hơn 5MB');
-        return;
-      }
-
-      const url = URL.createObjectURL(file);
-      setAvatarUrl(url);
-    }
-  };
-
-  const handleClick = () => {
-    inputRef.current?.click();
-  };
-
-  const handleDownload = async () => {
-    if (!cardRef.current || isProcessingRef.current || !isAllow) return;
-    
-    // Nếu có avatar thì kiểm tra, không có thì bỏ qua
-    if (template.has_avatar && !avatarUrl) {
-      alert("Vui lòng tải lên ảnh đại diện của bạn!");
-      return;
-    }
-
-    try {
-      isProcessingRef.current = true;
-      setIsPending(true);
-
-      const canvas = await html2canvas(cardRef.current, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: false,
-        logging: false,
-        backgroundColor: '#0a1520',
-        onclone: (doc, el) => {
-          if (el) {
-            el.style.transform = 'none';
-          }
-        }
-      });
-
-      const base64 = canvas.toDataURL('image/jpeg', 0.95);
-
-      const link = document.createElement('a');
-      link.download = `invitation-${dataForm.name.toLowerCase().replace(/\s+/g, '-')}.jpg`;
-      link.href = base64;
-      link.click();
-
-      // Chỉ đẩy data (lưu DB & lấy link share) nếu template cho phép
-      if (template.save_user_info !== false) {
-        const result = await saveInvitation(dataForm.name, dataForm.title, base64);
-        if (result.success && result.slug) {
-          window.location.href = `/share/${result.slug}`;
-        }
-      } else {
-        alert('Tải ảnh thư mời thành công!');
-      }
-    } catch (error) {
-      console.error('Lỗi khi tải thư mời xuống:', error);
-      alert('Có lỗi xảy ra khi tạo ảnh. Vui lòng thử lại.');
-    } finally {
-      isProcessingRef.current = false;
-      setIsPending(false);
-      setIsAllow(false);
-    }
-  };
-
-  const changeValueEvent = (value: InvitationFormData) => {
-    const upperValue = toUppercaseValues(value);
-    setDataForm(upperValue);
-    setIsAllow(true);
-  };
+  const { state, refs, actions } = useInvitationCard(template);
+  const { dataForm, avatarUrl, isAllow, isPending, bgImage, imageStyle } = state;
+  const { cardRef, transformRef, inputRef } = refs;
+  const { handleUpload, handleClick, handleDownload, changeValueEvent, setZoomValue } = actions;
 
   const renderContent = () => (
     <div className="mx-auto w-full max-w-6xl py-4">
@@ -178,18 +77,16 @@ export default function UserInvitationCard({ template }: { template: InvitationT
                   transformOrigin: 'top left',
                 }}
               >
-                {template.background_url ? (
+                {bgImage ? (
                   <img 
-                    src={template.background_url}
-                    crossOrigin="anonymous"
+                    src={bgImage}
                     alt="Background"
                     className="absolute inset-0 z-10 pointer-events-none w-full h-full object-cover"
                   />
                 ) : (
-                  <div 
-                    className="absolute inset-0 z-10 pointer-events-none bg-center bg-cover bg-no-repeat"
-                    style={{ backgroundImage: 'url(/frame.png)' }}
-                  />
+                  <div className="absolute inset-0 z-10 pointer-events-none flex items-center justify-center bg-[#162a40]">
+                    <Loader2 className="w-10 h-10 animate-spin text-gray-500" />
+                  </div>
                 )}
 
                 {template.has_avatar && (
@@ -239,14 +136,14 @@ export default function UserInvitationCard({ template }: { template: InvitationT
                     className="text-4xl font-bold text-white mb-1 uppercase font-avo-bold leading-tight"
                     style={{ textShadow: '0 4px 10px rgba(0,0,0,0.3)', padding: 0, letterSpacing: '3px', fontWeight: 400, lineHeight: 1 }}
                   >
-                    {dataForm.name || 'NGUYỄN VĂN A'}
+                    {dataForm?.name || 'NGUYỄN VĂN A'}
                   </h2>
                   <div className="">
                     <h3
                       className="text-xl mt-0 font-normal small-text uppercase text-[#e5e5e5] font-avo"
                       style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
                     >
-                      {dataForm.title || 'CHỨC VỤ'}
+                      {dataForm?.title || 'CHỨC VỤ'}
                     </h3>
                   </div>
                 </div>
@@ -259,11 +156,11 @@ export default function UserInvitationCard({ template }: { template: InvitationT
                 <button
                   onClick={handleDownload}
                   className="group relative overflow-hidden bg-gradient-to-r from-[#c19d68] to-[#ac8d45] text-white font-bold py-4 rounded-xl shadow-[0_10px_30px_rgba(193,157,104,0.3)] hover:shadow-[0_15px_40px_rgba(193,157,104,0.5)] transition-all duration-300 uppercase tracking-widest w-full disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-1 active:translate-y-0"
-                  disabled={isPending}
+                  disabled={isPending || !bgImage}
                 >
                   <div className="absolute inset-0 w-full h-full bg-white/20 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] skew-x-12"></div>
                   <span className="relative flex items-center justify-center gap-2">
-                    {isPending ? 'Đang xử lý...' : 'Tải Thư Mời'}
+                    {isPending ? 'Đang xử lý...' : (!bgImage ? 'Đang tải ảnh gốc...' : 'Tải Thư Mời')}
                   </span>
                 </button>
               ) : (

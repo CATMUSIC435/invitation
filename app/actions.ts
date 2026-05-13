@@ -176,3 +176,16 @@ export async function uploadTemplateBackground(base64Image: string, name: string
     return { success: false, error: 'Lỗi hệ thống khi upload ảnh' };
   }
 }
+
+export async function getProxyImage(url: string) {
+  try {
+    const res = await fetch(url);
+    const buffer = await res.arrayBuffer();
+    const base64 = Buffer.from(buffer).toString('base64');
+    const type = res.headers.get('content-type') || 'image/png';
+    return `data:${type};base64,${base64}`;
+  } catch (error) {
+    console.error('Failed to proxy image', error);
+    return url;
+  }
+}
