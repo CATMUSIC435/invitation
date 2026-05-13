@@ -6,6 +6,7 @@ import { Metadata } from 'next';
 import { db } from '@/lib/db/drizzle';
 import { invitationTemplates } from '@/lib/db/schema';
 import { desc } from 'drizzle-orm';
+import { connection } from 'next/server';
 
 export const metadata: Metadata = {
   title: 'Tạo Thư Mời | DXMD Vietnam',
@@ -37,6 +38,7 @@ async function getTemplates() {
 }
 
 export default async function InvitationsListPage() {
+  await connection();
   const templates = await getTemplates();
 
   return (

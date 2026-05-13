@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import ShareFooter from '@/components/atoms/share-footer';
-import TopBranding from '@/components/atoms/top-branding';
-import { Metadata } from 'next';
 import { db } from '@/lib/db/drizzle';
 import { avatarTemplates } from '@/lib/db/schema';
 import { desc } from 'drizzle-orm';
+import { Metadata } from 'next';
+import { connection } from 'next/server';
 
 export const metadata: Metadata = {
   title: 'Tạo Avatar Chiến Dịch | DXMD Vietnam',
@@ -37,6 +37,7 @@ async function getTemplates() {
 }
 
 export default async function AvatarMergeListPage() {
+  await connection();
   const templates = await getTemplates();
 
   return (

@@ -4,6 +4,7 @@ import AvatarMergeEditor from '../editor';
 import { db } from '@/lib/db/drizzle';
 import { avatarTemplates } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
+import { connection } from 'next/server';
 
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const params = await props.params;
@@ -37,14 +38,6 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   };
 }
 
-export async function generateStaticParams() {
-  try {
-    const templates = await db.select({ slug: avatarTemplates.slug }).from(avatarTemplates);
-    return templates.map((t) => ({ slug: t.slug }));
-  } catch (error) {
-    return [];
-  }
-}
 
 async function getTemplate(slug: string) {
   const [template] = await db.select().from(avatarTemplates).where(eq(avatarTemplates.slug, slug));
@@ -53,6 +46,8 @@ async function getTemplate(slug: string) {
 
 export default async function AvatarMergeSlugPage(props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
+  const { connection } = await import('next/server');
+  await connection();
   
   try {
     const template = await getTemplate(params.slug);

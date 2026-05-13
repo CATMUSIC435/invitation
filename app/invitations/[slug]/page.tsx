@@ -13,15 +13,6 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateStaticParams() {
-  try {
-    const templates = await db.select({ slug: invitationTemplates.slug }).from(invitationTemplates);
-    return templates.map((t) => ({ slug: t.slug }));
-  } catch (error) {
-    return [];
-  }
-}
-
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const params = await props.params;
   try {
@@ -53,6 +44,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 
 export default async function Page({ params }: Props) {
   const resolvedParams = await params;
+  const { connection } = await import('next/server');
+  await connection();
   const template = await getInvitationTemplateBySlug(resolvedParams.slug);
 
   if (!template) {
