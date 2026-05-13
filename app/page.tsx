@@ -56,7 +56,7 @@ export default async function AvatarMergeListPage() {
           <h1 className="hidden text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4 tracking-tight uppercase font-avo-bold">
             Tạo Avatar Chiến Dịch
           </h1>
-          <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
+          <p className="text-gray-400 text-sm md:text-base max-w-4xl mx-auto">
             Cùng DXMD Vietnam lan tỏa thông điệp tích cực bằng cách tạo và chia sẻ avatar chiến dịch của bạn.
           </p>
         </div>
