@@ -58,7 +58,7 @@ export default async function Page({ params }: Props) {
 
   return (
     <main className="p-4 min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
-      <TopBranding />
+      <TopBranding url="/invitations" />
 
       <div className="flex-1 w-full flex flex-col items-center justify-center relative z-10 pb-10">
         <div className="mt-4 mb-4 text-center max-w-2xl mx-auto">
