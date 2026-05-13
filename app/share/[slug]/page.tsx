@@ -4,11 +4,11 @@ import { eq } from 'drizzle-orm';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Link from 'next/link';
-
 type Params = Promise<{ slug: string }>;
 
+export const dynamic = 'force-dynamic';
+
 async function getInvitationBySlug(slug: string) {
-  'use cache';
   const [data] = await db.select().from(invitations).where(eq(invitations.slug, slug));
   return data;
 }

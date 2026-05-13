@@ -6,6 +6,8 @@ import { avatarTemplates } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { connection } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata(props: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const params = await props.params;
   const { connection } = await import('next/server');

@@ -8,6 +8,8 @@ import { desc } from 'drizzle-orm';
 import { Metadata } from 'next';
 import { connection } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Tạo Avatar Chiến Dịch | DXMD Vietnam',
   description: 'Danh sách các mẫu avatar chiến dịch nổi bật từ DXMD Vietnam. Hãy chọn mẫu ưng ý và tạo avatar ủng hộ chiến dịch ngay hôm nay!',

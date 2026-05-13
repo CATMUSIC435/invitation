@@ -8,6 +8,8 @@ import { invitationTemplates } from '@/lib/db/schema';
 import { desc } from 'drizzle-orm';
 import { connection } from 'next/server';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Tạo Thư Mời | DXMD Vietnam',
   description: 'Danh sách các mẫu thư mời nổi bật từ DXMD Vietnam. Hãy chọn mẫu ưng ý và tạo thư mời của bạn ngay hôm nay!',

@@ -3,8 +3,9 @@ import { invitations } from '@/lib/db/schema';
 import { desc } from 'drizzle-orm';
 import AdminTable from './AdminTable';
 
+export const dynamic = 'force-dynamic';
+
 async function getInvitations() {
-  'use cache';
   return await db.select().from(invitations).orderBy(desc(invitations.created_at));
 }
 
