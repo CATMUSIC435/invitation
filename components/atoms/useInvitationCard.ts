@@ -19,6 +19,8 @@ export function useInvitationCard(template: InvitationTemplate) {
   const [isAllow, setIsAllow] = useState<boolean>(false);
   const [isPending, setIsPending] = useState(false);
   const [bgImage, setBgImage] = useState<string | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [bgDimensions, setBgDimensions] = useState<{ width: number; height: number }>({ width: 900, height: 1500 });
 
   const cardRef = useRef<HTMLDivElement>(null);
   const transformRef = useRef<ReactZoomPanPinchRef>(null);
@@ -26,13 +28,23 @@ export function useInvitationCard(template: InvitationTemplate) {
   const isProcessingRef = useRef<boolean>(false);
 
   useEffect(() => {
-    // Tải ảnh proxy dạng base64 để html2canvas không bị dính lỗi CORS
     async function loadProxy() {
       if (template.background_url) {
         const base64Url = await getProxyImage(template.background_url);
-        setBgImage(base64Url);
+        
+        const img = new window.Image();
+        img.onload = () => {
+          if (img.naturalWidth && img.naturalHeight) {
+            setBgDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+          }
+          // Set bgImage only after dimensions are known to prevent layout shift
+          setBgImage(base64Url);
+          setIsLoaded(true);
+        };
+        img.src = base64Url;
       } else {
         setBgImage('/frame.png');
+        setIsLoaded(true);
       }
     }
     loadProxy();
@@ -135,6 +147,8 @@ export function useInvitationCard(template: InvitationTemplate) {
       isAllow,
       isPending,
       bgImage,
+      isLoaded,
+      bgDimensions,
       imageStyle
     },
     refs: {

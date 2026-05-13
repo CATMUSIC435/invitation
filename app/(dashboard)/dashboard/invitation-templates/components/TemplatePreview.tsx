@@ -1,30 +1,48 @@
 'use client';
 
 import { Move } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useTemplateStore } from '../store';
 
 export default function TemplatePreview() {
   const { editingTemplate, bgPreview, draggingElement, setDraggingElement, handleChange } = useTemplateStore();
   const previewRef = useRef<HTMLDivElement>(null);
+  const [bgDimensions, setBgDimensions] = useState({ width: 900, height: 1500 });
 
-  const scaleFactor = 3.75; // Actual image is 900x1500, preview is 240x400
+  useEffect(() => {
+    if (bgPreview) {
+      const img = new window.Image();
+      img.onload = () => {
+        if (img.naturalWidth && img.naturalHeight) {
+          setBgDimensions({ width: img.naturalWidth, height: img.naturalHeight });
+        }
+      };
+      img.src = bgPreview;
+    }
+  }, [bgPreview]);
+
+  const isHorizontal = bgDimensions.width > bgDimensions.height;
+  const PREVIEW_WIDTH = isHorizontal ? 360 : 240;
+  const PREVIEW_HEIGHT = (PREVIEW_WIDTH * bgDimensions.height) / bgDimensions.width;
+  const scaleFactor = PREVIEW_WIDTH / bgDimensions.width;
+  
+  // Logic to calculate position based on scale
+  const transformToCanvas = (val: number) => val / scaleFactor;
+  const transformFromCanvas = (val: number) => Math.round(val * scaleFactor);
 
   const handleMouseDown = (e: React.MouseEvent, type: 'text' | 'avatar') => {
     setDraggingElement(type);
     
-    // We can't use React state for dragStart and initialPos smoothly without re-renders causing lag,
-    // so we can use a ref or data attributes. Let's use data attributes on the preview container.
     if (previewRef.current) {
       previewRef.current.dataset.dragStartX = e.clientX.toString();
       previewRef.current.dataset.dragStartY = e.clientY.toString();
       
       if (type === 'text') {
-        previewRef.current.dataset.initialX = ((editingTemplate?.text_position_x || 450) / scaleFactor).toString();
-        previewRef.current.dataset.initialY = ((editingTemplate?.text_position_y || 650) / scaleFactor).toString();
+        previewRef.current.dataset.initialX = transformToCanvas(editingTemplate?.text_position_x || 450).toString();
+        previewRef.current.dataset.initialY = transformToCanvas(editingTemplate?.text_position_y || 650).toString();
       } else {
-        previewRef.current.dataset.initialX = ((editingTemplate?.avatar_position_x || 450) / scaleFactor).toString();
-        previewRef.current.dataset.initialY = ((editingTemplate?.avatar_position_y || 450) / scaleFactor).toString();
+        previewRef.current.dataset.initialX = transformToCanvas(editingTemplate?.avatar_position_x || 450).toString();
+        previewRef.current.dataset.initialY = transformToCanvas(editingTemplate?.avatar_position_y || 450).toString();
       }
     }
   };
@@ -44,11 +62,11 @@ export default function TemplatePreview() {
     let newY = initialY + dy;
 
     if (draggingElement === 'text') {
-      handleChange('text_position_x', Math.round(newX * scaleFactor));
-      handleChange('text_position_y', Math.round(newY * scaleFactor));
+      handleChange('text_position_x', transformFromCanvas(newX));
+      handleChange('text_position_y', transformFromCanvas(newY));
     } else if (draggingElement === 'avatar') {
-      handleChange('avatar_position_x', Math.round(newX * scaleFactor));
-      handleChange('avatar_position_y', Math.round(newY * scaleFactor));
+      handleChange('avatar_position_x', transformFromCanvas(newX));
+      handleChange('avatar_position_y', transformFromCanvas(newY));
     }
   };
 
@@ -66,23 +84,32 @@ export default function TemplatePreview() {
         </p>
       </div>
       
-      <div className="relative border border-dashed border-[#c19d68]/40 rounded-xl bg-white/5 shadow-inner overflow-hidden w-[240px] h-[400px]">
+      <div 
+        className="relative border border-dashed border-[#c19d68]/40 rounded-xl bg-white/5 shadow-inner overflow-hidden"
+        style={{ width: `${PREVIEW_WIDTH}px`, height: `${PREVIEW_HEIGHT}px` }}
+      >
         <div 
           ref={previewRef}
           className="absolute top-0 left-0 origin-top-left overflow-hidden"
           style={{
-            width: '900px',
-            height: '1500px',
-            transform: 'scale(0.26666667)', // 240 / 900
+            width: `${bgDimensions.width}px`,
+            height: `${bgDimensions.height}px`,
+            transform: `scale(${scaleFactor})`,
           }}
           onMouseMove={handleMouseMove}
         >
-          <div 
-            className="absolute inset-0 z-10 pointer-events-none bg-center bg-cover bg-no-repeat"
-            style={{
-              backgroundImage: bgPreview ? `url(${bgPreview})` : 'url(/frame.png)',
-            }}
-          />
+          {bgPreview ? (
+            <img 
+              src={bgPreview}
+              alt="Preview"
+              className="absolute inset-0 z-10 pointer-events-none w-full h-full object-cover"
+            />
+          ) : (
+            <div 
+              className="absolute inset-0 z-10 pointer-events-none bg-center bg-cover bg-no-repeat"
+              style={{ backgroundImage: 'url(/frame.png)' }}
+            />
+          )}
 
           {editingTemplate.has_avatar && (
             <div 

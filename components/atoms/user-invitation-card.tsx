@@ -10,9 +10,15 @@ import { useInvitationCard } from './useInvitationCard';
 
 export default function UserInvitationCard({ template }: { template: InvitationTemplate }) {
   const { state, refs, actions } = useInvitationCard(template);
-  const { dataForm, avatarUrl, isAllow, isPending, bgImage, imageStyle } = state;
+  const { dataForm, avatarUrl, isAllow, isPending, bgImage, isLoaded, bgDimensions, imageStyle } = state;
   const { cardRef, transformRef, inputRef } = refs;
   const { handleUpload, handleClick, handleDownload, changeValueEvent, setZoomValue } = actions;
+
+  // Tính toán kích thước preview linh hoạt
+  const isHorizontal = bgDimensions.width > bgDimensions.height;
+  const PREVIEW_WIDTH = isHorizontal ? 500 : 300;
+  const PREVIEW_HEIGHT = (PREVIEW_WIDTH * bgDimensions.height) / bgDimensions.width;
+  const scale = PREVIEW_WIDTH / bgDimensions.width;
 
   const renderContent = () => (
     <div className="mx-auto w-full max-w-6xl py-4">
@@ -63,17 +69,20 @@ export default function UserInvitationCard({ template }: { template: InvitationT
           </div>
 
           {/* Preview Section */}
-          <div className="mx-auto relative group flex flex-col items-center pt-2">
+          <div className="mx-auto relative group flex flex-col items-center pt-2 max-w-full">
             <div className="absolute -inset-4 bg-gradient-to-b from-[#c19d68]/20 to-transparent rounded-[2rem] blur-2xl opacity-40 group-hover:opacity-70 transition-opacity duration-700"></div>
 
-            <div className="h-[500px] w-[300px] overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/20 bg-[#0e1e2e] relative z-10 transition-transform duration-500 group-hover:-translate-y-2">
+            <div 
+              className="overflow-hidden rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] ring-1 ring-white/20 bg-[#0e1e2e] relative z-10 transition-transform duration-500 group-hover:-translate-y-2 max-w-[90vw]"
+              style={{ width: `${PREVIEW_WIDTH}px`, height: `${PREVIEW_HEIGHT}px` }}
+            >
               <div
                 ref={cardRef}
                 className="relative bg-[#0e1e2e] text-center flex flex-col items-center overflow-hidden"
                 style={{
-                  width: '900px',
-                  height: '1500px',
-                  transform: 'scale(0.3333)',
+                  width: `${bgDimensions.width}px`,
+                  height: `${bgDimensions.height}px`,
+                  transform: `scale(${scale})`,
                   transformOrigin: 'top left',
                 }}
               >
@@ -89,9 +98,9 @@ export default function UserInvitationCard({ template }: { template: InvitationT
                   </div>
                 )}
 
-                {template.has_avatar && (
+                {isLoaded && template.has_avatar && (
                   <div 
-                    className="absolute z-0 flex items-center justify-center"
+                    className="absolute z-0 flex items-center justify-center transition-opacity duration-300"
                     style={{
                       top: template.avatar_position_y ? `${template.avatar_position_y}px` : '450px',
                       left: template.avatar_position_x ? `${template.avatar_position_x}px` : '450px',
@@ -123,30 +132,32 @@ export default function UserInvitationCard({ template }: { template: InvitationT
                   </div>
                 )}
 
-                <div 
-                  className="absolute z-20 flex flex-col items-center justify-center"
-                  style={{
-                    top: template.text_position_y ? `${template.text_position_y}px` : '650px',
-                    left: template.text_position_x ? `${template.text_position_x}px` : '450px',
-                    transform: 'translate(-50%, 0)',
-                    width: 'max-content'
-                  }}
-                >
-                  <h2
-                    className="text-4xl font-bold text-white mb-1 uppercase font-avo-bold leading-tight"
-                    style={{ textShadow: '0 4px 10px rgba(0,0,0,0.3)', padding: 0, letterSpacing: '3px', fontWeight: 400, lineHeight: 1 }}
+                {isLoaded && (
+                  <div 
+                    className="absolute z-20 flex flex-col items-center justify-center transition-opacity duration-300"
+                    style={{
+                      top: template.text_position_y ? `${template.text_position_y}px` : '650px',
+                      left: template.text_position_x ? `${template.text_position_x}px` : '450px',
+                      transform: 'translate(-50%, 0)',
+                      width: 'max-content'
+                    }}
                   >
-                    {dataForm?.name || 'NGUYỄN VĂN A'}
-                  </h2>
-                  <div className="">
-                    <h3
-                      className="text-xl mt-0 font-normal small-text uppercase text-[#e5e5e5] font-avo"
-                      style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                    <h2
+                      className="text-4xl font-bold text-white mb-1 uppercase font-avo-bold leading-tight"
+                      style={{ textShadow: '0 4px 10px rgba(0,0,0,0.3)', padding: 0, letterSpacing: '3px', fontWeight: 400, lineHeight: 1 }}
                     >
-                      {dataForm?.title || 'CHỨC VỤ'}
-                    </h3>
+                      {dataForm?.name || 'NGUYỄN VĂN A'}
+                    </h2>
+                    <div className="">
+                      <h3
+                        className="text-xl mt-0 font-normal small-text uppercase text-[#e5e5e5] font-avo"
+                        style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
+                      >
+                        {dataForm?.title || 'CHỨC VỤ'}
+                      </h3>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
 
