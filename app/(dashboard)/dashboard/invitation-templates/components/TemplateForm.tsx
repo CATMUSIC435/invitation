@@ -2,59 +2,20 @@
 
 import { UploadCloud } from 'lucide-react';
 import { useTemplateStore } from '../store';
-import { uploadTemplateBackground, saveInvitationTemplate } from '@/app/actions';
 import { useRouter } from 'next/navigation';
 
 export default function TemplateForm() {
   const router = useRouter();
-  const { editingTemplate, loading, setLoading, handleChange, closeModal, setBgPreview } = useTemplateStore();
+  const { editingTemplate, loading, handleChange, closeModal, setBgPreview, saveTemplate } = useTemplateStore();
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editingTemplate || !editingTemplate.slug || !editingTemplate.name) {
-      alert('Vui lòng nhập Tên và Slug');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      let finalBgUrl = editingTemplate.background_url || '';
-
-      if (editingTemplate.bg_file) {
-        const uploadRes = await uploadTemplateBackground(editingTemplate.bg_file, editingTemplate.slug);
-        if (uploadRes.success && uploadRes.url) {
-          finalBgUrl = uploadRes.url;
-        } else {
-          alert('Lỗi khi upload ảnh nền lên WordPress. Sẽ dùng URL cũ hoặc để trống.');
-        }
-      }
-
-      const res = await saveInvitationTemplate({
-        id: editingTemplate.id,
-        slug: editingTemplate.slug,
-        name: editingTemplate.name,
-        title: editingTemplate.title || '',
-        description: editingTemplate.description || '',
-        background_url: finalBgUrl,
-        text_position_x: Number(editingTemplate.text_position_x || 0),
-        text_position_y: Number(editingTemplate.text_position_y || 0),
-        avatar_position_x: Number(editingTemplate.avatar_position_x || 450),
-        avatar_position_y: Number(editingTemplate.avatar_position_y || 450),
-        has_avatar: !!editingTemplate.has_avatar,
-        save_user_info: editingTemplate.save_user_info !== false,
-      });
-
-      if (res.success) {
-        alert('Lưu mẫu thư mời thành công!');
-        closeModal();
-        router.refresh();
-      } else {
-        alert(res.error || 'Có lỗi xảy ra khi lưu');
-      }
-    } catch (error) {
-      alert('Lỗi hệ thống');
-    } finally {
-      setLoading(false);
+    const res = await saveTemplate();
+    if (res.success) {
+      alert('Lưu mẫu thư mời thành công!');
+      router.refresh();
+    } else {
+      alert(res.error || 'Có lỗi xảy ra khi lưu');
     }
   };
 

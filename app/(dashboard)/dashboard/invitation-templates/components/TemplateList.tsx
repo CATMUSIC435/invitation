@@ -2,17 +2,16 @@
 
 import Link from 'next/link';
 import { Edit, ExternalLink, Trash2 } from 'lucide-react';
-import { deleteInvitationTemplate } from '@/app/actions';
 import { useRouter } from 'next/navigation';
 import { useTemplateStore } from '../store';
 
 export default function TemplateList() {
   const router = useRouter();
-  const { templates, openModal } = useTemplateStore();
+  const { templates, openModal, deleteTemplate } = useTemplateStore();
 
   const handleDelete = async (id: number) => {
     if (confirm('Bạn có chắc chắn muốn xóa mẫu này không?')) {
-      const res = await deleteInvitationTemplate(id);
+      const res = await deleteTemplate(id);
       if (res.success) {
         alert('Xóa thành công');
         router.refresh();
