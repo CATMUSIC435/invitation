@@ -7,7 +7,7 @@ import TopBranding from '@/components/atoms/top-branding';
 import SuccessModal from '@/components/atoms/success-modal';
 import { getProxyImage } from '@/app/actions';
 
-export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate?: { title?: string; content?: string; image?: string } | null }) {
+export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate?: { title?: string; content?: string; image?: string; slug?: string } | null }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [frameSrc, setFrameSrc] = useState<string | null>(null);
   const [avatarSrc, setAvatarSrc] = useState<string | null>(null);
@@ -59,7 +59,7 @@ export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate
     if (initialTemplate && initialTemplate.image) {
       const loadInitialImage = async () => {
         try {
-          const proxyUrl = await getProxyImage(initialTemplate.image!);
+          const proxyUrl = initialTemplate.image!;
           const img = new window.Image();
           img.crossOrigin = "anonymous";
           img.onload = () => {
@@ -217,6 +217,7 @@ export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate
         showPopup={showPopup}
         setShowPopup={setShowPopup}
         generatedImage={generatedImage}
+        fileName={initialTemplate?.slug ? `${initialTemplate.slug}-${Math.random().toString(36).substring(2, 8)}.jpg` : "avatar.jpg"}
       />
 
       <div className="max-w-6xl mx-auto space-y-8 w-full">

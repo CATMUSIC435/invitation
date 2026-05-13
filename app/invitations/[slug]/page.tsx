@@ -1,6 +1,7 @@
 import { getInvitationTemplateBySlug } from '@/app/actions';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
+import { getProxyImage } from '@/app/actions';
 import UserInvitationCard from '@/components/atoms/user-invitation-card';
 import ShinyText from '@/components/atoms/shiny-text';
 import TopBranding from '@/components/atoms/top-branding';
@@ -56,6 +57,11 @@ export default async function Page({ params }: Props) {
     notFound();
   }
 
+  const preloadedTemplate = {
+    ...template,
+    background_url: template.background_url ? await getProxyImage(template.background_url).catch(() => template.background_url || null) : template.background_url
+  };
+
   return (
     <main className="p-4 min-h-screen flex flex-col items-center justify-center relative overflow-hidden">
       <TopBranding url="/invitations" />
@@ -71,7 +77,7 @@ export default async function Page({ params }: Props) {
             {template.description || 'Tạo thiệp mời cá nhân hóa của bạn bằng cách nhập thông tin bên dưới.'}
           </p>
         </div>
-        <UserInvitationCard template={template} />
+        <UserInvitationCard template={preloadedTemplate} />
       </div>
 
       <ShareFooter />

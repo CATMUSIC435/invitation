@@ -6,9 +6,10 @@ interface SuccessModalProps {
   showPopup: boolean;
   setShowPopup: (show: boolean) => void;
   generatedImage: string | null;
+  fileName?: string;
 }
 
-export default function SuccessModal({ showPopup, setShowPopup, generatedImage }: SuccessModalProps) {
+export default function SuccessModal({ showPopup, setShowPopup, generatedImage, fileName }: SuccessModalProps) {
   if (!showPopup || !generatedImage) return null;
 
   return (
@@ -39,7 +40,7 @@ export default function SuccessModal({ showPopup, setShowPopup, generatedImage }
           </button>
           <a
             href={generatedImage}
-            download="merged-avatar.jpg"
+            download={fileName || "merged-avatar.jpg"}
             className="flex items-center justify-center gap-2 px-8 py-3 bg-[#c19d68] hover:bg-[#d8b47d] text-black font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(193,157,104,0.3)] active:scale-95 uppercase tracking-wider text-xs"
             onClick={() => setShowPopup(false)}
           >

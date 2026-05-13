@@ -38,9 +38,10 @@ export function useInvitationCard(template: InvitationTemplate) {
   useEffect(() => {
     async function loadProxy() {
       if (template.background_url) {
-        const base64Url = await getProxyImage(template.background_url);
+        const base64Url = template.background_url;
         
         const img = new window.Image();
+        img.crossOrigin = "anonymous";
         img.onload = () => {
           if (img.naturalWidth && img.naturalHeight) {
             setBgDimensions({ width: img.naturalWidth, height: img.naturalHeight });

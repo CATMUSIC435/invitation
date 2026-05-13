@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { Metadata } from 'next';
 import AvatarMergeEditor from '../editor';
 import { db } from '@/lib/db/drizzle';
+import { getProxyImage } from '@/app/actions';
 import { avatarTemplates } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { connection } from 'next/server';
@@ -62,9 +63,10 @@ export default async function AvatarMergeSlugPage(props: { params: Promise<{ slu
 
     // Map DB fields to what editor expects
     const editorTemplate = {
-      ...template,
+      title: template.title || undefined,
       content: template.content || undefined,
-      image: template.image_url || undefined
+      image: template.image_url ? await getProxyImage(template.image_url).catch(() => template.image_url || undefined) : undefined,
+      slug: template.slug || undefined
     };
 
     return <AvatarMergeEditor initialTemplate={editorTemplate} />;
