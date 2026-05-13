@@ -8,13 +8,13 @@ import { avatarTemplates } from '@/lib/db/schema';
 import { desc } from 'drizzle-orm';
 
 export const metadata: Metadata = {
-  title: 'Tạo Avatar Chiến Dịch | DXMD Việt Nam',
-  description: 'Danh sách các mẫu avatar chiến dịch nổi bật từ DXMD Việt Nam. Hãy chọn mẫu ưng ý và tạo avatar ủng hộ chiến dịch ngay hôm nay!',
+  title: 'Tạo Avatar Chiến Dịch | FENICA',
+  description: 'Danh sách các mẫu avatar chiến dịch nổi bật từ FENICA. Hãy chọn mẫu ưng ý và tạo avatar ủng hộ chiến dịch ngay hôm nay!',
   openGraph: {
-    title: 'Tạo Avatar Chiến Dịch | DXMD Việt Nam',
-    description: 'Cùng tham gia tạo avatar ủng hộ các chiến dịch cộng đồng cùng Công Ty Cổ Phần DXMD Việt Nam.',
+    title: 'Tạo Avatar Chiến Dịch | FENICA',
+    description: 'Cùng tham gia tạo avatar ủng hộ các chiến dịch cộng đồng cùng FENICA.',
     url: '/',
-    siteName: 'DXMD Việt Nam',
+    siteName: 'FENICA',
     locale: 'vi_VN',
     type: 'website',
   },
@@ -47,7 +47,7 @@ export default async function AvatarMergeListPage() {
             Tạo Avatar Chiến Dịch
           </h1>
           <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
-            Cùng DXMD Việt Nam lan tỏa thông điệp tích cực bằng cách tạo và chia sẻ avatar chiến dịch của bạn.
+            Cùng FENICA lan tỏa thông điệp tích cực bằng cách tạo và chia sẻ avatar chiến dịch của bạn.
           </p>
         </div>
 

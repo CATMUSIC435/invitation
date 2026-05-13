@@ -8,13 +8,13 @@ import { invitationTemplates } from '@/lib/db/schema';
 import { desc } from 'drizzle-orm';
 
 export const metadata: Metadata = {
-  title: 'Tạo Thư Mời | DXMD Việt Nam',
-  description: 'Danh sách các mẫu thư mời nổi bật từ DXMD Việt Nam. Hãy chọn mẫu ưng ý và tạo thư mời của bạn ngay hôm nay!',
+  title: 'Tạo Thư Mời | FENICA',
+  description: 'Danh sách các mẫu thư mời nổi bật từ FENICA. Hãy chọn mẫu ưng ý và tạo thư mời của bạn ngay hôm nay!',
   openGraph: {
-    title: 'Tạo Thư Mời | DXMD Việt Nam',
-    description: 'Cùng tham gia tạo thư mời cho các sự kiện cùng Công Ty Cổ Phần DXMD Việt Nam.',
+    title: 'Tạo Thư Mời | FENICA',
+    description: 'Cùng tham gia tạo thư mời cho các sự kiện cùng FENICA.',
     url: '/invitations',
-    siteName: 'DXMD Việt Nam',
+    siteName: 'FENICA',
     locale: 'vi_VN',
     type: 'website',
   },
@@ -47,7 +47,7 @@ export default async function InvitationsListPage() {
             Tạo Thư Mời
           </h1>
           <p className="text-gray-400 text-sm md:text-base max-w-2xl mx-auto">
-            Cùng DXMD Việt Nam lan tỏa thông điệp tích cực bằng cách tạo thư mời sự kiện của bạn.
+            Cùng FENICA lan tỏa thông điệp tích cực bằng cách tạo thư mời sự kiện của bạn.
           </p>
         </div>
 

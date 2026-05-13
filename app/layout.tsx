@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { Manrope } from 'next/font/google';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://fenica.vn'),
   title: 'Thư mời | CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
   description:
     'Thư mời chính thức tham dự CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA” – sự kiện đặc biệt từ FENICA.',

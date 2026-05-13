@@ -12,8 +12,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
 
     if (template) {
       return {
-        title: `Tạo Avatar - ${template.title} | DXMD Việt Nam`,
-        description: template.content || `Tham gia chiến dịch ${template.title} cùng DXMD Việt Nam.`,
+        title: `Tạo Avatar - ${template.title} | FENICA`,
+        description: template.content || `Tham gia chiến dịch ${template.title} cùng FENICA.`,
         openGraph: {
           title: `Tạo Avatar - ${template.title}`,
           description: template.content || `Tạo avatar chiến dịch ${template.title}`,
@@ -26,8 +26,8 @@ export async function generateMetadata(props: { params: Promise<{ slug: string }
   }
 
   return {
-    title: 'Tạo Avatar | DXMD Việt Nam',
-    description: 'Tạo avatar chiến dịch cùng DXMD Việt Nam.'
+    title: 'Tạo Avatar | FENICA',
+    description: 'Tạo avatar chiến dịch cùng FENICA.'
   };
 }
 
