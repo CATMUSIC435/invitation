@@ -6,39 +6,44 @@ import { eq, desc } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 
 export async function uploadToWordPress(formData: FormData) {
-  const file = formData.get('file') as File;
-  if (!file) throw new Error("No file uploaded");
+  try {
+    const file = formData.get('file') as File;
+    if (!file) return { error: "No file uploaded" };
 
-  const wpUrl = process.env.WP_URL;
-  const wpUser = process.env.WP_USERNAME;
-  const wpPass = process.env.WP_APP_PASSWORD;
+    const wpRestUrl = process.env.WP_REST_URL || 'https://marketing.dxmdvietnam.vn/index.php?rest_route=/wp/v2/media';
+    const wpUser = process.env.WP_USERNAME;
+    const wpPass = process.env.WP_APP_PASSWORD;
 
-  if (!wpUrl || !wpUser || !wpPass) {
-    throw new Error("Vui lòng cấu hình WP_URL, WP_USERNAME, WP_APP_PASSWORD trong file .env");
+    if (!wpRestUrl || !wpUser || !wpPass) {
+      return { error: "Vui lòng cấu hình WP_REST_URL, WP_USERNAME, WP_APP_PASSWORD trong file .env" };
+    }
+
+    const authHeader = 'Basic ' + Buffer.from(`${wpUser}:${wpPass}`).toString('base64');
+    
+    const buffer = await file.arrayBuffer();
+    
+    const response = await fetch(wpRestUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': authHeader,
+        'Content-Disposition': `attachment; filename="${file.name}"`,
+        'Content-Type': file.type || 'image/jpeg',
+      },
+      body: Buffer.from(buffer),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("WP Upload Error:", errorText);
+      return { error: `Tải ảnh lên WordPress thất bại: ${response.statusText} - ${errorText}` };
+    }
+
+    const data = await response.json();
+    return { url: data.source_url };
+  } catch (error: any) {
+    console.error("Upload Error Exception:", error);
+    return { error: error.message || "Lỗi không xác định khi tải ảnh" };
   }
-
-  const authHeader = 'Basic ' + Buffer.from(`${wpUser}:${wpPass}`).toString('base64');
-  
-  const buffer = await file.arrayBuffer();
-  
-  const response = await fetch(`${wpUrl}/wp-json/wp/v2/media`, {
-    method: 'POST',
-    headers: {
-      'Authorization': authHeader,
-      'Content-Disposition': `attachment; filename="${file.name}"`,
-      'Content-Type': file.type || 'image/jpeg',
-    },
-    body: Buffer.from(buffer),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    console.error("WP Upload Error:", errorText);
-    throw new Error(`Tải ảnh lên WordPress thất bại: ${response.statusText}`);
-  }
-
-  const data = await response.json();
-  return data.source_url; // URL ảnh tĩnh từ WP
 }
 
 export async function getAvatarTemplates() {

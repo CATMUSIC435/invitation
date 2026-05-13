@@ -46,8 +46,12 @@ export default function AvatarAdminClient({ initialTemplates }: { initialTemplat
     try {
       const form = new FormData();
       form.append('file', file);
-      const url = await uploadToWordPress(form);
-      setFormData(prev => ({ ...prev, image_url: url }));
+      const result = await uploadToWordPress(form);
+      if (result.error) {
+        alert("Lỗi tải ảnh: " + result.error);
+        return;
+      }
+      setFormData(prev => ({ ...prev, image_url: result.url }));
       alert("Tải ảnh thành công!");
     } catch (error: any) {
       alert("Lỗi tải ảnh: " + error.message);
