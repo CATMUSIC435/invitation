@@ -91,10 +91,17 @@ export function useInvitationCard(template: InvitationTemplate) {
 
       const base64 = canvas.toDataURL('image/jpeg', 0.95);
 
+      // Chuyển base64 sang Blob để tránh lỗi Chrome tải file không có đuôi mở rộng khi chuỗi base64 quá lớn
+      const fetchRes = await fetch(base64);
+      const blob = await fetchRes.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
       const link = document.createElement('a');
       link.download = `invitation-${dataForm.name.toLowerCase().replace(/\s+/g, '-')}.jpg`;
-      link.href = base64;
+      link.href = blobUrl;
       link.click();
+      
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 1000);
 
       if (template.save_user_info !== false) {
         const result = await saveInvitation(dataForm.name, dataForm.title, base64);
