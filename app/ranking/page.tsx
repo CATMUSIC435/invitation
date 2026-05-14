@@ -4,6 +4,12 @@ import ShinyText from '@/components/atoms/shiny-text';
 
 export const metadata: Metadata = {
   title: 'Bảng Xếp Hạng | CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
+  description: 'Bảng xếp hạng mức độ tương tác trên mạng xã hội dành cho các hành khách tiên phong trong chiến dịch Săn vé lên tàu cùng FENICA.',
+  openGraph: {
+    title: 'Bảng Xếp Hạng | CUỘC THI “SĂN VÉ LÊN TÀU CÙNG FENICA”',
+    description: 'Bảng xếp hạng mức độ tương tác trên mạng xã hội dành cho các hành khách tiên phong trong chiến dịch Săn vé lên tàu cùng FENICA.',
+    type: 'website',
+  }
 };
 
 const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL || 'https://neutral-husky-121097.upstash.io';
@@ -199,9 +205,9 @@ export default function RankingPage() {
   return (
     <section className="flex-1 flex flex-col p-4 lg:p-8 max-w-6xl mx-auto w-full relative z-10">
       <div className="text-center mb-12">
-        <h2 className="text-[#c19d68] text-4xl md:text-5xl font-bold tracking-widest uppercase drop-shadow-[0_0_15px_rgba(193,157,104,0.5)] font-avo-bold">
+        <h1 className="text-[#c19d68] text-4xl md:text-5xl font-bold tracking-widest uppercase drop-shadow-[0_0_15px_rgba(193,157,104,0.5)] font-avo-bold">
           <ShinyText text="SĂN VÉ LÊN TÀU CÙNG FENICA" disabled={false} speed={3} className="text-[#c19d68]" shineColor="#ffffff" />
-        </h2>
+        </h1>
         <p className="text-gray-400 mt-3 text-lg font-light">Bảng xếp hạng mức độ tương tác trên mạng xã hội</p>
       </div>
 
