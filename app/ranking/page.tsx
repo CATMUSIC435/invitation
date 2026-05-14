@@ -60,23 +60,30 @@ async function fetchRankings() {
       }
     }).filter(Boolean);
 
-    // Parse stats and sort by views -> likes
+    // Parse stats and sort by score
     const ranked = parsed.map((item: any) => {
       const data = item?.result?.data || {};
+      const likes = parseInt(data.likes) || 0;
+      const comments = parseInt(data.comments) || 0;
+      const shares = parseInt(data.shares) || 0;
+      const views = parseInt(data.views) || 0;
+      const score = likes + comments + shares;
+
       return {
         url: item.url || '',
         platform: item?.result?.platform || 'unknown',
         username: data.username || data.nickname || 'Không rõ',
         caption: data.caption || '',
-        views: parseInt(data.views) || 0,
-        likes: parseInt(data.likes) || 0,
-        comments: parseInt(data.comments) || 0,
-        shares: parseInt(data.shares) || 0,
+        views,
+        likes,
+        comments,
+        shares,
+        score,
         cover: data.cover || '',
       };
     });
 
-    ranked.sort((a: any, b: any) => b.views - a.views || b.likes - a.likes);
+    ranked.sort((a: any, b: any) => b.score - a.score || b.likes - a.likes);
     return ranked;
   } catch (error) {
     console.error('Failed to fetch rankings', error);
@@ -84,7 +91,7 @@ async function fetchRankings() {
   }
 }
 
-import { Trophy, Eye, Heart, MessageCircle, Share2, Medal } from 'lucide-react';
+import { Trophy, Eye, Heart, MessageCircle, Share2, Medal, Flame } from 'lucide-react';
 import { Suspense } from 'react';
 
 import { connection } from 'next/server';
@@ -155,8 +162,8 @@ async function RankingContent() {
 
                     <div className="flex-shrink-0 w-full sm:w-auto text-left sm:text-right mt-2 sm:mt-0 flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-center border-t sm:border-none border-white/10 pt-2 sm:pt-0">
                       <div className={`text-lg sm:text-xl md:text-2xl font-black ${actualRank === 1 ? 'text-yellow-400' : actualRank === 2 ? 'text-gray-200' : actualRank === 3 ? 'text-amber-500' : 'text-white'}`}>
-                        <Eye size={16} className="inline mr-1.5 opacity-60 mb-0.5" />
-                        {new Intl.NumberFormat('vi-VN').format(item.views)}
+                        <Flame size={16} className="inline mr-1.5 opacity-60 mb-0.5" />
+                        {new Intl.NumberFormat('vi-VN').format(item.score)}
                       </div>
                       <div className="text-xs sm:text-sm text-gray-400 flex flex-wrap items-center justify-end gap-2 sm:gap-3 mt-1 font-medium">
                         <span className="flex items-center gap-1"><Heart size={12} className={actualRank === 1 ? "text-yellow-500/80" : ""} /> {new Intl.NumberFormat('vi-VN').format(item.likes)}</span>
