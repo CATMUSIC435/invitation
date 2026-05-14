@@ -75,6 +75,7 @@ export const viewport: Viewport = {
 const manrope = Manrope({ subsets: ['latin'] });
 
 import ParticleWrapper from '@/components/atoms/particle-wrapper';
+import PageLoader from '@/components/atoms/page-loader';
 
 export default function RootLayout({
   children
@@ -87,6 +88,7 @@ export default function RootLayout({
       className={`bg-[#0a1520] text-gray-100 ${manrope.className}`}
     >
       <body className="min-h-[100dvh] bg-transparent relative antialiased selection:bg-[#0e1e2e] selection:text-white">
+        <PageLoader />
         <ParticleWrapper />
         {children}
       </body>
