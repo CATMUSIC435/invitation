@@ -49,43 +49,41 @@ function WaveGrid() {
     uniforms.uTime.value = state.clock.getElapsedTime() * 0.25;
   });
 
+  const material1 = useMemo(() => new THREE.ShaderMaterial({
+    uniforms,
+    vertexShader,
+    fragmentShader: `
+      void main() {
+        gl_FragColor = vec4(0.29, 0.64, 0.87, 0.1);
+      }
+    `,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  }), [uniforms, vertexShader]);
+
+  const material2 = useMemo(() => new THREE.ShaderMaterial({
+    uniforms,
+    vertexShader,
+    fragmentShader: `
+      void main() {
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 0.25);
+      }
+    `,
+    transparent: true,
+    blending: THREE.AdditiveBlending,
+    depthWrite: false
+  }), [uniforms, vertexShader]);
+
   return (
     <group position={[0, -80, 0]}>
       {geometries.map((geo, i) => (
         <group key={i}>
-          {/* @ts-ignore - R3F line element clashes with SVG line in TS */}
-          <line geometry={geo}>
-            <shaderMaterial
-              uniforms={uniforms}
-              vertexShader={vertexShader}
-              fragmentShader={`
-                void main() {
-                  gl_FragColor = vec4(0.29, 0.64, 0.87, 0.1); // #4aa3df with 0.1 opacity
-                }
-              `}
-              transparent={true}
-              blending={THREE.AdditiveBlending}
-              depthWrite={false}
-            />
-          </line>
+          {/* @ts-ignore */}
+          <line geometry={geo} material={material1} />
           {i % 2 === 0 && (
-            <>
-              {/* @ts-ignore */}
-              <points geometry={geo}>
-                <shaderMaterial
-                  uniforms={uniforms}
-                  vertexShader={vertexShader}
-                  fragmentShader={`
-                    void main() {
-                      gl_FragColor = vec4(1.0, 1.0, 1.0, 0.25); // white with 0.25 opacity
-                    }
-                  `}
-                  transparent={true}
-                  blending={THREE.AdditiveBlending}
-                  depthWrite={false}
-                />
-              </points>
-            </>
+            /* @ts-ignore */
+            <points geometry={geo} material={material2} />
           )}
         </group>
       ))}

@@ -165,7 +165,7 @@ async function RankingContent() {
 
                     <div className="flex-grow min-w-0 ml-1 sm:ml-2">
                       <a href={item.url} target="_blank" rel="noopener noreferrer" className="font-bold text-white text-base sm:text-lg md:text-xl hover:text-[#c19d68] transition-colors truncate block">
-                        @{item.username}
+                        {item.username}
                       </a>
                       <p className="text-xs sm:text-sm text-gray-400 capitalize flex items-center gap-2 mt-0.5">
                         <span className={`inline-block w-2 h-2 rounded-full ${item.platform === 'tiktok' ? 'bg-cyan-400' : 'bg-blue-600'}`}></span>
