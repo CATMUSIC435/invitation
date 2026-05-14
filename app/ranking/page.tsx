@@ -148,7 +148,7 @@ async function RankingContent() {
                         <>
                           <img src={item.cover} alt={item.username} className={`w-10 h-10 md:w-12 md:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full object-cover ring-2 transition-all ${ringColor}`} />
                           <a 
-                            href={`/api/download?url=${encodeURIComponent(item.cover)}&name=san-ve-fenica-${slugify(item.username)}.webp`}
+                            href={`/api/download?url=${encodeURIComponent(item.cover)}&name=san-ve-fenica-${slugify(item.username)}.jpg`}
                             download
                             title="Tải ảnh này"
                             className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity"

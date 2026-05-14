@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
   const url = request.nextUrl.searchParams.get('url');
-  const filename = request.nextUrl.searchParams.get('name') || 'image.webp';
+  const filename = request.nextUrl.searchParams.get('name') || 'image.jpg';
 
   if (!url) {
     return new NextResponse('Missing URL', { status: 400 });
