@@ -79,7 +79,7 @@ async function fetchRankings() {
         comments,
         shares,
         score,
-        cover: data.cover || '',
+        cover: data.screenshotUrl || data.cover || '',
       };
     });
 

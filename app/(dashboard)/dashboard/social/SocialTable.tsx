@@ -10,7 +10,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<any>(null);
   const [isAdding, setIsAdding] = useState(false);
-  const [addForm, setAddForm] = useState<any>({ key: 'scraped_data:new_user', username: '', platform: 'tiktok', views: 0, likes: 0, comments: 0, shares: 0 });
+  const [addForm, setAddForm] = useState<any>({ key: 'scraped_data:new_user', username: '', platform: 'tiktok', views: 0, likes: 0, comments: 0, shares: 0, screenshotUrl: '' });
   const [isLoading, setIsLoading] = useState(false);
 
   // Pagination logic
@@ -29,6 +29,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
       likes: data.likes || 0,
       comments: data.comments || 0,
       shares: data.shares || 0,
+      screenshotUrl: data.screenshotUrl || data.cover || '',
       rawItem: item
     });
   };
@@ -48,6 +49,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
     updatedRaw.result.data.likes = editForm.likes.toString();
     updatedRaw.result.data.comments = editForm.comments.toString();
     updatedRaw.result.data.shares = editForm.shares.toString();
+    updatedRaw.result.data.screenshotUrl = editForm.screenshotUrl;
 
     await saveSocialDataAction(editingKey!, updatedRaw);
     setEditingKey(null);
@@ -76,6 +78,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
           likes: addForm.likes.toString(),
           comments: addForm.comments.toString(),
           shares: addForm.shares.toString(),
+          screenshotUrl: addForm.screenshotUrl,
           cover: ""
         }
       }
@@ -83,7 +86,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
 
     await saveSocialDataAction(addForm.key, newRecord);
     setIsAdding(false);
-    setAddForm({ key: `scraped_data:new_${Date.now()}`, username: '', platform: 'tiktok', views: 0, likes: 0, comments: 0, shares: 0 });
+    setAddForm({ key: `scraped_data:new_${Date.now()}`, username: '', platform: 'tiktok', views: 0, likes: 0, comments: 0, shares: 0, screenshotUrl: '' });
     setIsLoading(false);
   };
 
@@ -125,6 +128,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
               <th className="px-4 py-3 font-semibold">Likes</th>
               <th className="px-4 py-3 font-semibold">Comments</th>
               <th className="px-4 py-3 font-semibold">Shares</th>
+              <th className="px-4 py-3 font-semibold w-32">Ảnh URL</th>
               <th className="px-4 py-3 font-semibold text-right">Thao tác</th>
             </tr>
           </thead>
@@ -191,6 +195,15 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
                     className="w-full bg-[#0a1520] border border-white/20 rounded-md px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#c19d68] focus:ring-1 focus:ring-[#c19d68]"
                   />
                 </td>
+                <td className="px-4 py-3">
+                  <input 
+                    type="text" 
+                    value={addForm.screenshotUrl} 
+                    onChange={e => setAddForm({...addForm, screenshotUrl: e.target.value})}
+                    placeholder="https://..."
+                    className="w-full bg-[#0a1520] border border-white/20 rounded-md px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#c19d68] focus:ring-1 focus:ring-[#c19d68]"
+                  />
+                </td>
                 <td className="px-4 py-3 text-right">
                   <button onClick={handleSaveAdd} disabled={isLoading} className="inline-flex items-center gap-1 bg-green-500/20 text-green-400 hover:bg-green-500/30 px-3 py-1.5 rounded-md font-medium text-xs transition-colors">
                     <Check size={14}/> Lưu
@@ -201,7 +214,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
 
             {currentData.length === 0 && !isAdding ? (
               <tr>
-                <td colSpan={8} className="px-4 py-8 text-center text-sm text-gray-500 italic">
+                <td colSpan={9} className="px-4 py-8 text-center text-sm text-gray-500 italic">
                   Chưa có dữ liệu MXH nào.
                 </td>
               </tr>
@@ -291,6 +304,24 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
                         />
                       ) : (
                         new Intl.NumberFormat('vi-VN').format(data.shares || 0)
+                      )}
+                    </td>
+
+                    <td className="px-4 py-3">
+                      {isEditing ? (
+                        <input 
+                          type="text" 
+                          value={editForm.screenshotUrl} 
+                          onChange={e => setEditForm({...editForm, screenshotUrl: e.target.value})}
+                          placeholder="https://..."
+                          className="w-full bg-[#0a1520] border border-[#c19d68] rounded-md px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#c19d68]"
+                        />
+                      ) : (
+                        data.screenshotUrl ? (
+                          <a href={data.screenshotUrl} target="_blank" rel="noopener noreferrer" className="text-[#c19d68] hover:underline flex items-center gap-1 truncate max-w-[100px]">
+                            <img src={data.screenshotUrl} className="w-6 h-6 object-cover rounded" /> Xem
+                          </a>
+                        ) : 'N/A'
                       )}
                     </td>
 
