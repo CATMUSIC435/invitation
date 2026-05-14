@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { useEffect, useState } from 'react';
 
 export default function PageLoader() {
@@ -14,12 +14,12 @@ export default function PageLoader() {
     return () => clearTimeout(timer);
   }, []);
 
-  const containerVariants = {
+  const containerVariants: Variants = {
     hidden: { opacity: 1 },
     exit: { opacity: 0, scale: 1.05, transition: { duration: 0.8, ease: 'easeInOut' } }
   };
 
-  const drawLogo = {
+  const drawLogo: Variants = {
     hidden: { pathLength: 0, fillOpacity: 0, opacity: 0 },
     visible: (i: number) => ({
       pathLength: 1,
@@ -33,7 +33,7 @@ export default function PageLoader() {
     })
   };
 
-  const textContainer = {
+  const textContainer: Variants = {
     hidden: {},
     visible: {
       transition: {
@@ -43,7 +43,7 @@ export default function PageLoader() {
     }
   };
 
-  const textItem = {
+  const textItem: Variants = {
     hidden: { opacity: 0, y: 5 },
     visible: {
       opacity: 1,
