@@ -10,7 +10,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
   const [editingKey, setEditingKey] = useState<string | null>(null);
   const [editForm, setEditForm] = useState<any>(null);
   const [isAdding, setIsAdding] = useState(false);
-  const [addForm, setAddForm] = useState<any>({ key: 'scraped_data:new_user', username: '', platform: 'tiktok', views: 0, likes: 0, comments: 0, shares: 0, screenshotUrl: '' });
+  const [addForm, setAddForm] = useState<any>({ key: `scraped_data:new_${Date.now()}`, username: '', platform: 'tiktok', url: '', views: 0, likes: 0, comments: 0, shares: 0, screenshotUrl: '' });
   const [isLoading, setIsLoading] = useState(false);
 
   // Pagination logic
@@ -25,6 +25,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
     setEditForm({ 
       username: data.username || data.nickname || '',
       platform: item.data?.result?.platform || 'tiktok',
+      url: item.data?.url || '',
       views: data.views || 0,
       likes: data.likes || 0,
       comments: data.comments || 0,
@@ -43,6 +44,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
     if (!updatedRaw.result) updatedRaw.result = { data: {} };
     if (!updatedRaw.result.data) updatedRaw.result.data = {};
     
+    updatedRaw.url = editForm.url;
     updatedRaw.result.platform = editForm.platform;
     updatedRaw.result.data.username = editForm.username;
     updatedRaw.result.data.views = editForm.views.toString();
@@ -65,11 +67,11 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
   };
 
   const handleSaveAdd = async () => {
-    if (!addForm.username || !addForm.key) return alert('Vui lòng điền đủ thông tin');
+    if (!addForm.username || !addForm.url) return alert('Vui lòng điền đủ thông tin');
     setIsLoading(true);
     
     const newRecord = {
-      url: `https://example.com/@${addForm.username}`,
+      url: addForm.url,
       result: {
         platform: addForm.platform,
         data: {
@@ -86,7 +88,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
 
     await saveSocialDataAction(addForm.key, newRecord);
     setIsAdding(false);
-    setAddForm({ key: `scraped_data:new_${Date.now()}`, username: '', platform: 'tiktok', views: 0, likes: 0, comments: 0, shares: 0, screenshotUrl: '' });
+    setAddForm({ key: `scraped_data:new_${Date.now()}`, username: '', platform: 'tiktok', url: '', views: 0, likes: 0, comments: 0, shares: 0, screenshotUrl: '' });
     setIsLoading(false);
   };
 
@@ -121,7 +123,7 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
         <table className="w-full text-left text-sm text-gray-300">
           <thead className="bg-[#1a2d42] text-gray-400 uppercase text-xs border-b border-white/10">
             <tr>
-              <th className="px-4 py-3 font-semibold">Key / Redis</th>
+              <th className="px-4 py-3 font-semibold">Link bài viết</th>
               <th className="px-4 py-3 font-semibold">Username</th>
               <th className="px-4 py-3 font-semibold">Nền tảng</th>
               <th className="px-4 py-3 font-semibold">Views</th>
@@ -138,9 +140,9 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
                 <td className="px-4 py-3">
                   <input 
                     type="text" 
-                    value={addForm.key} 
-                    onChange={e => setAddForm({...addForm, key: e.target.value})}
-                    placeholder="scraped_data:xxx"
+                    value={addForm.url} 
+                    onChange={e => setAddForm({...addForm, url: e.target.value})}
+                    placeholder="https://..."
                     className="w-full bg-[#0a1520] border border-white/20 rounded-md px-3 py-1.5 text-sm text-white focus:outline-none focus:border-[#c19d68] focus:ring-1 focus:ring-[#c19d68]"
                   />
                 </td>
@@ -225,7 +227,22 @@ export default function SocialTable({ initialData }: { initialData: any[] }) {
 
                 return (
                   <tr key={item.key} className="hover:bg-white/5 transition-colors group">
-                    <td className="px-4 py-3 text-xs text-gray-400 font-mono truncate max-w-[120px]" title={item.key}>{item.key}</td>
+                    <td className="px-4 py-3 text-xs text-gray-400 font-mono truncate max-w-[150px]" title={item.data?.url || item.key}>
+                      {isEditing ? (
+                        <input 
+                          type="text" 
+                          value={editForm.url} 
+                          onChange={e => setEditForm({...editForm, url: e.target.value})}
+                          className="w-full bg-[#0a1520] border border-[#c19d68] rounded-md px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-1 focus:ring-[#c19d68]"
+                        />
+                      ) : (
+                        item.data?.url ? (
+                          <a href={item.data.url} target="_blank" rel="noopener noreferrer" className="text-[#c19d68] hover:underline">
+                            {item.data.url}
+                          </a>
+                        ) : 'N/A'
+                      )}
+                    </td>
                     
                     <td className="px-4 py-3 font-medium text-white">
                       {isEditing ? (
