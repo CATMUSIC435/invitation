@@ -53,6 +53,7 @@ function WaveGrid() {
     <group position={[0, -80, 0]}>
       {geometries.map((geo, i) => (
         <group key={i}>
+          {/* @ts-ignore - R3F line element clashes with SVG line in TS */}
           <line geometry={geo}>
             <shaderMaterial
               uniforms={uniforms}
@@ -68,20 +69,23 @@ function WaveGrid() {
             />
           </line>
           {i % 2 === 0 && (
-            <points geometry={geo}>
-              <shaderMaterial
-                uniforms={uniforms}
-                vertexShader={vertexShader}
-                fragmentShader={`
-                  void main() {
-                    gl_FragColor = vec4(1.0, 1.0, 1.0, 0.25); // white with 0.25 opacity
-                  }
-                `}
-                transparent={true}
-                blending={THREE.AdditiveBlending}
-                depthWrite={false}
-              />
-            </points>
+            <>
+              {/* @ts-ignore */}
+              <points geometry={geo}>
+                <shaderMaterial
+                  uniforms={uniforms}
+                  vertexShader={vertexShader}
+                  fragmentShader={`
+                    void main() {
+                      gl_FragColor = vec4(1.0, 1.0, 1.0, 0.25); // white with 0.25 opacity
+                    }
+                  `}
+                  transparent={true}
+                  blending={THREE.AdditiveBlending}
+                  depthWrite={false}
+                />
+              </points>
+            </>
           )}
         </group>
       ))}
