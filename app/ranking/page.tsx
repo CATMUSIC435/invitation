@@ -92,10 +92,12 @@ async function fetchRankings() {
   }
 }
 
-import { Trophy, Eye, Heart, MessageCircle, Share2, Medal, Flame } from 'lucide-react';
+import { Trophy, Eye, Heart, MessageCircle, Share2, Medal, Flame, Download } from 'lucide-react';
 import { Suspense } from 'react';
 
 import { connection } from 'next/server';
+
+const slugify = (text: string) => text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
 
 async function RankingContent() {
   await connection();
@@ -140,10 +142,20 @@ async function RankingContent() {
                       #{actualRank}
                     </div>
 
-                    <div className="flex-shrink-0 relative">
+                    <div className="flex-shrink-0 relative group/img">
                       {actualRank === 1 && <Trophy className="absolute -top-3 -right-3 text-yellow-400 drop-shadow-[0_0_5px_rgba(250,204,21,0.8)] z-10" size={16} />}
                       {item.cover ? (
-                        <img src={item.cover} alt={item.username} className={`w-10 h-10 md:w-12 md:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full object-cover ring-2 transition-all ${ringColor}`} />
+                        <>
+                          <img src={item.cover} alt={item.username} className={`w-10 h-10 md:w-12 md:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full object-cover ring-2 transition-all ${ringColor}`} />
+                          <a 
+                            href={`/api/download?url=${encodeURIComponent(item.cover)}&name=san-ve-fenica-${slugify(item.username)}.webp`}
+                            download
+                            title="Tải ảnh này"
+                            className="absolute inset-0 flex items-center justify-center bg-black/60 rounded-full opacity-0 group-hover/img:opacity-100 transition-opacity"
+                          >
+                            <Download size={16} className="text-white" />
+                          </a>
+                        </>
                       ) : (
                         <div className={`w-10 h-10 md:w-12 md:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full bg-gray-800 flex items-center justify-center ring-2 ${ringColor}`}>
                           <span className="text-gray-500 text-[10px] sm:text-xs">No img</span>
