@@ -102,6 +102,7 @@ import { Trophy, Eye, Heart, MessageCircle, Share2, Medal, Flame, Download } fro
 import { Suspense } from 'react';
 
 import { connection } from 'next/server';
+import TopBranding from '@/components/atoms/top-branding';
 
 const slugify = (text: string) => text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
 
@@ -153,7 +154,7 @@ async function RankingContent() {
                       {item.cover ? (
                         <>
                           <img src={item.cover} alt={item.username} className={`w-10 h-10 md:w-12 md:h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full object-cover ring-2 transition-all ${ringColor}`} />
-                          <a 
+                          <a
                             href={`/api/download?url=${encodeURIComponent(item.cover)}&name=san-ve-fenica-${slugify(item.username)}.jpg`}
                             download
                             title="Tải ảnh này"
@@ -205,6 +206,7 @@ export default function RankingPage() {
   return (
     <section className="flex-1 flex flex-col p-4 lg:p-8 max-w-6xl mx-auto w-full relative z-10">
       <div className="text-center mb-12">
+        <TopBranding />
         <h1 className="text-[#c19d68] text-4xl md:text-5xl font-bold tracking-widest uppercase drop-shadow-[0_0_15px_rgba(193,157,104,0.5)] font-avo-bold">
           <ShinyText text="SĂN VÉ LÊN TÀU CÙNG FENICA" disabled={false} speed={3} className="text-[#c19d68]" shineColor="#ffffff" />
         </h1>
