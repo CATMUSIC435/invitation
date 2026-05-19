@@ -71,26 +71,20 @@ async function fetchRankings() {
     const ranked = parsed.map((item: any) => {
       const data = item?.result?.data || {};
       const likes = parseInt(data.likes) || 0;
-      const comments = parseInt(data.comments) || 0;
-      const shares = parseInt(data.shares) || 0;
-      const views = parseInt(data.views) || 0;
-      const score = likes + comments + shares;
+      const score = likes;
 
       return {
         url: item.url || '',
         platform: item?.result?.platform || 'unknown',
         username: data.username || data.nickname || 'Không rõ',
         caption: data.caption || '',
-        views,
         likes,
-        comments,
-        shares,
         score,
         cover: data.screenshotUrl || data.cover || '',
       };
     });
 
-    ranked.sort((a: any, b: any) => b.score - a.score || b.likes - a.likes);
+    ranked.sort((a: any, b: any) => b.score - a.score);
     return ranked;
   } catch (error) {
     console.error('Failed to fetch rankings', error);
@@ -98,7 +92,7 @@ async function fetchRankings() {
   }
 }
 
-import { Trophy, Eye, Heart, MessageCircle, Share2, Medal, Flame, Download } from 'lucide-react';
+import { Trophy, Heart, Flame, Download } from 'lucide-react';
 import { Suspense } from 'react';
 
 import { connection } from 'next/server';
@@ -187,8 +181,6 @@ async function RankingContent() {
                       </div>
                       <div className="text-xs sm:text-sm text-gray-400 flex flex-wrap items-center justify-end gap-2 sm:gap-3 mt-1 font-medium">
                         <span className="flex items-center gap-1"><Heart size={12} className={actualRank === 1 ? "text-yellow-500/80" : ""} /> {new Intl.NumberFormat('vi-VN').format(item.likes)}</span>
-                        <span className="flex items-center gap-1"><MessageCircle size={12} className={actualRank === 1 ? "text-yellow-500/80" : ""} /> {new Intl.NumberFormat('vi-VN').format(item.comments)}</span>
-                        <span className="flex items-center gap-1"><Share2 size={12} className={actualRank === 1 ? "text-yellow-500/80" : ""} /> {new Intl.NumberFormat('vi-VN').format(item.shares || 0)}</span>
                       </div>
                     </div>
                   </li>
