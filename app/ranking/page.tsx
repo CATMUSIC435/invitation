@@ -73,14 +73,20 @@ async function fetchRankings() {
       const likes = parseInt(data.likes) || 0;
       const score = likes;
 
+      const views = parseInt(data.views || data.playCount || data.viewCount) || 0;
+      const shares = parseInt(data.shares || data.shareCount) || 0;
+
       return {
         url: item.url || '',
         platform: item?.result?.platform || 'unknown',
         username: data.username || data.nickname || 'Không rõ',
         caption: data.caption || '',
         likes,
+        views,
+        shares,
         score,
         cover: data.screenshotUrl || data.cover || '',
+        timestamp: data.timestamp || data.createdAt || data.createTime || '',
       };
     });
 
@@ -97,6 +103,7 @@ import { Suspense } from 'react';
 
 import { connection } from 'next/server';
 import TopBranding from '@/components/atoms/top-branding';
+import ExportButton from './export-button';
 
 const slugify = (text: string) => text.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-');
 
@@ -112,6 +119,9 @@ async function RankingContent() {
         </div>
       ) : (
         <div className="flex flex-col gap-6 w-full max-w-4xl mx-auto">
+          <div className="flex justify-end mb-2 hidden">
+            <ExportButton data={data} />
+          </div>
           <div className='py-4'>
             <ul className="flex flex-col gap-3">
               {data.map((item: any, index: number) => {
