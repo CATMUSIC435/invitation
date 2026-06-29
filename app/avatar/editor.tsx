@@ -27,9 +27,12 @@ export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate
   const [scale, setScale] = useState(50); // 0 to 100, maps to 0.1 to 3x
   const [rotation, setRotation] = useState(0); // -180 to 180
 
-  // Pointer drag state
+  // Pointer drag and pinch state
   const isDragging = useRef(false);
   const lastPos = useRef({ x: 0, y: 0 });
+  const activePointers = useRef<{ [pointerId: number]: { x: number; y: number } }>({});
+  const initialPinchDistance = useRef<number | null>(null);
+  const initialPinchScale = useRef<number>(50);
 
   // Handle file uploads
   const handleFileUpload = (e: ChangeEvent<HTMLInputElement>, type: "frame" | "avatar") => {
@@ -134,39 +137,81 @@ export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate
     }
   }, [frameImg, avatarImg, x, y, scale, rotation]);
 
-  // Pointer events for drag to pan
+  // Pointer events for drag to pan and pinch to zoom
   const handlePointerDown = (e: React.PointerEvent<HTMLCanvasElement>) => {
     if (!avatarImg) return;
-    isDragging.current = true;
-    lastPos.current = { x: e.clientX, y: e.clientY };
+    
+    activePointers.current[e.pointerId] = { x: e.clientX, y: e.clientY };
+    const pointers = Object.values(activePointers.current);
+
+    if (pointers.length === 1) {
+      isDragging.current = true;
+      lastPos.current = { x: e.clientX, y: e.clientY };
+    } else if (pointers.length === 2) {
+      isDragging.current = false;
+      const dist = Math.hypot(pointers[0].x - pointers[1].x, pointers[0].y - pointers[1].y);
+      initialPinchDistance.current = dist;
+      initialPinchScale.current = scale;
+    }
+    
     e.currentTarget.setPointerCapture(e.pointerId);
   };
 
   const handlePointerMove = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    if (!isDragging.current || !canvasRef.current || !frameImg) return;
+    if (!avatarImg || !canvasRef.current || !frameImg) return;
+    
+    if (activePointers.current[e.pointerId]) {
+      activePointers.current[e.pointerId] = { x: e.clientX, y: e.clientY };
+    }
 
-    const dx = e.clientX - lastPos.current.x;
-    const dy = e.clientY - lastPos.current.y;
+    const pointers = Object.values(activePointers.current);
 
-    const rect = canvasRef.current.getBoundingClientRect();
-    const scaleX = canvasRef.current.width / rect.width;
-    const scaleY = canvasRef.current.height / rect.height;
+    if (pointers.length === 1 && isDragging.current) {
+      const dx = e.clientX - lastPos.current.x;
+      const dy = e.clientY - lastPos.current.y;
 
-    const dxCanvas = dx * scaleX;
-    const dyCanvas = dy * scaleY;
+      const rect = canvasRef.current.getBoundingClientRect();
+      const scaleX = canvasRef.current.width / rect.width;
+      const scaleY = canvasRef.current.height / rect.height;
 
-    const dxPercent = (dxCanvas / canvasRef.current.width) * 100;
-    const dyPercent = (dyCanvas / canvasRef.current.height) * 100;
+      const dxCanvas = dx * scaleX;
+      const dyCanvas = dy * scaleY;
 
-    setX(prev => prev + dxPercent); // Allowed to go outside 0-100 to drag out of bounds
-    setY(prev => prev + dyPercent);
+      const dxPercent = (dxCanvas / canvasRef.current.width) * 100;
+      const dyPercent = (dyCanvas / canvasRef.current.height) * 100;
 
-    lastPos.current = { x: e.clientX, y: e.clientY };
+      setX(prev => prev + dxPercent);
+      setY(prev => prev + dyPercent);
+
+      lastPos.current = { x: e.clientX, y: e.clientY };
+    } else if (pointers.length === 2 && initialPinchDistance.current !== null && initialPinchDistance.current > 0) {
+      const dist = Math.hypot(pointers[0].x - pointers[1].x, pointers[0].y - pointers[1].y);
+      const scaleFactor = dist / initialPinchDistance.current;
+      
+      const prevMappedScale = 0.1 + (initialPinchScale.current / 100) * 2.9;
+      const newMappedScale = prevMappedScale * scaleFactor;
+      
+      let newScaleState = ((newMappedScale - 0.1) / 2.9) * 100;
+      newScaleState = Math.min(100, Math.max(0, newScaleState));
+      
+      setScale(newScaleState);
+    }
   };
 
   const handlePointerUp = (e: React.PointerEvent<HTMLCanvasElement>) => {
-    isDragging.current = false;
+    delete activePointers.current[e.pointerId];
     e.currentTarget.releasePointerCapture(e.pointerId);
+    
+    const pointers = Object.values(activePointers.current);
+    if (pointers.length < 2) {
+      initialPinchDistance.current = null;
+    }
+    if (pointers.length === 1) {
+      isDragging.current = true;
+      lastPos.current = { x: pointers[0].x, y: pointers[0].y };
+    } else if (pointers.length === 0) {
+      isDragging.current = false;
+    }
   };
 
   // Wheel event for zoom
@@ -284,7 +329,7 @@ export default function AvatarMergeEditor({ initialTemplate }: { initialTemplate
                 </button>
               </div>
               <p className="text-[11px] text-gray-500 mb-8 font-light tracking-wide leading-relaxed">
-                Mẹo: Bạn có thể kéo thả trực tiếp trên ảnh để di chuyển, và dùng con lăn chuột để phóng to/thu nhỏ.
+                Mẹo: Bạn có thể kéo thả trực tiếp trên ảnh để di chuyển, và dùng con lăn chuột hoặc dùng hai ngón tay để phóng to/thu nhỏ.
               </p>
 
               <div className="space-y-8">
